@@ -194,7 +194,7 @@ redis的复制结构可以支持单层或多层复制关系，一般可分为如
 - 主节点故障转移
 - 主节点关闭持久化，从节点开启持久化，提高主节点的性能
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-10-02-redis-master-slave/20181003071045.png?raw=true)
+![image]({{site.url}}img/2018-10-02-redis-master-slave/20181003071045.png?raw=true)
 
 #### 一主多从
 
@@ -206,7 +206,7 @@ redis的复制结构可以支持单层或多层复制关系，一般可分为如
 - 读写分离，降低主节点压力
 - 在从节点执行如：keys，sort等耗时命令
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-10-02-redis-master-slave/20181003071107.png?raw=true)
+![image]({{site.url}}img/2018-10-02-redis-master-slave/20181003071107.png?raw=true)
 
 <p>
 <font color="red">
@@ -222,7 +222,7 @@ Tips：如果主节点的从节点过多且主节点的写并发较多的情况�
 
 - 从节点数量较多，通过从节点将数据向别的从节点复制，提高原始主节点的性能
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-10-02-redis-master-slave/20181003071121.png?raw=true)
+![image]({{site.url}}img/2018-10-02-redis-master-slave/20181003071121.png?raw=true)
 
 ```
 #原始主节点6381
@@ -326,7 +326,7 @@ role:slave
 slave_repl_offset:108
 ```
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-10-02-redis-master-slave/20181003114429.png?raw=true)
+![image]({{site.url}}img/2018-10-02-redis-master-slave/20181003114429.png?raw=true)
 
 <p>
 Tips：可通过复制偏移量来判断主从节点数据是否一致。如果master_repl_offset-slave_offset较大，则可能有网络延迟或命令阻塞需要进一步检查。
@@ -422,7 +422,7 @@ master_replid:ee1821344611dbc7b6587b563246a22435422808
 9845:S 03 Oct 15:29:46.942 * Background AOF rewrite terminated with success
 ```
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-10-02-redis-master-slave/20181003173311.png?raw=true)
+![image]({{site.url}}img/2018-10-02-redis-master-slave/20181003173311.png?raw=true)
 
 <p>
 全量复制的主要开销如下：
@@ -461,7 +461,7 @@ Tips：如果主节点的数据量较大，开启新的从节点进行全量复�
 5. 主节点检查runid是否与自身一致且offset之后的数据是否在缓冲区内，检查成功返回+CONTINUE，告知从节点可部分复制
 6. 主节点根据偏移量把复制积压缓冲区里的数据发送给从节点
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-10-02-redis-master-slave/20181003185904.png?raw=true)
+![image]({{site.url}}img/2018-10-02-redis-master-slave/20181003185904.png?raw=true)
 
 #### 心跳
 
@@ -469,7 +469,7 @@ Tips：如果主节点的数据量较大，开启新的从节点进行全量复�
 主从建立复制关系后，彼此之间通过长连接发送心跳命令来检查网络及服务是否正常。
 </p>
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-10-02-redis-master-slave/20181008180254.png?raw=true)
+![image]({{site.url}}img/2018-10-02-redis-master-slave/20181008180254.png?raw=true)
 
 - 主从模拟成对方的客户端进行通信，client list查看信息，flags=M（主），flags=S（从）
 - 主节点每隔repl-ping-slave-period（默认10秒）发送ping，检查从节点存活性与连接状态
@@ -481,7 +481,7 @@ Tips：如果主节点的数据量较大，开启新的从节点进行全量复�
 主节点处理完客户端的写命令后，会直接返回给客户端，再异步将写命令发送给从节点，主从之间的数据可能会有延迟，正常情况下延迟在1秒内。如果需要查看延迟的字节量，可通过查看replication信息，master_repl_offset-slave_offset=延迟的字节量。
 </p>
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-10-02-redis-master-slave/20181008173738.png?raw=true)
+![image]({{site.url}}img/2018-10-02-redis-master-slave/20181008173738.png?raw=true)
 
 ```
 [root@vagrant redis-6380]# ./redis-cli -p 6382 info replication

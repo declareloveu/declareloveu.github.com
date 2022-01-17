@@ -16,7 +16,7 @@ tags:
 
 ## 架构图
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-05-18-8-rabbitmq-study-HignAvailable/ha.png?raw=true)
+![image]({{site.url}}img/2018-05-18-8-rabbitmq-study-HignAvailable/ha.png?raw=true)
 
 ## 服务器
 
@@ -322,4 +322,4 @@ if ($blnAck) {
 Tips：需要时刻关注队列中消息数，提高消费者处理速度，避免消息大批量滞留。
 </p>
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-05-18-8-rabbitmq-study-HignAvailable/pic_11.png?raw=true)
+![image]({{site.url}}img/2018-05-18-8-rabbitmq-study-HignAvailable/pic_11.png?raw=true)

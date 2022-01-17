@@ -87,11 +87,11 @@ sleep(10);
 redis客户端连接信息如下，可以发现3次连接的端口都是不同的，当重新连接时原来的连接会立即断开。
 </p>
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-07-12-redis-pconnect-connect/20180712172317.png?raw=true)
+![image]({{site.url}}img/2018-07-12-redis-pconnect-connect/20180712172317.png?raw=true)
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-07-12-redis-pconnect-connect/20180712172356.png?raw=true)
+![image]({{site.url}}img/2018-07-12-redis-pconnect-connect/20180712172356.png?raw=true)
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-07-12-redis-pconnect-connect/20180712172449.png?raw=true)
+![image]({{site.url}}img/2018-07-12-redis-pconnect-connect/20180712172449.png?raw=true)
 
 #### 2.pconnect
 
@@ -116,11 +116,11 @@ sleep(10);
 redis客户端连接信息如下，可以发现3次连接的端口都是相同的，脚本执行过程中，age在一直增长，idle会在使用后重新从0开始计算。
 </p>
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-07-12-redis-pconnect-connect/20180712173124.png?raw=true)
+![image]({{site.url}}img/2018-07-12-redis-pconnect-connect/20180712173124.png?raw=true)
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-07-12-redis-pconnect-connect/20180712173540.png?raw=true)
+![image]({{site.url}}img/2018-07-12-redis-pconnect-connect/20180712173540.png?raw=true)
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-07-12-redis-pconnect-connect/20180712173712.png?raw=true)
+![image]({{site.url}}img/2018-07-12-redis-pconnect-connect/20180712173712.png?raw=true)
 
 ##### 2.不同的标识id
 
@@ -143,11 +143,11 @@ sleep(10);
 redis客户端连接信息如下，可以发现3次连接的端口都是不同的，每次连接时原来的连接不会立即断开，而是要等到timeout时间。
 </p>
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-07-12-redis-pconnect-connect/20180712174540.png?raw=true)
+![image]({{site.url}}img/2018-07-12-redis-pconnect-connect/20180712174540.png?raw=true)
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-07-12-redis-pconnect-connect/20180712174643.png?raw=true)
+![image]({{site.url}}img/2018-07-12-redis-pconnect-connect/20180712174643.png?raw=true)
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-07-12-redis-pconnect-connect/20180712174734.png?raw=true)
+![image]({{site.url}}img/2018-07-12-redis-pconnect-connect/20180712174734.png?raw=true)
 
 ## 多次执行单连接测试
 
@@ -164,11 +164,11 @@ var_dump($objRedis->ping());
 redis客户端连接信息如下，可以发现3次执行脚本端口都是不同的，每次都会重新创建连接。
 </p>
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-07-12-redis-pconnect-connect/20180713172954.png?raw=true)
+![image]({{site.url}}img/2018-07-12-redis-pconnect-connect/20180713172954.png?raw=true)
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-07-12-redis-pconnect-connect/20180713173006.png?raw=true)
+![image]({{site.url}}img/2018-07-12-redis-pconnect-connect/20180713173006.png?raw=true)
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-07-12-redis-pconnect-connect/20180713173018.png?raw=true)
+![image]({{site.url}}img/2018-07-12-redis-pconnect-connect/20180713173018.png?raw=true)
 
 #### 2.pconnect
 
@@ -182,11 +182,11 @@ var_dump($objRedis->ping());
 redis客户端连接信息如下，可以发现3次执行脚本端口都是相同的，每次执行后idle会更新为0，age（连接创建的时间）则会一直增长。
 </p>
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-07-12-redis-pconnect-connect/20180713155322.png?raw=true)
+![image]({{site.url}}img/2018-07-12-redis-pconnect-connect/20180713155322.png?raw=true)
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-07-12-redis-pconnect-connect/20180713155417.png?raw=true)
+![image]({{site.url}}img/2018-07-12-redis-pconnect-connect/20180713155417.png?raw=true)
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-07-12-redis-pconnect-connect/20180713155524.png?raw=true)
+![image]({{site.url}}img/2018-07-12-redis-pconnect-connect/20180713155524.png?raw=true)
 
 ## 总结
 

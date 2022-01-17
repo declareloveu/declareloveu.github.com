@@ -61,7 +61,7 @@ class Cache extends Facade
 
 #### 3.加载流程图
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-06-06-4-laravel-study-facades/20180625145952.png?raw=true)
+![image]({{site.url}}img/2018-06-06-4-laravel-study-facades/20180625145952.png?raw=true)
 
 ## 使用外观
 
@@ -77,7 +77,7 @@ $user = Cache::get('user:'.$id);
 
 #### 2.使用流程图
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-06-06-4-laravel-study-facades/QQ20180625171351.png?raw=true)
+![image]({{site.url}}img/2018-06-06-4-laravel-study-facades/QQ20180625171351.png?raw=true)
 
 ## 外观的优缺点
 

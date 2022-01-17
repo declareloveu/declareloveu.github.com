@@ -46,7 +46,7 @@ redis集群采用虚拟槽分区，所有的键根据哈希函数映射到[0-163
 - 节点自身维护槽的映射关系，不需要客户端或者代理服务维护槽分区元数据
 - 支持节点、槽、键之间的映射查询，用于数据路由、在线伸缩等场景
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-10-12-redis-cluster/20181018180422.png?raw=true)
+![image]({{site.url}}img/2018-10-12-redis-cluster/20181018180422.png?raw=true)
 
 #### 集群功能限制
 
@@ -452,13 +452,13 @@ S: f9a65ed5171b9a66e70b4a12474386c4f9b47e35 127.0.0.1:6384
 redis的集群伸缩是在不影响集群对外服务的前提下，对集群增加节点（扩容）与减少节点（收缩）。
 </p>
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-10-12-redis-cluster/20181017110314.png?raw=true)
+![image]({{site.url}}img/2018-10-12-redis-cluster/20181017110314.png?raw=true)
 
 <p>
 redis集群可以方便的进行节点上下线控制，原理是依赖于槽和数据在节点中的灵活移动。
 </p>
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-10-12-redis-cluster/20181017135000.png?raw=true)
+![image]({{site.url}}img/2018-10-12-redis-cluster/20181017135000.png?raw=true)
 
 #### 扩容
 
@@ -516,7 +516,7 @@ f9a65ed5171b9a66e70b4a12474386c4f9b47e35 127.0.0.1:6384@16384 slave e19b36f039d4
 5. 重复执行步骤（3,4）直到槽下所有的键值数据迁移到目标节点
 6. 向集群内所有主节点发送cluster setslot {slot} node {targetNodeId}命令，通知槽分配给目标节点。为了保证槽节点映射变更及时传播，需要遍历发送给所有主节点更新被迁移的槽指向新节点
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-10-12-redis-cluster/20181017161739.png?raw=true)
+![image]({{site.url}}img/2018-10-12-redis-cluster/20181017161739.png?raw=true)
 
 
 <p>
@@ -666,7 +666,7 @@ f9a65ed5171b9a66e70b4a12474386c4f9b47e35 127.0.0.1:6384@16384 slave e19b36f039d4
 - 首先需要确定下线节点是否有负责的槽，如果有，需要把槽迁移到其他节点，保证节点下线后整个集群槽节点映射的完整性
 - 当下线节点不再负责槽或者本身是从节点时，就可以通知集群内其他节点忘记下线节点，当所有的节点忘记该节点后可以正常关闭
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-10-12-redis-cluster/20181017194309.png?raw=true)
+![image]({{site.url}}img/2018-10-12-redis-cluster/20181017194309.png?raw=true)
 
 ##### 下线迁移槽
 
@@ -674,7 +674,7 @@ f9a65ed5171b9a66e70b4a12474386c4f9b47e35 127.0.0.1:6384@16384 slave e19b36f039d4
 下线节点需要迁移槽，原理与扩容迁移槽的过程一致，这里下线6383（master）与6385（slave），需要把主节点6383上的槽均匀迁移到另外3个主节点上。
 </p>
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-10-12-redis-cluster/20181017202012.png?raw=true)
+![image]({{site.url}}img/2018-10-12-redis-cluster/20181017202012.png?raw=true)
 
 <p>
 每次执行redis-trib.rb reshard只能有一个目标节点，所以需要执行3此reshard命令。
@@ -882,7 +882,7 @@ Tips：如果在cluster-node-time*2时间内无法收集到一半以上槽节点
 从节点根据自身复制偏移量设置延迟选举时间，如复制偏移量最大的节点slave b-1延迟1秒执行，保证复制延迟低的从节点优先发起选举
 </p>
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-10-12-redis-cluster/20181018155222.png?raw=true)
+![image]({{site.url}}img/2018-10-12-redis-cluster/20181018155222.png?raw=true)
 
 ##### 发起选举
 
@@ -896,7 +896,7 @@ Tips：如果在cluster-node-time*2时间内无法收集到一半以上槽节点
 只有拥有槽的主节点才能对选举进行投票，且在一个配置纪元内只能投票一次，当从节点收集到N(所有槽主节点)/2+1个持有槽主节点投票时，从节点即可执行替换主节点操作。
 </p>
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-10-12-redis-cluster/20181018164925.png?raw=true)
+![image]({{site.url}}img/2018-10-12-redis-cluster/20181018164925.png?raw=true)
 
 <p>
 <font color="red">

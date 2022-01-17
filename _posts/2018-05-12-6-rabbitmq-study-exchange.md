@@ -16,7 +16,7 @@ tags:
 
 ## rabbit消息处理结构
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-05-08-6-rabbitmq-study-php-amqplib/message_deal_struct.jpg?raw=true)
+![image]({{site.url}}img/2018-05-08-6-rabbitmq-study-php-amqplib/message_deal_struct.jpg?raw=true)
 
 ## fanout
 
@@ -36,7 +36,7 @@ tags:
 
 ##### 1.结构图
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-05-12-6-rabbitmq-study-exchange/fanout_publish_subscribe.png?raw=true)
+![image]({{site.url}}img/2018-05-12-6-rabbitmq-study-exchange/fanout_publish_subscribe.png?raw=true)
 
 ##### 2.注意事项
 
@@ -82,9 +82,9 @@ tags:
 
 ##### 1.结构图
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-05-12-6-rabbitmq-study-exchange/direct_routing1.png?raw=true)
+![image]({{site.url}}img/2018-05-12-6-rabbitmq-study-exchange/direct_routing1.png?raw=true)
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-05-12-6-rabbitmq-study-exchange/direct_routing2.png?raw=true)
+![image]({{site.url}}img/2018-05-12-6-rabbitmq-study-exchange/direct_routing2.png?raw=true)
 
 ##### 2.注意事项
 
@@ -138,9 +138,9 @@ routekey规则：使用【.】连接的标识符【[a-z0-9]+】，上限为255�
 
 ##### 1.结构图
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-05-12-6-rabbitmq-study-exchange/topic_topics1.jpg?raw=true)
+![image]({{site.url}}img/2018-05-12-6-rabbitmq-study-exchange/topic_topics1.jpg?raw=true)
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-05-12-6-rabbitmq-study-exchange/topic_topics2.jpg?raw=true)
+![image]({{site.url}}img/2018-05-12-6-rabbitmq-study-exchange/topic_topics2.jpg?raw=true)
 
 ##### 2.注意事项
 
@@ -189,7 +189,7 @@ routekey规则：使用【.】连接的标识符【[a-z0-9]+】，上限为255�
 
 ##### 1.结构图
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-05-12-6-rabbitmq-study-exchange/rpc_fibonacci.jpg?raw=true)
+![image]({{site.url}}img/2018-05-12-6-rabbitmq-study-exchange/rpc_fibonacci.jpg?raw=true)
 
 
 ##### 2.注意事项
@@ -241,7 +241,7 @@ routekey规则：使用【.】连接的标识符【[a-z0-9]+】，上限为255�
 
 ##### 1.结构图
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-05-12-6-rabbitmq-study-exchange/rpc_fibonacci_dead.jpg?raw=true)
+![image]({{site.url}}img/2018-05-12-6-rabbitmq-study-exchange/rpc_fibonacci_dead.jpg?raw=true)
 
 
 ##### 2.注意事项
@@ -278,7 +278,7 @@ routekey规则：使用【.】连接的标识符【[a-z0-9]+】，上限为255�
 
 ##### 1.结构图
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-05-12-6-rabbitmq-study-exchange/alternate_exchange.jpg?raw=true)
+![image]({{site.url}}img/2018-05-12-6-rabbitmq-study-exchange/alternate_exchange.jpg?raw=true)
 
 
 ##### 2.注意事项

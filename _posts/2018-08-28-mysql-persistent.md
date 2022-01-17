@@ -163,9 +163,9 @@ mysql> show full processlist;
 当执行多次web请求时，只有第一次进行了3次tcp握手，之后不需要。
 </p>
 
-[长连接.cap](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-08-28-mysql-persistent/%E9%95%BF%E8%BF%9E%E6%8E%A5.cap)
+[长连接.cap]({{site.url}}img/2018-08-28-mysql-persistent/%E9%95%BF%E8%BF%9E%E6%8E%A5.cap)
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-08-28-mysql-persistent/20180828183529.png?raw=true)
+![image]({{site.url}}img/2018-08-28-mysql-persistent/20180828183529.png?raw=true)
 
 
 #### 3.短连接
@@ -253,9 +253,9 @@ mysql> show full processlist;
 当执行多次web请求时，每次都进行了3次tcp握手。
 </p>
 
-[短连接.cap](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-08-28-mysql-persistent/%E7%9F%AD%E8%BF%9E%E6%8E%A5.cap)
+[短连接.cap]({{site.url}}img/2018-08-28-mysql-persistent/%E7%9F%AD%E8%BF%9E%E6%8E%A5.cap)
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-08-28-mysql-persistent/20180828183644.png?raw=true)
+![image]({{site.url}}img/2018-08-28-mysql-persistent/20180828183644.png?raw=true)
 
 #### 4.长连接与短连接混用
 

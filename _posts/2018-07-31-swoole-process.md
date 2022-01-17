@@ -23,9 +23,9 @@ swoole的进程由master进程，manager进程，worker进程，task进程组成
 master与manager进程只会有一个，worker与task进程根据配置可能会产生多个。
 </p>
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-07-31-swoole-process/20180731153032.png?raw=true)
+![image]({{site.url}}img/2018-07-31-swoole-process/20180731153032.png?raw=true)
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-07-31-swoole-process/20180731153049.png?raw=true)
+![image]({{site.url}}img/2018-07-31-swoole-process/20180731153049.png?raw=true)
 
 ## worker_num
 
@@ -43,13 +43,13 @@ master与manager进程只会有一个，worker与task进程根据配置可能会
 逻辑cpu为1，加上master与manager总共为3个。
 </p>
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-07-31-swoole-process/20180731161604.png?raw=true)
+![image]({{site.url}}img/2018-07-31-swoole-process/20180731161604.png?raw=true)
 
 <p>
 逻辑cpu为4，加上master与manager总共为6个。
 </p>
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-07-31-swoole-process/20180731164732.png?raw=true)
+![image]({{site.url}}img/2018-07-31-swoole-process/20180731164732.png?raw=true)
 
 #### 2.设置worke_num
 
@@ -57,13 +57,13 @@ master与manager进程只会有一个，worker与task进程根据配置可能会
 手动启动3个worker进程，加上master与manager总共为5个。
 </p>
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-07-31-swoole-process/20180731162049.png?raw=true)
+![image]({{site.url}}img/2018-07-31-swoole-process/20180731162049.png?raw=true)
 
 <p>
 手动启动6个worker进程，加上master与manager总共为8个。
 </p>
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-07-31-swoole-process/20180731162300.png?raw=true)
+![image]({{site.url}}img/2018-07-31-swoole-process/20180731162300.png?raw=true)
 
 ## task_worker_num
 
@@ -77,7 +77,7 @@ master与manager进程只会有一个，worker与task进程根据配置可能会
 worker与task进程，加上master与manager总共为8个。
 </p>
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-07-31-swoole-process/20180731175826.png?raw=true)
+![image]({{site.url}}img/2018-07-31-swoole-process/20180731175826.png?raw=true)
 
 ##### 设置worke_num=3，task_worker_num=6
 
@@ -85,7 +85,7 @@ worker与task进程，加上master与manager总共为8个。
 worker与task进程，加上master与manager总共为11个。
 </p>
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-07-31-swoole-process/20180731175838.png?raw=true)
+![image]({{site.url}}img/2018-07-31-swoole-process/20180731175838.png?raw=true)
 
 ## worker进程与task进程的区别
 
@@ -97,7 +97,7 @@ worker与task进程，加上master与manager总共为11个。
 swoole中任务的处理流程如下图，服务器接收到客户端的处理请求可以直接在worker中进行处理，如果处理的耗时较长，可将任务异步投递到空闲的task中处理（如果任务异步处理的话），这样worker就可以接收新的客户端处理请求，从而提高了服务器处理任务的速度。
 </p>
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-07-31-swoole-process/20180805111411.png?raw=true)
+![image]({{site.url}}img/2018-07-31-swoole-process/20180805111411.png?raw=true)
 
 <p>
 为了验证实际情况是不是如上面说的，进行如下测试，服务端开启3个worker，2个task。
@@ -109,11 +109,11 @@ swoole中任务的处理流程如下图，服务器接收到客户端的处理�
 - src_worker_id：当前task进程处理的任务来自哪个worker进程
 - task_id：swoole自动生成的任务编号，src_worker_id+task_id为全局唯一
 
-[服务端代码](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-07-31-swoole-process/server.php)
+[服务端代码]({{site.url}}img/2018-07-31-swoole-process/server.php)
 
-[客户端代码](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-07-31-swoole-process/client.php)
+[客户端代码]({{site.url}}img/2018-07-31-swoole-process/client.php)
 
-[测试结果](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-07-31-swoole-process/2018-08-05INFO.log)
+[测试结果]({{site.url}}img/2018-07-31-swoole-process/2018-08-05INFO.log)
 
 #### 测试结果
 
@@ -121,13 +121,13 @@ swoole中任务的处理流程如下图，服务器接收到客户端的处理�
 多个worker会调用相同的task处理。
 </p>
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-07-31-swoole-process/20180805201910.png?raw=true)
+![image]({{site.url}}img/2018-07-31-swoole-process/20180805201910.png?raw=true)
 
 <p>
 相同的worker会调用不同的task处理。
 </p>
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-07-31-swoole-process/20180805202449.png?raw=true)
+![image]({{site.url}}img/2018-07-31-swoole-process/20180805202449.png?raw=true)
 
 ## 参考资料
 

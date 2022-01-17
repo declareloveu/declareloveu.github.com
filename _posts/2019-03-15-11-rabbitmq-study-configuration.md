@@ -132,7 +132,7 @@ Starting RabbitMQ 3.7.13 on Erlang 20.3
 如果开启web管理页面的话，也可以在节点的信息中查看配置文件路径。
 </p>
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2019-03-15-11-rabbitmq-study-configuration/20190316140308.png?raw=true)
+![image]({{site.url}}img/2019-03-15-11-rabbitmq-study-configuration/20190316140308.png?raw=true)
 
 #### 配置文件格式
 

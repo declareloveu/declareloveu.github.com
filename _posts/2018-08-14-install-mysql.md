@@ -42,7 +42,7 @@ tags:
 Linux vagrant.localhost 2.6.32-573.el6.x86_64 #1 SMP Thu Jul 23 15:44:03 UTC 2015 x86_64 x86_64 x86_64 GNU/Linux
 ```
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-08-14-install-mysql/20180815103751.png?raw=true)
+![image]({{site.url}}img/2018-08-14-install-mysql/20180815103751.png?raw=true)
 
 #### 2.安装
 
@@ -135,7 +135,7 @@ mysql运行目录<code>/mysql</code>用于存放数据文件，pid，log等信�
 mysql的良好运行与参数配置至关重要，这里创建my.cnf文件，然后进行一些初始化的修改。
 </p>
 
-[my.cnf](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-08-14-install-mysql/my.cnf)
+[my.cnf]({{site.url}}img/2018-08-14-install-mysql/my.cnf)
 
 ```
 [root@vagrant etc]# cd /etc

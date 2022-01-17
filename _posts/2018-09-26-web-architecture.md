@@ -23,7 +23,7 @@ tags:
 
 #### 网站架构图
 
-![image](https://github.com/xuanxuan2016/xuanxuan2016.github.io/blob/master/img/2018-09-26-web-architecture/bg2018091413.jpg?raw=true)
+![image]({{site.url}}img/2018-09-26-web-architecture/bg2018091413.jpg?raw=true)
 
 #### 请求处理流程
 
