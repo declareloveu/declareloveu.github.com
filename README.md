@@ -1,1 +1,1 @@
-# declareloveu.github.com
+# declareloveu.github.io
