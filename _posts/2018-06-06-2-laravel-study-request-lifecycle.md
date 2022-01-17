@@ -26,7 +26,7 @@ tags:
 </p>
 
 
-![image]({{ site.url }}/img/2018-06-06-2-laravel-study-request-lifecycle/2018-07-01_114410.png?raw=true)
+![image]({{site.url}}/img/2018-06-06-2-laravel-study-request-lifecycle/2018-07-01_114410.png?raw=true)
 
 ## 应用创建
 
