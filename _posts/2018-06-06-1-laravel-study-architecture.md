@@ -30,7 +30,7 @@ tags:
 此图主要是展示服务容器（Service Container），服务提供者（Service Providers），外观（Facades），契约（Contracts）之间的关系。
 </p>
 
-![image]({{site.url}}img/2018-06-06-1-laravel-study-architecture/20180621155721.png?raw=true)
+![image]({{site.url}}/img/2018-06-06-1-laravel-study-architecture/20180621155721.png?raw=true)
 
 ## 架构说明
 

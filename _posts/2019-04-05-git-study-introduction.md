@@ -69,7 +69,7 @@ total 9
 右上角用户->设置->SSH and GPG keys->New SSH Key。将<code>id_rsa.pub</code>里的内容填写进去。
 </p>
 
-![image]({{site.url}}img/2019-04-05-git-study-introduction/20190407111122.png?raw=true)
+![image]({{site.url}}/img/2019-04-05-git-study-introduction/20190407111122.png?raw=true)
 
 #### linux
 
@@ -131,7 +131,7 @@ total 12
 右上角用户->设置->SSH and GPG keys->New SSH Key。将<code>id_rsa.pub</code>里的内容填写进去。
 </p>
 
-![image]({{site.url}}img/2019-04-05-git-study-introduction/20190407111122.png?raw=true)
+![image]({{site.url}}/img/2019-04-05-git-study-introduction/20190407111122.png?raw=true)
 
 ## 创建版本库
 
@@ -184,7 +184,7 @@ On branch master
 在实际工作中，大部分时间都是在本地版本库里进行操作。本地版本库一般分为3个部分，工作区、暂存区、本地分支库。
 </p>
 
-![image]({{site.url}}img/2019-04-05-git-study-introduction/20190405162654.png?raw=true)
+![image]({{site.url}}/img/2019-04-05-git-study-introduction/20190405162654.png?raw=true)
 
 #### 工作区状态
 
@@ -623,4 +623,4 @@ Fast-forward
 
 [廖雪峰教程](https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000)
 
-[git-cheatsheet]({{site.url}}img/2019-04-05-git-study-introduction/git-cheatsheet.pdf)
+[git-cheatsheet]({{site.url}}/img/2019-04-05-git-study-introduction/git-cheatsheet.pdf)

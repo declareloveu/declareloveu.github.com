@@ -21,7 +21,7 @@ tags:
 集群的队列创建后默认只在一个节点上，当集群配置为镜像集群时，队列会被镜像到所有节点上。消息发布到信道后，会被投递到主队列及镜像队列中。一个镜像队列包含一个主队列（master）和多个从队列（slave）。
 </p>
 
-![image]({{site.url}}img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190403151814.png?raw=true)
+![image]({{site.url}}/img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190403151814.png?raw=true)
 
 #### 非同步队列
 
@@ -29,7 +29,7 @@ tags:
 rabbitmq中同步（synchronised）是用来表示master和slave之间的数据状态是否一致的。如果slave包含master中的所有message，则这个slave是synchronised；如果这个slave并没有包含所有master中的message，则这个slave是unsynchronised。
 </p>
 
-![image]({{site.url}}img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190401134813.png?raw=true)
+![image]({{site.url}}/img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190401134813.png?raw=true)
 
 #### 何时出现非同步队列
 
@@ -100,25 +100,25 @@ rabbitmq中同步（synchronised）是用来表示master和slave之间的数据�
 原有节点情况，队列中包含2条消息
 </p>
 
-![image]({{site.url}}img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190401165408.png?raw=true)
+![image]({{site.url}}/img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190401165408.png?raw=true)
 
 <p>
 新加入一个节点，因为原先队列有消息，所以新slave为未同步状态
 </p>
 
-![image]({{site.url}}img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190401170808.png?raw=true)
+![image]({{site.url}}/img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190401170808.png?raw=true)
 
 <p>
 队列中还在不断的增加消息
 </p>
 
-![image]({{site.url}}img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190401174309.png?raw=true)
+![image]({{site.url}}/img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190401174309.png?raw=true)
 
 <p>
 当队列中旧消息消费后，新slave变为同步状态
 </p>
 
-![image]({{site.url}}img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190401174409.png?raw=true)
+![image]({{site.url}}/img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190401174409.png?raw=true)
 
 ##### 自动模式
 
@@ -126,15 +126,15 @@ rabbitmq中同步（synchronised）是用来表示master和slave之间的数据�
 原有节点情况，队列中包含2条消息
 </p>
 
-![image]({{site.url}}img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190401165408.png?raw=true)
+![image]({{site.url}}/img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190401165408.png?raw=true)
 
 <p>
 新加入一个节点，rabbitmq执行自动同步（阻塞队列使用），所以新slave为同步状态
 </p>
 
-![image]({{site.url}}img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190401175116.png?raw=true)
+![image]({{site.url}}/img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190401175116.png?raw=true)
 
-![image]({{site.url}}img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190401174409.png?raw=true)
+![image]({{site.url}}/img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190401174409.png?raw=true)
 
 #### 旧节点重新加入
 
@@ -144,33 +144,33 @@ rabbitmq中同步（synchronised）是用来表示master和slave之间的数据�
 原有节点情况，队列中包含2条消息，总共有3个队列
 </p>
 
-![image]({{site.url}}img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190401180216.png?raw=true)
+![image]({{site.url}}/img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190401180216.png?raw=true)
 
 <p>
 某个节点由于各种原因停止服务了，只有2个队列了
 </p>
 
-![image]({{site.url}}img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190401180451.png?raw=true)
+![image]({{site.url}}/img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190401180451.png?raw=true)
 
 <p>
 队列中还在不断的消费消息
 </p>
 
-![image]({{site.url}}img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190401181316.png?raw=true)
+![image]({{site.url}}/img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190401181316.png?raw=true)
 
 <p>
 当节点重新加入到集群后，为未同步状态
 </p>
 
-![image]({{site.url}}img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190401184201.png?raw=true)
+![image]({{site.url}}/img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190401184201.png?raw=true)
 
 <p>
 队列中还在不断的消费消息与增加消息，当队列中旧消息消费后，节点变为同步状态
 </p>
 
-![image]({{site.url}}img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190401184537.png?raw=true)
+![image]({{site.url}}/img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190401184537.png?raw=true)
 
-![image]({{site.url}}img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190401185432.png?raw=true)
+![image]({{site.url}}/img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190401185432.png?raw=true)
 
 
 ##### 自动模式
@@ -179,25 +179,25 @@ rabbitmq中同步（synchronised）是用来表示master和slave之间的数据�
 原有节点情况，队列中包含2条消息，总共有3个队列
 </p>
 
-![image]({{site.url}}img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190401180216.png?raw=true)
+![image]({{site.url}}/img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190401180216.png?raw=true)
 
 <p>
 某个节点由于各种原因停止服务了，只有2个队列了
 </p>
 
-![image]({{site.url}}img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190401180451.png?raw=true)
+![image]({{site.url}}/img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190401180451.png?raw=true)
 
 <p>
 队列中还在不断的消费消息
 </p>
 
-![image]({{site.url}}img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190401181316.png?raw=true)
+![image]({{site.url}}/img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190401181316.png?raw=true)
 
 <p>
 当节点重新加入到集群后，自动进行同步，为同步状态
 </p>
 
-![image]({{site.url}}img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190401193449.png?raw=true)
+![image]({{site.url}}/img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190401193449.png?raw=true)
 
 ## 选主测试
 
@@ -205,19 +205,19 @@ rabbitmq中同步（synchronised）是用来表示master和slave之间的数据�
 原有节点情况，<code>rabbit@DEV-HROEx64</code>为master节点。
 </p>
 
-![image]({{site.url}}img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190402111953.png?raw=true)
+![image]({{site.url}}/img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190402111953.png?raw=true)
 
 <p>
 将原有master节点关闭，<code>rabbit@DEV-mHRO64</code>切换为master节点。
 </p>
 
-![image]({{site.url}}img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190402112043.png?raw=true)
+![image]({{site.url}}/img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190402112043.png?raw=true)
 
 <p>
 在启动<code>rabbit@DEV-HROEx64</code>节点，此节点变成了slave节点。
 </p>
 
-![image]({{site.url}}img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190402112230.png?raw=true)
+![image]({{site.url}}/img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190402112230.png?raw=true)
 
 <p style='color:red;'>
 Tips：未同步的slave是不能选为master的，如果不存在已同步的slave，则队列将不能使用。

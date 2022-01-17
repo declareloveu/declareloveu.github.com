@@ -186,8 +186,8 @@ class DemoServiceProvider extends ServiceProvider {
 
 ## 即时加载流程图
 
-![image]({{site.url}}img/2018-06-06-2-laravel-study-service-container/2018-06-24_190501.png?raw=true)
+![image]({{site.url}}/img/2018-06-06-2-laravel-study-service-container/2018-06-24_190501.png?raw=true)
 
 ## 延迟加载流程图
 
-![image]({{site.url}}img/2018-06-06-2-laravel-study-service-container/2018-06-24_192339.png?raw=true)
+![image]({{site.url}}/img/2018-06-06-2-laravel-study-service-container/2018-06-24_192339.png?raw=true)

@@ -236,7 +236,7 @@ Tips：因为内存碎片的原因，此处的maxmemory=used_memory，而非used
 - 惰性删除：当客户端读取带超时属性的键时，如果键已过期则进行删除并返回空
 - 定时任务删除：定时任务，默认每秒运行10次（config hz），回收过期键算法如下
 
-![image]({{site.url}}img/2018-09-12-redis-memory/20180822151548.png?raw=true)
+![image]({{site.url}}/img/2018-09-12-redis-memory/20180822151548.png?raw=true)
 
 <p>
 慢模式与快模式的内部执行逻辑相同，只是执行超时时间不同，慢模式为25ms超时，快模式为1ms且2秒内只能运行一次。

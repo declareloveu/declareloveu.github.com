@@ -1,0 +1,10 @@
+#  Sharing options at the bottom of the post.
+#  Icons from <https://fontawesome.com/>
+
+friend:
+  -
+    title: "阮一峰的个人网站"
+    link: "http://www.ruanyifeng.com/home.html"
+  -
+    title: "张鑫旭的个人主页"
+    link: "https://www.zhangxinxu.com/"
