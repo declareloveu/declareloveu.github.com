@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keywords"  content=" ">
+    <meta name="theme-color" content="#000000">
+    
+    <title>RabbitMQ学习-高可用 - zwt's Blog</title>
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/pwa/manifest.json">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="http://localhost:4001/2018/05/19/8-rabbitmq-study-HignAvailable/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">zwtisme</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    
+                    
+                    
+                    
+                    <li>
+                        <a href="/articles/">Articles</a>
+                    </li>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    <li>
+                        <a href="/tags/">Tags</a>
+                    </li>
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    var __HuxNav__ = {
+        close: function(){
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        },
+        open: function(){
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+
+    // Bind Event
+    $toggle.addEventListener('click', function(e){
+        if ($navbar.className.indexOf('in') > 0) {
+            __HuxNav__.close()
+        }else{
+            __HuxNav__.open()
+        }
+    })
+
+    /**
+     * Since Fastclick is used to delegate 'touchstart' globally
+     * to hack 300ms delay in iOS by performing a fake 'click',
+     * Using 'e.stopPropagation' to stop 'touchstart' event from 
+     * $toggle/$collapse will break global delegation.
+     * 
+     * Instead, we use a 'e.target' filter to prevent handler
+     * added to document close HuxNav.  
+     *
+     * Also, we use 'click' instead of 'touchstart' as compromise
+     */
+    document.addEventListener('click', function(e){
+        if(e.target == $toggle) return;
+        if(e.target.className == 'icon-bar') return;
+        __HuxNav__.close();
+    })
+</script>
+
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/post-bg-2015.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/post-bg-2015.jpg')
+    }
+
+    
+</style>
+<header class="intro-header" >
+    <div class="header-mask"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/#rabbitmq" title="rabbitmq">rabbitmq</a>
+                        
+                        <a class="tag" href="/tags/#php" title="php">php</a>
+                        
+                    </div>
+                    <h1>RabbitMQ学习-高可用</h1>
+                    
+                    
+                    <h2 class="subheading">hign available</h2>
+                    
+                    <span class="meta">Posted by zwtisme on May 19, 2018</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                 col-lg-8 col-lg-offset-2
+                 col-md-10 col-md-offset-1
+                 post-container">
+
+                <!-- Multi-Lingual -->
+                
+
+                <blockquote>
+  <p>介绍RabbitMQ中，如何来实现高可用。</p>
+</blockquote>
+
+<h2 id="架构图">架构图</h2>
+
+<p><img src="http://localhost:4001/img/2018-05-18-8-rabbitmq-study-HignAvailable/ha.png?raw=true" alt="image" /></p>
+
+<h2 id="服务器">服务器</h2>
+
+<p>
+为了保证RabbitMQ服务器的可用性，线上环境一般都使用镜像集群，当集群中某些节点不可用时，集群还是可以工作的。
+</p>
+
+<p><a href="http://localhost:4001/2018/05/18/7-rabbitmq-study-Cluster/#%E9%95%9C%E5%83%8F%E9%9B%86%E7%BE%A4">镜像集群搭建方法</a></p>
+
+<h2 id="生产者">生产者</h2>
+
+<h4 id="1交换器持久化">1.交换器持久化</h4>
+
+<p>
+正常的业务交换器定义好后一般都会一直使用，即使服务器重启也不会消失。
+</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#在定义交换器时(一般在消费者处)，控制如下2个参数
+durable：true
+auto_delete：false
+</code></pre></div></div>
+
+<h4 id="2队列持久化">2.队列持久化</h4>
+
+<p>
+正常的业务队列定义好后一般都会一直使用，即使服务器重启也不会消失。
+</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#在定义队列时(一般在消费者处)，控制如下2个参数
+durable：true
+auto_delete：false
+</code></pre></div></div>
+
+<h4 id="3消息持久化">3.消息持久化</h4>
+
+<p>
+为了确保消息在服务器出问题的时候也不会丢失，需要将消息持久到磁盘。
+</p>
+
+<p>消息真正的持久化实际需要依赖以下几点：</p>
+<ul>
+  <li>消息投递模式设置为2（持久）</li>
+  <li>消息发送到了持久化交换器</li>
+  <li>消息最终到达持久化队列</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#在定义消息时增加属性
+properties：['delivery_mode' =&gt; AMQPMessage::DELIVERY_MODE_PERSISTENT]
+</code></pre></div></div>
+
+<h4 id="4备用交换器">4.备用交换器</h4>
+
+<p><a href="https://www.rabbitmq.com/ae.html">官方文档</a></p>
+
+<p>
+为了确保能跟踪到所有发送给交换器的消息，在我们预想接收的消息外，可以设置备用交换器，来捕获其他未被路由的消息。
+</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>//备用交换器参数
+$arrArgument = new Wire\AMQPTable([
+    'alternate-exchange' =&gt; $strAeExchangeName
+]);
+//创建交换器，增加备用交换器设置
+$this-&gt;getChannel()-&gt;exchange_declare($strExchangeName, $strExchangeType, false, true, false, false, false, $arrArgument);
+</code></pre></div></div>
+
+<h4 id="5生产者确认">5.生产者确认</h4>
+
+<p><a href="http://www.rabbitmq.com/confirms.html#publisher-confirms">官方文档</a></p>
+
+<p>
+为了确保生产者能成功的将消息推送给RabbitMQ服务器，需要使用生产者确认。
+</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>//开启信道确认模式
+$this-&gt;getChannel()-&gt;confirm_select();
+//设置信道回调方法
+$this-&gt;getChannel()-&gt;set_ack_handler(function(AMQPMessage $objMessage) {
+    $this-&gt;ackHandler($objMessage);
+});
+$this-&gt;getChannel()-&gt;set_nack_handler(function(AMQPMessage $objMessage) {
+    $this-&gt;nackHandler($objMessage);
+});
+</code></pre></div></div>
+
+<h4 id="6代码示例">6.代码示例</h4>
+
+<p><a href="https://github.com/zwtisme/rabbitmq-study/blob/master/topic_ha_producer.php">生产者</a></p>
+
+<h2 id="消费者">消费者</h2>
+
+<h4 id="1消费者不下线">1.消费者不下线</h4>
+
+<p>
+在大部分业务中，消费者都是启动之后就不停止的，但是如果RabbitMQ服务器异常导致连接不上，就不能正常消费队列中的消息，这时消费者需要能够自动切换其他可连接的服务器。
+</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>while (1) {
+    try {
+        while (1) {
+            $this-&gt;getChannel()-&gt;wait();
+        }
+    } catch (\Exception $e) {
+        //日志记录
+        //重建
+        $this-&gt;reset();
+        if (!$this-&gt;build($this-&gt;arrInitParam)) {
+            //日志记录
+            break;
+        }
+    }
+}
+</code></pre></div></div>
+
+<h4 id="2消费者正常下线">2.消费者正常下线</h4>
+
+<p>
+当消费者逻辑需要进行更新时，就需要停止消费者的运行，如果直接将守护进程关闭，可能会导致逻辑处理到一半被终止了，从而产生不可预知的问题。
+</p>
+
+<p>
+可在消费者的回调方法中，增加对标识键的判断，如果存在标识键则处理完此条消息后停止消费消息，同时关闭信道与连接。
+</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/**
+ * 消费者是否已停止
+ */
+private function isConsumerStop() {
+    $this-&gt;blnConsumerStop = Cache::exec('exists', $this-&gt;arrInitParam['redis_key']);
+    return $this-&gt;blnConsumerStop;
+}
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/**
+ * 信息处理
+ */
+private function dealMessage(AMQPMessage $objMessage) {
+    //消息消费失败是否重进队列
+    $blnIsRequeue = isset($this-&gt;arrInitParam['is_requeue']) ? $this-&gt;arrInitParam['is_requeue'] : false;
+    //业务确认是否成功
+    $blnAck = $this-&gt;receiveMessage($objMessage-&gt;body);
+    if ($blnAck) {
+        $objMessage-&gt;delivery_info['channel']-&gt;basic_ack($objMessage-&gt;delivery_info['delivery_tag']);
+    } else {
+        //$objMessage-&gt;delivery_info['channel']-&gt;basic_nack($objMessage-&gt;delivery_info['delivery_tag'], false, $blnReQueue);
+        $objMessage-&gt;delivery_info['channel']-&gt;basic_reject($objMessage-&gt;delivery_info['delivery_tag'], $blnIsRequeue);
+    }
+    //消费者是否需要停止
+    if ($this-&gt;isConsumerStop()) {
+        $objMessage-&gt;delivery_info['channel']-&gt;basic_cancel($objMessage-&gt;delivery_info['consumer_tag']);
+    }
+}
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/**
+ * 开始运行
+ */
+public function run() {
+    while (1) {
+        try {
+            while (1) {
+                if ($this-&gt;blnConsumerStop) {
+                    //消费者已停止
+                    $this-&gt;reset();
+                    throw new Exception('consumer stop');
+                } else {
+                    $this-&gt;getChannel()-&gt;wait();
+                }
+            }
+        } catch (Exception $e) {
+            //消费者已停止
+            if ($this-&gt;blnConsumerStop) {
+                break;
+            }
+            //设置错误信息
+            $strErrorMsg = $e-&gt;getMessage();
+            $strErrorMsg = sprintf("type:%s\r\n param:%s\r\n error:%s\r\n", $this-&gt;getType() . '_run', json_encode($this-&gt;arrInitParam), $strErrorMsg);
+            //错误日志记录
+            Log::log($strErrorMsg, Config::get('const.Log.LOG_MQERR'));
+            //重建
+            $this-&gt;reset();
+            if (!$this-&gt;build($this-&gt;arrInitParam)) {
+                //日志记录
+                break;
+            }
+        }
+    }
+}
+</code></pre></div></div>
+
+<h4 id="3消费者逻辑变更">3.消费者逻辑变更</h4>
+
+<p>
+标记值变化，处理完消息后就不处理，杀死进程
+</p>
+
+<h4 id="4单条信息获取">4.单条信息获取</h4>
+
+<p>
+为了确保消费者在消费消息时能够进行确认成功消费，每次只能队列中获取一条消息。
+</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>//每次只接受一条信息
+$this-&gt;getChannel()-&gt;basic_qos(null, 1, null);
+</code></pre></div></div>
+
+<h4 id="5死信队列">5.死信队列</h4>
+
+<p><a href="https://www.rabbitmq.com/dlx.html">官方文档</a></p>
+
+<p>
+当消费者在消费某个消息失败后，如果将消息重新投入队列，则此消息会被其它消费者依次接收到，如果一直不能成功消费，则会阻碍其他消息的消费。
+</p>
+
+<p>
+可以将消费失败的消息，投入到死信队列，通过其他逻辑对它们进行处理，从而不影响正常的功能。
+</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>//死信交换器参数
+$arrArgument = new Wire\AMQPTable([
+    'x-dead-letter-exchange' =&gt; $strDqExchangeName,
+    'x-dead-letter-routing-key' =&gt; $strDqRouteKey
+]);
+//创建队列，增加死信队列设置
+$this-&gt;getChannel()-&gt;queue_declare($strQueueName, false, true, false, false, false, $arrArgument);
+</code></pre></div></div>
+
+<h4 id="6消费者确认">6.消费者确认</h4>
+
+<p><a href="http://www.rabbitmq.com/confirms.html#consumer-acknowledgements">官方文档</a></p>
+
+<p>
+为了确保消费者成功的消费的消息，从而从队列中删除此消息，需要使用消费者确认模式。
+</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>//接收消息
+$this-&gt;getChannel()-&gt;basic_consume($arrQueue['queue_name'], '', false, false, false, false, function(AMQPMessage $objMessage) {
+    $this-&gt;dealMessage($objMessage);
+});
+//业务确认是否成功
+$blnAck = $this-&gt;receiveMessage($objMessage-&gt;body);
+if ($blnAck) {
+    $objMessage-&gt;delivery_info['channel']-&gt;basic_ack($objMessage-&gt;delivery_info['delivery_tag']);
+} else {
+    $objMessage-&gt;delivery_info['channel']-&gt;basic_reject($objMessage-&gt;delivery_info['delivery_tag'], $blnIsRequeue);
+}
+</code></pre></div></div>
+
+<h4 id="7代码示例">7.代码示例</h4>
+
+<p><a href="https://github.com/zwtisme/rabbitmq-study/blob/master/topic_ha_consumer.php">消费者</a></p>
+
+<h2 id="性能">性能</h2>
+
+<h4 id="硬件配置">硬件配置</h4>
+
+<p>
+主要包括网络配置、磁盘管理、处理器核心数等。
+</p>
+
+<h4 id="软件配置">软件配置</h4>
+
+<p>
+通过不同AMQP参数的配置，来合理控制性能。
+</p>
+
+<h5 id="消息持久化">消息持久化</h5>
+
+<p>
+在消息投递时，如果设置消息持久化存储的话，性能大致会降低1/2左右（降低后投递速度也有4000/s左右）。要根据实际使用场景来觉得是否需要使用持久化存储（是否能接受消息的丢失）。
+</p>
+
+<h5 id="消息确认">消息确认</h5>
+
+<p>
+如果在订阅队列时设置<code>no-ack=true</code>，服务器在将消息投递后就可以无须关注，消费者在处理完消息后也无须再发送确认信息给服务器，这样就可以加快消费者消费的速度。带来的问题是，如果消息消费失败，则消息会用永久丢失了。
+</p>
+
+<h5 id="路由算法和绑定规则">路由算法和绑定规则</h5>
+
+<p>
+通常情况下，topic交换器上的绑定相比direct或fanout来说，会占用更多内存。
+</p>
+
+<h5 id="消息投递">消息投递</h5>
+
+<p>
+参考如下消息流程图，RabbitMQ内部被优化为尽快的将消息投递给消费者。在制定容量规划与消息进出速率的时，应该尽可能让队列保持为空的状态，这样消息可以不经过内存或磁盘存储直接到消费者，从而提高效率。
+</p>
+
+<p style="color:red;">
+Tips：需要时刻关注队列中消息数，提高消费者处理速度，避免消息大批量滞留。
+</p>
+
+<p><img src="http://localhost:4001/img/2018-05-18-8-rabbitmq-study-HignAvailable/pic_11.png?raw=true" alt="image" /></p>
+
+
+                <hr style="visibility: hidden;">
+
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2018/05/18/7-rabbitmq-study-Cluster/" data-toggle="tooltip" data-placement="top" title="RabbitMQ学习-集群">
+                            Previous<br>
+                            <span>RabbitMQ学习-集群</span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/2018/06/06/1-laravel-study-architecture/" data-toggle="tooltip" data-placement="top" title="laravel学习（一）-核心架构">
+                            Next<br>
+                            <span>laravel学习（一）-核心架构</span>
+                        </a>
+                    </li>
+                    
+                </ul>
+
+
+                
+                <!-- disqus 评论框 start -->
+                <div class="comment">
+                    <div id="disqus_thread" class="disqus-thread"></div>
+                </div>
+                <!-- disqus 评论框 end -->
+                
+
+                
+            </div>  
+
+            <!-- Side Catalog Container -->
+            
+            <div class="
+                 col-lg-2 col-lg-offset-0
+                 visible-lg-block
+                 sidebar-container
+                 catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
+            <!-- Sidebar Container -->
+            <div class="
+                 col-lg-8 col-lg-offset-2
+                 col-md-10 col-md-offset-1
+                 sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+
+                        
+                        
+                            
+                            
+                                
+                                <a href="/tags/#php" title="php" rel="21">
+                                    php
+                                </a>
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                        
+                            
+                            
+                                
+                            
+                                
+                            
+                                
+                                <a href="/tags/#rabbitmq" title="rabbitmq" rel="11">
+                                    rabbitmq
+                                </a>
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                        
+                            
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                                <a href="/tags/#redis" title="redis" rel="8">
+                                    redis
+                                </a>
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                        
+                            
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                                <a href="/tags/#laravel" title="laravel" rel="7">
+                                    laravel
+                                </a>
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                        
+                            
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                                <a href="/tags/#mysql" title="mysql" rel="5">
+                                    mysql
+                                </a>
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                        
+                            
+                            
+                                
+                            
+                                
+                                <a href="/tags/#linux" title="linux" rel="2">
+                                    linux
+                                </a>
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                        
+                            
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                                <a href="/tags/#swoole" title="swoole" rel="1">
+                                    swoole
+                                </a>
+                                
+                            
+                                
+                            
+                                
+                                <a href="/tags/#架构" title="架构" rel="1">
+                                    架构
+                                </a>
+                                
+                            
+                                
+                                <a href="/tags/#git" title="git" rel="1">
+                                    git
+                                </a>
+                                
+                            
+                                
+                                <a href="/tags/#tcp/ip" title="tcp/ip" rel="1">
+                                    tcp/ip
+                                </a>
+                                
+                            
+                                
+                                <a href="/tags/#http" title="http" rel="1">
+                                    http
+                                </a>
+                                
+                            
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>LINKS</h5>
+                <ul class="list-inline">
+                    
+                    <li><a href="http://www.ruanyifeng.com/home.html">阮一峰的个人网站</a></li>
+                    
+                    <li><a href="https://www.zhangxinxu.com/">张鑫旭的个人主页</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "zwtisme";
+    var disqus_identifier = "/2018/05/19/8-rabbitmq-study-HignAvailable";
+    var disqus_url = "http://localhost:4001/2018/05/19/8-rabbitmq-study-HignAvailable/";
+    /*
+     (function() {
+     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+     dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+     })();
+     */
+</script>
+<!-- disqus 公共JS代码 end -->
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+        var d = document, t = 'script',
+                o = d.createElement(t),
+                s = d.getElementsByTagName(t)[0];
+        o.src = u;
+        if (c) {
+            o.addEventListener('load', function (e) {
+                c(null, e);
+            }, false);
+        }
+        s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js", function () {
+        anchors.options = {
+            visible: 'always',
+            placement: 'right',
+            icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+                    
+
+                    <!-- add Weibo, Zhihu by Hux, add target = "_blank" to <a> by Hux -->
+                    
+                    
+
+
+                    
+                    
+                    
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; zwtisme 2022
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<!-- Currently, only navbar scroll-down effect at desktop still depends on this -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+<!-- Service Worker -->
+
+<script src="/js/snackbar.js "></script>
+<script src="/js/sw-registration.js "></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async('/js/jquery.tagcloud.js',function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-49627206-1';
+    var _gaDomain = 'https://zwtisme.github.io/';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog (selector) {
+
+        // interop with multilangual 
+        if (false) {
+            _containerSelector = 'div.post-container.active'
+        } else {
+            _containerSelector = 'div.post-container'
+        }
+
+        // init
+        var P = $(_containerSelector),a,n,t,l,i,c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        // clean
+        $(selector).html('')
+
+        // appending
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#"+$(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="'+i+'" rel="nofollow">'+t+'</a>');
+            l = $('<li class="'+n+'_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function(e){
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+<!-- Multi-Lingual -->
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

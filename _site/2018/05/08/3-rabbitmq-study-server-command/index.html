@@ -1,0 +1,1608 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keywords"  content=" ">
+    <meta name="theme-color" content="#000000">
+    
+    <title>RabbitMQ学习-服务器命令 - zwt's Blog</title>
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/pwa/manifest.json">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="http://localhost:4001/2018/05/08/3-rabbitmq-study-server-command/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">zwtisme</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    
+                    
+                    
+                    
+                    <li>
+                        <a href="/articles/">Articles</a>
+                    </li>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    <li>
+                        <a href="/tags/">Tags</a>
+                    </li>
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    var __HuxNav__ = {
+        close: function(){
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        },
+        open: function(){
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+
+    // Bind Event
+    $toggle.addEventListener('click', function(e){
+        if ($navbar.className.indexOf('in') > 0) {
+            __HuxNav__.close()
+        }else{
+            __HuxNav__.open()
+        }
+    })
+
+    /**
+     * Since Fastclick is used to delegate 'touchstart' globally
+     * to hack 300ms delay in iOS by performing a fake 'click',
+     * Using 'e.stopPropagation' to stop 'touchstart' event from 
+     * $toggle/$collapse will break global delegation.
+     * 
+     * Instead, we use a 'e.target' filter to prevent handler
+     * added to document close HuxNav.  
+     *
+     * Also, we use 'click' instead of 'touchstart' as compromise
+     */
+    document.addEventListener('click', function(e){
+        if(e.target == $toggle) return;
+        if(e.target.className == 'icon-bar') return;
+        __HuxNav__.close();
+    })
+</script>
+
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/post-bg-2015.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/post-bg-2015.jpg')
+    }
+
+    
+</style>
+<header class="intro-header" >
+    <div class="header-mask"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/#rabbitmq" title="rabbitmq">rabbitmq</a>
+                        
+                    </div>
+                    <h1>RabbitMQ学习-服务器命令</h1>
+                    
+                    
+                    <h2 class="subheading">server-command</h2>
+                    
+                    <span class="meta">Posted by zwtisme on May 8, 2018</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                 col-lg-8 col-lg-offset-2
+                 col-md-10 col-md-offset-1
+                 post-container">
+
+                <!-- Multi-Lingual -->
+                
+
+                <blockquote>
+  <p>介绍RabbitMQ服务端命令的使用方法与作用。</p>
+</blockquote>
+
+<h2 id="rabbitmq-server">rabbitmq-server</h2>
+
+<p>
+RabbitMQ节点一般指RabbitMQ应用程序和其所在的Erlang节点，当运行在Erlang节点上的应用程序崩溃时，Erlang会自动尝试重启应用程序（如果Erlang本身没有崩溃）。
+</p>
+
+<p><img src="http://localhost:4001/img/2018-05-08-3-rabbitmq-study-server-command/20190318103109.png?raw=true" alt="image" /></p>
+
+<h4 id="启动节点">启动节点</h4>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#前台启动
+rabbitmq-server
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#后台启动（守护进程）
+rabbitmq-server -detached
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#增加启动变量
+RABBITMQ_NODE_PORT=5673 rabbitmq-server -detached
+</code></pre></div></div>
+
+<h4 id="关闭">关闭</h4>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#只关闭应用程序，可用于加入及退出集群的操作
+[root@vagrant rabbitmq]# rabbitmqctl stop_app
+Stopping rabbit application on node rabbit@vagrant ...
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#关闭整个节点
+[root@vagrant rabbitmq]# rabbitmqctl stop
+Stopping and halting node rabbit@vagrant ...
+</code></pre></div></div>
+
+<h2 id="rabbitmqctl">rabbitmqctl</h2>
+
+<p>
+此命令用于管理RabbitMQ节点。
+</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#可在指定节点上执行命令
+rabbitmqctl -n nodename commond
+</code></pre></div></div>
+
+<p style="color:red;">
+Tips：如下有些命令，在低版本里会没有。
+</p>
+
+<h4 id="集群管理">集群管理</h4>
+
+<h5 id="join_cluster">join_cluster</h5>
+
+<p>
+将当前节点添加到集群中，使用此命令前需要先停止节点应用。
+</p>
+
+<ul>
+  <li>clusternode：现有集群中的任意节点</li>
+  <li>–ram：标记新加入的节点是否为内存节点，默认为磁盘节点</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#命令格式
+join_cluster clusternode [--ram]
+
+#示例
+rabbitmqctl stop_app
+rabbitmqctl join_cluster rabbit@DEV-HROEx64
+rabbitmqctl start_app
+</code></pre></div></div>
+
+<h5 id="cluster_status">cluster_status</h5>
+
+<p>
+查看集群状态。
+</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#命令格式
+cluster_status
+
+#示例
+rabbitmqctl cluster_status
+</code></pre></div></div>
+
+<h5 id="change_cluster_node_type">change_cluster_node_type</h5>
+
+<p>
+修改集群节点类型，使用此命令前需要先停止节点应用。
+</p>
+
+<ul>
+  <li>type：disc或ram</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#命令格式
+change_cluster_node_type type
+
+#示例
+rabbitmqctl stop_app
+rabbitmqctl change_cluster_node_type disc
+rabbitmqctl start_app
+</code></pre></div></div>
+
+<h5 id="forget_cluster_node">forget_cluster_node</h5>
+
+<p>
+远程从集群中移除节点，被移除的节点需要处于离线状态，操作的节点需要处于在线状态，除非使用<code>--offline</code>参数。
+</p>
+
+<ul>
+  <li>–offline：允许从离线节点中远程删除其它节点</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#命令格式
+forget_cluster_node [--offline]
+
+#示例
+rabbitmqctl forget_cluster_node rabbit@DEV-mHRO
+</code></pre></div></div>
+
+<h5 id="sync_queue">sync_queue</h5>
+
+<p>
+同步集群中状态为未同步的队列，此命令将导致队列阻塞，发布者与消费者将不能使用此队列。
+</p>
+
+<p>
+如果未同步的队列有正常消费者消费消息的话，队列最终会变为同步的。此命令主要用于不活动的队列。
+</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#命令格式
+sync_queue [-p vhost] queue
+
+#示例
+rabbitmqctl sync_queue jobseek_confirm_type1
+</code></pre></div></div>
+
+<h5 id="cancel_sync_queue">cancel_sync_queue</h5>
+
+<p>
+停止队列的同步。
+</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#命令格式
+cancel_sync_queue [-p vhost] queue
+
+#示例
+rabbitmqctl cancel_sync_queue jobseek_confirm_type1
+</code></pre></div></div>
+
+<h5 id="purge_queue">purge_queue</h5>
+
+<p>
+清空队列中的消息。
+</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#命令格式
+purge_queue [-p vhost] queue
+
+#示例
+rabbitmqctl purge_queue jobseek_confirm_type1
+</code></pre></div></div>
+
+<h4 id="用户管理">用户管理</h4>
+
+<h5 id="add_user">add_user</h5>
+
+<p>
+添加用户并设置初始密码。
+</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#命令格式
+add_user username password
+
+#示例
+rabbitmqctl add_user user_test 123456
+</code></pre></div></div>
+
+<h5 id="delete_user">delete_user</h5>
+
+<p>
+删除用户。
+</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#命令格式
+delete_user username
+
+#示例
+rabbitmqctl delete_user user_test
+</code></pre></div></div>
+
+<h5 id="change_password">change_password</h5>
+
+<p>
+修改用户的密码。
+</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#命令格式
+change_password username newpassword
+
+#示例
+rabbitmqctl change_password user_test 654321
+</code></pre></div></div>
+
+<h5 id="clear_password">clear_password</h5>
+
+<p>
+删除用户的密码。此操作会导致用户使用密码不能登录(除非使用其他配置登录，如SASL EXTERNAL)。
+</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#命令格式
+clear_password username
+
+#示例
+rabbitmqctl clear_password user_test
+</code></pre></div></div>
+
+<h5 id="authenticate_user">authenticate_user</h5>
+
+<p>
+验证用户名与密码是否匹配。
+</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#命令格式
+authenticate_user username password
+
+#示例
+rabbitmqctl authenticate_user user_test 123456
+</code></pre></div></div>
+
+<h5 id="set_user_tags">set_user_tags</h5>
+
+<p>
+设置用户角色，同时会清除现有的所有设置。
+</p>
+
+<ul>
+  <li>management：普通管理者，仅可登陆管理控制台(启用management plugin的情况下)，无法看到节点信息，也无法对策略进行管理</li>
+  <li>policymaker：策略制定者，可登陆管理控制台(启用management plugin的情况下), 同时可以对policy进行管理</li>
+  <li>monitoring：监控者，可登陆管理控制台(启用management plugin的情况下)，同时可以查看rabbitmq节点的相关信息(进程数，内存使用情况，磁盘使用情况等)</li>
+  <li>administrator：超级管理员，可登陆管理控制台(启用management plugin的情况下)，可查看所有的信息，并且可以对用户，策略(policy)进行操作</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#命令格式
+set_user_tags username [tag ...]
+
+#示例
+rabbitmqctl set_user_tags user_test administrator
+</code></pre></div></div>
+
+<h5 id="list_users">list_users</h5>
+
+<p>
+显示所有用户及用户的角色。
+</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#命令格式
+rabbitmqctl list_users
+
+#示例
+rabbitmqctl list_users
+</code></pre></div></div>
+
+<h4 id="访问控制">访问控制</h4>
+
+<h5 id="add_vhost">add_vhost</h5>
+
+<p>
+创建新的虚拟主机
+</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#命令格式
+add_vhost vhost
+
+#示例
+rabbitmqctl add_vhost test
+</code></pre></div></div>
+
+<h5 id="delete_vhost">delete_vhost</h5>
+
+<p>
+删除已有的虚拟主机，同时会删除虚拟主机中的交换器、队列、绑定、用户权限、参数和策略。
+</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#命令格式
+delete_vhost vhost
+
+#示例
+rabbitmqctl delete_vhost test
+</code></pre></div></div>
+
+<h5 id="list_vhosts">list_vhosts</h5>
+
+<p>
+显示所有主机信息，vhostinfoitem可为{name,tracing}
+</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#命令格式
+list_vhosts [vhostinfoitem ...]
+
+#示例
+rabbitmqctl list_vhosts name tracing
+</code></pre></div></div>
+
+<h5 id="set_permissions">set_permissions</h5>
+
+<p>
+将虚拟主机指派给用户，同时设置相应权限。资源一般可理解为队列，交换器等。
+</p>
+
+<ul>
+  <li>[-p vhost]：需要指派的主机名称，默认为“/”</li>
+  <li>user：需要指派的用户</li>
+  <li>conf：用户可配置（交换器与队列的新建或删除）的资源名称，使用正则表达式匹配</li>
+  <li>write：用户可写（发布消息，需要绑定成功）的资源名称，使用正则表达式匹配</li>
+  <li>read：用户可读（消息的操作，需要绑定成功）的资源名称，使用正则表达式匹配</li>
+</ul>
+
+<p>
+如下为不同AMQP命令对应的权限
+</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>AMQP命令</th>
+      <th>配置</th>
+      <th>写</th>
+      <th>读</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>exchange.declare</td>
+      <td>exchange</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>exchange.delete</td>
+      <td>exchange</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>queue.declare</td>
+      <td>queue</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>queue.delete</td>
+      <td>queue</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>queue.bind</td>
+      <td> </td>
+      <td>queue</td>
+      <td>exchange</td>
+    </tr>
+    <tr>
+      <td>basic.publish</td>
+      <td> </td>
+      <td>exchange</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>basic.get</td>
+      <td> </td>
+      <td> </td>
+      <td>queue</td>
+    </tr>
+    <tr>
+      <td>basic.consume</td>
+      <td> </td>
+      <td> </td>
+      <td>queue</td>
+    </tr>
+    <tr>
+      <td>queue.purge</td>
+      <td> </td>
+      <td> </td>
+      <td>queue</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#命令格式
+set_permissions [-p vhost] user conf write read
+
+#示例
+rabbitmqctl set_permissions -p vhost-test user-test ".*" ".* ".*"
+</code></pre></div></div>
+
+<h5 id="clear_permissions">clear_permissions</h5>
+
+<p>
+移除用户的在某个虚拟主机上的权限。
+</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#命令格式
+clear_permissions [-p vhost] username
+
+#示例
+rabbitmqctl clear_permissions -p vhost_test user_test
+</code></pre></div></div>
+
+<h5 id="list_permissions">list_permissions</h5>
+
+<p>
+显示某虚拟主机下的用户及用户的权限。
+</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#命令格式
+list_permissions [-p vhost]
+
+#示例
+rabbitmqctl list_permissions -p vhost_test
+</code></pre></div></div>
+
+<h5 id="list_user_permissions">list_user_permissions</h5>
+
+<p>
+显示用户所关联的虚拟主机及相应的权限。
+</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#命令格式
+list_user_permissions username
+
+#示例
+rabbitmqctl list_user_permissions user_test
+</code></pre></div></div>
+
+<h5 id="set_topic_permissions">set_topic_permissions</h5>
+
+<p>
+设置用户在虚拟主机中对于某个主题交换器，可发布或获取消息的routing key。
+</p>
+
+<ul>
+  <li>[-p vhost]：需要指派的主机名称，默认为“/”</li>
+  <li>user：需要指派的用户</li>
+  <li>exchange：用户可配置的资源名称，使用正则表达式匹配</li>
+  <li>write：用户发布消息的routing key，使用正则表达式匹配</li>
+  <li>read：用户获取消息的routing key，使用正则表达式匹配</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#命令格式
+set_topic_permissions [-p vhost] user exchange write read
+
+#示例
+rabbitmqctl set_topic_permissions -p vhost_test user_test amq.topic "^xpz-.*" "^xpz-.*"
+</code></pre></div></div>
+
+<h5 id="clear_topic_permissions">clear_topic_permissions</h5>
+
+<p>
+清除用户在主题交换器上的权限限制。
+</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#命令格式
+clear_topic_permissions [-p vhost] username [exchange]
+
+#示例
+rabbitmqctl clear_topic_permissions -p vhost_test user_test amq.topic
+</code></pre></div></div>
+
+<h5 id="list_topic_permissions">list_topic_permissions</h5>
+
+<p>
+显示虚拟主机上所有用户的主题权限限制。
+</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#命令格式
+list_topic_permissions [-p  vhost]
+
+#示例
+rabbitmqctl list_topic_permissions -p vhost_test
+</code></pre></div></div>
+
+<h5 id="list_topic_user_permissions">list_topic_user_permissions</h5>
+
+<p>
+显示用户所关联的虚拟主机及相应的主题权限限制。
+</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#命令格式
+list_user_topic_permissions username
+
+#示例
+rabbitmqctl list_topic_user_permissions user_test
+</code></pre></div></div>
+
+<h4 id="虚拟主机限制">虚拟主机限制</h4>
+
+<h5 id="set_vhost_limits">set_vhost_limits</h5>
+
+<p>
+对虚拟主机设置某些限制。
+</p>
+
+<p>
+definition为json格式的字符串，当值为负数时表示不做任何限制。
+</p>
+
+<ul>
+  <li>max-connections：设置最大连接数</li>
+  <li>max-queues：设置最多队列数</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#命令格式
+set_vhost_limits [-p vhost] definition
+
+#示例
+#设置最大连接数为64
+rabbitmqctl set_vhost_limits -p vhost_test '{"max-connections": 64}'
+
+#设置最多队列数为256
+rabbitmqctl set_vhost_limits -p vhost_test '{"max-queues": 256}'
+
+#设置最大连接数为不受限
+rabbitmqctl set_vhost_limits -p vhost_test '{"max-connections": -1}'
+
+#设置最大连接数为0，不允许任何连接进来
+rabbitmqctl set_vhost_limits -p vhost_test '{"max-connections": 0}'
+</code></pre></div></div>
+
+<h5 id="clear_vhost_limits">clear_vhost_limits</h5>
+
+<p>
+清除虚拟主机上的限制。
+</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#命令格式
+clear_vhost_limits [-p vhost]
+
+#示例
+rabbitmqctl clear_vhost_limits -p vhost_test
+</code></pre></div></div>
+
+<h5 id="list_vhost_limits">list_vhost_limits</h5>
+
+<p>
+清除虚拟主机上的限制。
+</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#命令格式
+list_vhost_limits [-p vhost] [--global]
+
+#示例
+#显示指定虚拟主机
+rabbitmqctl list_vhost_limits -p vhost_test
+
+#显示所有虚拟主机
+rabbitmqctl list_vhost_limits --global
+</code></pre></div></div>
+
+<h4 id="使用统计">使用统计</h4>
+
+<h5 id="list_queues">list_queues</h5>
+
+<p>
+显示队列信息，默认主机为【/】
+</p>
+
+<ul>
+  <li>–offline：主节点不可用的持久化队列</li>
+  <li>–online：主节点可用的队列</li>
+  <li>–local：主节点在当前进程上的队列</li>
+</ul>
+
+<p>
+queueinfoitem可选参数
+</p>
+
+<ul>
+  <li>name：队列名称</li>
+  <li>durable：队列是否持久的，服务器重启后仍存在</li>
+  <li>auto_delete：当队列不使用时，是否自动删除</li>
+  <li>arguments：队列参数</li>
+  <li>policy：有效的队列策略</li>
+  <li>pid：队列的Erlang进程id</li>
+  <li>owner_pid：当队列为独占时，连接的Erlang进程id</li>
+  <li>exclusive：队列是否独占</li>
+  <li>exclusive_consumer_pid：订阅队列的独占消费者的信道的Erlang进程id</li>
+  <li>exclusive_consumer_tag：订阅队列的独占消费者的标签</li>
+  <li>messages_ready：可被消费者消费的消息数</li>
+  <li>messages_unacknowledged：已被消费者获取，但还未确认的消息数</li>
+  <li>messages：messages_ready+messages_unacknowledged</li>
+  <li>messages_ready_ram：内存中，可被消费者消费的消息数</li>
+  <li>messages_unacknowledged_ram：内存中，已被消费者获取，但还未确认的消息数</li>
+  <li>messages_ram：内存中，messages_ready+messages_unacknowledged</li>
+  <li>messages_persistent：队列中的持久化消息数</li>
+  <li>message_bytes：队列中消息的大小(仅算正文)</li>
+  <li>message_bytes_ready：队列中消息的大小(仅算正文)，可被消费者消费的消息数</li>
+  <li>message_bytes_unacknowledged：队列中消息的大小(仅算正文)，已被消费者获取，但还未确认的消息数</li>
+  <li>message_bytes_ram：队列中在内存消息的大小(仅算正文)</li>
+  <li>message_bytes_persistent：队列中持久化消息的大小(仅算正文)</li>
+  <li>head_message_timestamp：队列中第一条消息的timestamp</li>
+  <li>disk_reads：队列启动后从磁盘读取消息的总次数</li>
+  <li>disk_writes：队列启动后向磁盘写入消息的总次数</li>
+  <li>consumers：消费者数量</li>
+  <li>consumer_utilisation：队列能够立即向消费者传递消息的时间分数（介于0.0和1.0之间）。如果消费者受到网络拥塞或预取计数的限制，则可以小于1.0</li>
+  <li>memory：队列运行时分配的内存字节数，包括堆栈，堆和内部结构</li>
+  <li>slave_pids：如果队列是镜像的，则列出镜像的ID(跟随者副本)</li>
+  <li>synchronised_slave_pids：如果镜像是队列，则列出主（领导者）同步的镜像（跟随者副本）的ID</li>
+  <li>state：队列状态，一般为running</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#命令格式
+list_queues [-p vhost] [--offline | --online | --local] [queueinfoitem ...]
+
+#示例
+rabbitmqctl list_queues name pid
+</code></pre></div></div>
+
+<h5 id="list_exchanges">list_exchanges</h5>
+
+<p>
+显示交换器信息，默认主机为【/】
+</p>
+
+<p>
+exchangeinfoitem可选参数
+</p>
+
+<ul>
+  <li>name：交换器名称</li>
+  <li>type：交换器类型(fanout,direct,headers,topic)</li>
+  <li>durable：交换器是否持久的，服务器重启后仍存在</li>
+  <li>auto_delete：当交换器不使用时，是否自动删除</li>
+  <li>internal：是否内部交换器，</li>
+  <li>arguments：交换器参数</li>
+  <li>policy：应用在交换器上的策略名称</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#命令格式
+list_exchanges [-p vhost] [exchangeinfoitem ...]
+
+#示例
+rabbitmqctl list_exchanges name type
+</code></pre></div></div>
+
+<h5 id="list_bindings">list_bindings</h5>
+
+<p>
+显示绑定信息，默认主机为【/】
+</p>
+
+<p>
+bindinginfoitem可选参数
+</p>
+
+<ul>
+  <li>source_name：交换器名称</li>
+  <li>source_kind：exchange</li>
+  <li>destination_name：队列名称</li>
+  <li>destination_kind：queue</li>
+  <li>routing_key：绑定的路由键</li>
+  <li>arguments：绑定参数</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#命令格式
+list_bindings [-p vhost] [bindinginfoitem ...]
+
+#示例
+rabbitmqctl list_bindings
+</code></pre></div></div>
+
+<h5 id="list_connections">list_connections</h5>
+
+<p>
+显示连接信息
+</p>
+
+<p>
+connectioninfoitem可选参数
+</p>
+
+<ul>
+  <li>pid：与连接关联的Erlang进程id</li>
+  <li>name：连接的可读名称</li>
+  <li>port：服务器端口</li>
+  <li>host：服务器ip</li>
+  <li>peer_port：客户端端口</li>
+  <li>peer_host：客户端ip</li>
+  <li>ssl：是否开启ssl</li>
+  <li>ssl_protocol：ssl协议</li>
+  <li>ssl_key_exchange：SSL密钥交换算法（例如“rsa”）</li>
+  <li>ssl_cipher：SSL密码算法（例如“aes_256_cbc”）</li>
+  <li>ssl_hash：SSL散列函数（例如“sha”）</li>
+  <li>peer_cert_subject：对等方SSL证书的主题，RFC4514格式</li>
+  <li>peer_cert_issuer：对等方SSL证书的颁发者，采用RFC4514格式</li>
+  <li>peer_cert_validity：对等方SSL证书有效的时间段</li>
+  <li>state：连接状态（starting,tuning,opening,running,flow,blocking,blocked,closing,closed）</li>
+  <li>channels：使用连接的信道数量</li>
+  <li>protocol：AMQP协议版本（0.9.1,0.8.0）</li>
+  <li>auth_mechanism：使用SASL身份验证机制，例如“PLAIN”</li>
+  <li>user：连接使用的用户名</li>
+  <li>vhost：连接的虚拟主机</li>
+  <li>timeout：连接的超时时间/心跳间隔</li>
+  <li>frame_max：最大帧大小</li>
+  <li>channel_max：连接的可用信道数</li>
+  <li>client_properties：连接的客户端属性</li>
+  <li>recv_oct：Octets received</li>
+  <li>recv_cnt：Packets received</li>
+  <li>send_oct：Octets send</li>
+  <li>send_cnt：Packets sent</li>
+  <li>send_pend ：Send queue size</li>
+  <li>connected_at：连接建立时间</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#命令格式
+list_connections [connectioninfoitem ...]
+
+#示例
+rabbitmqctl list_connections
+</code></pre></div></div>
+
+<h5 id="list_channels">list_channels</h5>
+
+<p>
+显示信道信息
+</p>
+
+<p>
+channelinfoitem可选参数
+</p>
+
+<ul>
+  <li>pid：与连接关联的Erlang进程id</li>
+  <li>connection：信道所在的连接</li>
+  <li>name：信道名称</li>
+  <li>number：信道编号</li>
+  <li>user：连接使用的用户名</li>
+  <li>vhost：连接的虚拟主机</li>
+  <li>confirm：信道是否处于确认模式</li>
+  <li>consumer_count：信道的消费者数量</li>
+  <li>messages_unacknowledged：未被确认的已发布的消息数</li>
+  <li>messages_unconfirmed：未被消费者确认的消息数</li>
+  <li>prefetch_count：新消费者的预取限制</li>
+  <li>global_prefetch_count：整个信道的预取限制</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#命令格式
+list_channels [channelinfoitem ...]
+
+#示例
+rabbitmqctl list_channels
+</code></pre></div></div>
+
+<h5 id="list_consumers">list_consumers</h5>
+
+<p>
+显示消费者信息
+</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#命令格式
+list_consumers [-p vhost]
+
+#示例
+rabbitmqctl list_consumers
+</code></pre></div></div>
+
+<h4 id="策略管理">策略管理</h4>
+
+<h5 id="set_policy">set_policy</h5>
+
+<p>
+设置主机的策略，默认主机为【/】
+</p>
+
+<ul>
+  <li>-p：虚拟主机</li>
+  <li>–priority：策略优先级，数字越大优先级越高</li>
+  <li>–apply-to：策略应用对象，【queues,exchanges,all】，默认为【all】</li>
+  <li>name：策略名称</li>
+  <li>pattern：匹配的资源名称，使用正则表达式匹配</li>
+  <li>definition：策略定义，使用JSON格式，可参考web管理系统的policies设置页</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#命令格式
+set_policy [-p vhost] [--priority priority] [--apply-to apply-to] name pattern definition
+
+#示例
+rabbitmqctl set_policy -p interview ha_policy '^' '{"ha-mode":"all"}'
+</code></pre></div></div>
+
+<h5 id="clear_policy">clear_policy</h5>
+
+<p>
+删除主机的策略，默认主机为【/】
+</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#命令格式
+clear_policy [-p vhost] name
+
+#示例
+clear_policy -p interview ha_policy
+</code></pre></div></div>
+
+<h5 id="list_policies">list_policies</h5>
+
+<p>
+显示主机的策略，默认主机为【/】
+</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#命令格式
+list_policies [-p vhost]
+
+#示例
+rabbitmqctl list_policies -p interview
+</code></pre></div></div>
+
+<h2 id="rabbitmq-plugins">rabbitmq-plugins</h2>
+
+<h2 id="参考资料">参考资料</h2>
+
+<p><a href="https://www.rabbitmq.com/rabbitmq-server.8.html">rabbitmq-server</a></p>
+
+<p><a href="https://www.rabbitmq.com/rabbitmqctl.8.html">rabbitmqctl</a></p>
+
+<p><a href="https://www.rabbitmq.com/rabbitmq-plugins.8.html">rabbitmq-plugins</a></p>
+
+
+                <hr style="visibility: hidden;">
+
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2018/05/08/2-rabbitmq-study-problems/" data-toggle="tooltip" data-placement="top" title="RabbitMQ学习-遇到的问题">
+                            Previous<br>
+                            <span>RabbitMQ学习-遇到的问题</span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/2018/05/08/4-rabbitmq-study-web-management/" data-toggle="tooltip" data-placement="top" title="RabbitMQ学习-web管理页面">
+                            Next<br>
+                            <span>RabbitMQ学习-web管理页面</span>
+                        </a>
+                    </li>
+                    
+                </ul>
+
+
+                
+                <!-- disqus 评论框 start -->
+                <div class="comment">
+                    <div id="disqus_thread" class="disqus-thread"></div>
+                </div>
+                <!-- disqus 评论框 end -->
+                
+
+                
+            </div>  
+
+            <!-- Side Catalog Container -->
+            
+            <div class="
+                 col-lg-2 col-lg-offset-0
+                 visible-lg-block
+                 sidebar-container
+                 catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
+            <!-- Sidebar Container -->
+            <div class="
+                 col-lg-8 col-lg-offset-2
+                 col-md-10 col-md-offset-1
+                 sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+
+                        
+                        
+                            
+                            
+                                
+                                <a href="/tags/#php" title="php" rel="21">
+                                    php
+                                </a>
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                        
+                            
+                            
+                                
+                            
+                                
+                            
+                                
+                                <a href="/tags/#rabbitmq" title="rabbitmq" rel="11">
+                                    rabbitmq
+                                </a>
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                        
+                            
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                                <a href="/tags/#redis" title="redis" rel="8">
+                                    redis
+                                </a>
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                        
+                            
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                                <a href="/tags/#laravel" title="laravel" rel="7">
+                                    laravel
+                                </a>
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                        
+                            
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                                <a href="/tags/#mysql" title="mysql" rel="5">
+                                    mysql
+                                </a>
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                        
+                            
+                            
+                                
+                            
+                                
+                                <a href="/tags/#linux" title="linux" rel="2">
+                                    linux
+                                </a>
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                        
+                            
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                                <a href="/tags/#swoole" title="swoole" rel="1">
+                                    swoole
+                                </a>
+                                
+                            
+                                
+                            
+                                
+                                <a href="/tags/#架构" title="架构" rel="1">
+                                    架构
+                                </a>
+                                
+                            
+                                
+                                <a href="/tags/#git" title="git" rel="1">
+                                    git
+                                </a>
+                                
+                            
+                                
+                                <a href="/tags/#tcp/ip" title="tcp/ip" rel="1">
+                                    tcp/ip
+                                </a>
+                                
+                            
+                                
+                                <a href="/tags/#http" title="http" rel="1">
+                                    http
+                                </a>
+                                
+                            
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>LINKS</h5>
+                <ul class="list-inline">
+                    
+                    <li><a href="http://www.ruanyifeng.com/home.html">阮一峰的个人网站</a></li>
+                    
+                    <li><a href="https://www.zhangxinxu.com/">张鑫旭的个人主页</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "zwtisme";
+    var disqus_identifier = "/2018/05/08/3-rabbitmq-study-server-command";
+    var disqus_url = "http://localhost:4001/2018/05/08/3-rabbitmq-study-server-command/";
+    /*
+     (function() {
+     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+     dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+     })();
+     */
+</script>
+<!-- disqus 公共JS代码 end -->
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+        var d = document, t = 'script',
+                o = d.createElement(t),
+                s = d.getElementsByTagName(t)[0];
+        o.src = u;
+        if (c) {
+            o.addEventListener('load', function (e) {
+                c(null, e);
+            }, false);
+        }
+        s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js", function () {
+        anchors.options = {
+            visible: 'always',
+            placement: 'right',
+            icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+                    
+
+                    <!-- add Weibo, Zhihu by Hux, add target = "_blank" to <a> by Hux -->
+                    
+                    
+
+
+                    
+                    
+                    
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; zwtisme 2022
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<!-- Currently, only navbar scroll-down effect at desktop still depends on this -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+<!-- Service Worker -->
+
+<script src="/js/snackbar.js "></script>
+<script src="/js/sw-registration.js "></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async('/js/jquery.tagcloud.js',function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-49627206-1';
+    var _gaDomain = 'https://zwtisme.github.io/';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog (selector) {
+
+        // interop with multilangual 
+        if (false) {
+            _containerSelector = 'div.post-container.active'
+        } else {
+            _containerSelector = 'div.post-container'
+        }
+
+        // init
+        var P = $(_containerSelector),a,n,t,l,i,c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        // clean
+        $(selector).html('')
+
+        // appending
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#"+$(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="'+i+'" rel="nofollow">'+t+'</a>');
+            l = $('<li class="'+n+'_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function(e){
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+<!-- Multi-Lingual -->
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

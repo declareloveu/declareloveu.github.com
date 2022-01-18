@@ -1,0 +1,1556 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keywords"  content=" ">
+    <meta name="theme-color" content="#000000">
+    
+    <title>Tags - zwt's Blog</title>
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/pwa/manifest.json">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="http://localhost:4001/tags/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">zwtisme</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    
+                    
+                    
+                    
+                    <li>
+                        <a href="/articles/">Articles</a>
+                    </li>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    <li>
+                        <a href="/tags/">Tags</a>
+                    </li>
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    var __HuxNav__ = {
+        close: function(){
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        },
+        open: function(){
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+
+    // Bind Event
+    $toggle.addEventListener('click', function(e){
+        if ($navbar.className.indexOf('in') > 0) {
+            __HuxNav__.close()
+        }else{
+            __HuxNav__.open()
+        }
+    })
+
+    /**
+     * Since Fastclick is used to delegate 'touchstart' globally
+     * to hack 300ms delay in iOS by performing a fake 'click',
+     * Using 'e.stopPropagation' to stop 'touchstart' event from 
+     * $toggle/$collapse will break global delegation.
+     * 
+     * Instead, we use a 'e.target' filter to prevent handler
+     * added to document close HuxNav.  
+     *
+     * Also, we use 'click' instead of 'touchstart' as compromise
+     */
+    document.addEventListener('click', function(e){
+        if(e.target == $toggle) return;
+        if(e.target.className == 'icon-bar') return;
+        __HuxNav__.close();
+    })
+</script>
+
+
+    <!-- Page Header -->
+<header class="intro-header" style="background-image: url('/img/tag-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="site-heading" id="tag-heading">
+                    <h1>Tags</h1>
+                    <span class="subheading">keep hungry keep foolish</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Main Content -->
+<div class="container">
+	<div class="row">
+		<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <!-- 标签云 -->
+			<div id='tag_cloud' class="tags">
+				
+				<a href="#php" title="php" rel="21">php</a>
+				
+				<a href="#linux" title="linux" rel="2">linux</a>
+				
+				<a href="#rabbitmq" title="rabbitmq" rel="11">rabbitmq</a>
+				
+				<a href="#laravel" title="laravel" rel="7">laravel</a>
+				
+				<a href="#redis" title="redis" rel="8">redis</a>
+				
+				<a href="#swoole" title="swoole" rel="1">swoole</a>
+				
+				<a href="#mysql" title="mysql" rel="5">mysql</a>
+				
+				<a href="#架构" title="架构" rel="1">架构</a>
+				
+				<a href="#git" title="git" rel="1">git</a>
+				
+				<a href="#tcp/ip" title="tcp/ip" rel="1">tcp/ip</a>
+				
+				<a href="#http" title="http" rel="1">http</a>
+				
+			</div>
+
+            <!--<blockquote class="tag-comments">
+                标签命名规范：
+                    <li>行业观察、职位、公司优先使用中文</li>
+                    <li>外国产品、术语优先使用英文</li>
+            </blockquote>-->
+
+            <!-- 标签列表 -->
+			
+			<div class="one-tag-list">
+			  	<span class="fa fa-tag listing-seperator" id="php">
+                    <span class="tag-text">php</span>
+                </span>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2019-07-30">2019-07-30</time>
+				  <a href="/2019/07/30/composer-install/" title="composer安装">composer安装</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2019/07/30/composer-install/">
+				        <h2 class="post-title">
+                            composer安装
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            composer install
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2019-07-30</p> -->
+				</div>
+				<hr>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2018-09-25">2018-09-25</time>
+				  <a href="/2018/09/25/opcache/" title="opcache的使用">opcache的使用</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2018/09/25/opcache/">
+				        <h2 class="post-title">
+                            opcache的使用
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            opcache
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2018-09-25</p> -->
+				</div>
+				<hr>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2018-09-20">2018-09-20</time>
+				  <a href="/2018/09/20/xhprof/" title="xhprof使用">xhprof使用</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2018/09/20/xhprof/">
+				        <h2 class="post-title">
+                            xhprof使用
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            xhprof
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2018-09-20</p> -->
+				</div>
+				<hr>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2018-08-30">2018-08-30</time>
+				  <a href="/2018/08/30/mysql-connection-pool/" title="mysql连接池">mysql连接池</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2018/08/30/mysql-connection-pool/">
+				        <h2 class="post-title">
+                            mysql连接池
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            Mysql Connection Pool
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2018-08-30</p> -->
+				</div>
+				<hr>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2018-08-28">2018-08-28</time>
+				  <a href="/2018/08/28/mysql-persistent/" title="mysql持久化连接">mysql持久化连接</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2018/08/28/mysql-persistent/">
+				        <h2 class="post-title">
+                            mysql持久化连接
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            Mysql Persistent
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2018-08-28</p> -->
+				</div>
+				<hr>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2018-08-21">2018-08-21</time>
+				  <a href="/2018/08/21/redis-api/" title="redis的api使用">redis的api使用</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2018/08/21/redis-api/">
+				        <h2 class="post-title">
+                            redis的api使用
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            Redis Api
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2018-08-21</p> -->
+				</div>
+				<hr>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2018-08-16">2018-08-16</time>
+				  <a href="/2018/08/16/php-error-exception/" title="php中异常与错误处理">php中异常与错误处理</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2018/08/16/php-error-exception/">
+				        <h2 class="post-title">
+                            php中异常与错误处理
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            php Error and Exception
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2018-08-16</p> -->
+				</div>
+				<hr>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2018-08-03">2018-08-03</time>
+				  <a href="/2018/08/03/redis-online-wrong/" title="redis上线的问题">redis上线的问题</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2018/08/03/redis-online-wrong/">
+				        <h2 class="post-title">
+                            redis上线的问题
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            Redis Online Wrong
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2018-08-03</p> -->
+				</div>
+				<hr>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2018-06-06">2018-06-06</time>
+				  <a href="/2018/06/06/redis-pconnect-connect/" title="redis中pconnect与connect">redis中pconnect与connect</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2018/06/06/redis-pconnect-connect/">
+				        <h2 class="post-title">
+                            redis中pconnect与connect
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            Pconnect Connect
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2018-06-06</p> -->
+				</div>
+				<hr>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2018-06-06">2018-06-06</time>
+				  <a href="/2018/06/06/7-laravel-study-routing/" title="laravel学习（七）-路由">laravel学习（七）-路由</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2018/06/06/7-laravel-study-routing/">
+				        <h2 class="post-title">
+                            laravel学习（七）-路由
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            Routing
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2018-06-06</p> -->
+				</div>
+				<hr>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2018-06-06">2018-06-06</time>
+				  <a href="/2018/06/06/6-laravel-study-contracts/" title="laravel学习（六）-契约">laravel学习（六）-契约</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2018/06/06/6-laravel-study-contracts/">
+				        <h2 class="post-title">
+                            laravel学习（六）-契约
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            Contracts
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2018-06-06</p> -->
+				</div>
+				<hr>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2018-06-06">2018-06-06</time>
+				  <a href="/2018/06/06/5-laravel-study-facades/" title="laravel学习（五）-外观">laravel学习（五）-外观</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2018/06/06/5-laravel-study-facades/">
+				        <h2 class="post-title">
+                            laravel学习（五）-外观
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            Facades
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2018-06-06</p> -->
+				</div>
+				<hr>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2018-06-06">2018-06-06</time>
+				  <a href="/2018/06/06/4-laravel-study-service-providers/" title="laravel学习（四）-服务提供者">laravel学习（四）-服务提供者</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2018/06/06/4-laravel-study-service-providers/">
+				        <h2 class="post-title">
+                            laravel学习（四）-服务提供者
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            Service Providers
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2018-06-06</p> -->
+				</div>
+				<hr>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2018-06-06">2018-06-06</time>
+				  <a href="/2018/06/06/3-laravel-study-service-container/" title="laravel学习（三）-服务容器">laravel学习（三）-服务容器</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2018/06/06/3-laravel-study-service-container/">
+				        <h2 class="post-title">
+                            laravel学习（三）-服务容器
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            Service Container
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2018-06-06</p> -->
+				</div>
+				<hr>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2018-06-06">2018-06-06</time>
+				  <a href="/2018/06/06/2-laravel-study-request-lifecycle/" title="laravel学习（二）-请求周期">laravel学习（二）-请求周期</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2018/06/06/2-laravel-study-request-lifecycle/">
+				        <h2 class="post-title">
+                            laravel学习（二）-请求周期
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            Request Lifecycle
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2018-06-06</p> -->
+				</div>
+				<hr>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2018-06-06">2018-06-06</time>
+				  <a href="/2018/06/06/1-laravel-study-architecture/" title="laravel学习（一）-核心架构">laravel学习（一）-核心架构</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2018/06/06/1-laravel-study-architecture/">
+				        <h2 class="post-title">
+                            laravel学习（一）-核心架构
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            Architecture Concepts
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2018-06-06</p> -->
+				</div>
+				<hr>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2018-05-19">2018-05-19</time>
+				  <a href="/2018/05/19/8-rabbitmq-study-HignAvailable/" title="RabbitMQ学习-高可用">RabbitMQ学习-高可用</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2018/05/19/8-rabbitmq-study-HignAvailable/">
+				        <h2 class="post-title">
+                            RabbitMQ学习-高可用
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            hign available
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2018-05-19</p> -->
+				</div>
+				<hr>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2018-05-18">2018-05-18</time>
+				  <a href="/2018/05/18/7-rabbitmq-study-Cluster/" title="RabbitMQ学习-集群">RabbitMQ学习-集群</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2018/05/18/7-rabbitmq-study-Cluster/">
+				        <h2 class="post-title">
+                            RabbitMQ学习-集群
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            cluster
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2018-05-18</p> -->
+				</div>
+				<hr>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2018-05-12">2018-05-12</time>
+				  <a href="/2018/05/12/6-rabbitmq-study-exchange/" title="RabbitMQ学习-交换器">RabbitMQ学习-交换器</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2018/05/12/6-rabbitmq-study-exchange/">
+				        <h2 class="post-title">
+                            RabbitMQ学习-交换器
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            exchange
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2018-05-12</p> -->
+				</div>
+				<hr>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2018-05-08">2018-05-08</time>
+				  <a href="/2018/05/08/5-rabbitmq-study-php-amqplib/" title="RabbitMQ学习-php-amqplib">RabbitMQ学习-php-amqplib</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2018/05/08/5-rabbitmq-study-php-amqplib/">
+				        <h2 class="post-title">
+                            RabbitMQ学习-php-amqplib
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            php-amqplib
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2018-05-08</p> -->
+				</div>
+				<hr>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2018-05-06">2018-05-06</time>
+				  <a href="/2018/05/06/upgrading-php7.1.0-to-php7.2.5/" title="升级php版本从7.1.0到7.2.5">升级php版本从7.1.0到7.2.5</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2018/05/06/upgrading-php7.1.0-to-php7.2.5/">
+				        <h2 class="post-title">
+                            升级php版本从7.1.0到7.2.5
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            upgrading-php7.1.0-to-php7.2.5
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2018-05-06</p> -->
+				</div>
+				<hr>
+				
+			</div>
+			
+			<div class="one-tag-list">
+			  	<span class="fa fa-tag listing-seperator" id="linux">
+                    <span class="tag-text">linux</span>
+                </span>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2019-07-30">2019-07-30</time>
+				  <a href="/2019/07/30/composer-install/" title="composer安装">composer安装</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2019/07/30/composer-install/">
+				        <h2 class="post-title">
+                            composer安装
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            composer install
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2019-07-30</p> -->
+				</div>
+				<hr>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2018-05-06">2018-05-06</time>
+				  <a href="/2018/05/06/upgrading-php7.1.0-to-php7.2.5/" title="升级php版本从7.1.0到7.2.5">升级php版本从7.1.0到7.2.5</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2018/05/06/upgrading-php7.1.0-to-php7.2.5/">
+				        <h2 class="post-title">
+                            升级php版本从7.1.0到7.2.5
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            upgrading-php7.1.0-to-php7.2.5
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2018-05-06</p> -->
+				</div>
+				<hr>
+				
+			</div>
+			
+			<div class="one-tag-list">
+			  	<span class="fa fa-tag listing-seperator" id="rabbitmq">
+                    <span class="tag-text">rabbitmq</span>
+                </span>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2019-04-01">2019-04-01</time>
+				  <a href="/2019/04/01/14-rabbitmq-study-queue-data-sync/" title="RabbitMQ学习-队列数据同步">RabbitMQ学习-队列数据同步</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2019/04/01/14-rabbitmq-study-queue-data-sync/">
+				        <h2 class="post-title">
+                            RabbitMQ学习-队列数据同步
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            queue data sync
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2019-04-01</p> -->
+				</div>
+				<hr>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2019-03-15">2019-03-15</time>
+				  <a href="/2019/03/15/11-rabbitmq-study-configuration/" title="RabbitMQ学习-配置">RabbitMQ学习-配置</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2019/03/15/11-rabbitmq-study-configuration/">
+				        <h2 class="post-title">
+                            RabbitMQ学习-配置
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            configuration
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2019-03-15</p> -->
+				</div>
+				<hr>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2019-03-12">2019-03-12</time>
+				  <a href="/2019/03/12/11-rabbitmq-study-virtual-hosts/" title="RabbitMQ学习-虚拟主机">RabbitMQ学习-虚拟主机</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2019/03/12/11-rabbitmq-study-virtual-hosts/">
+				        <h2 class="post-title">
+                            RabbitMQ学习-虚拟主机
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            virtual hosts
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2019-03-12</p> -->
+				</div>
+				<hr>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2018-05-19">2018-05-19</time>
+				  <a href="/2018/05/19/8-rabbitmq-study-HignAvailable/" title="RabbitMQ学习-高可用">RabbitMQ学习-高可用</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2018/05/19/8-rabbitmq-study-HignAvailable/">
+				        <h2 class="post-title">
+                            RabbitMQ学习-高可用
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            hign available
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2018-05-19</p> -->
+				</div>
+				<hr>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2018-05-18">2018-05-18</time>
+				  <a href="/2018/05/18/7-rabbitmq-study-Cluster/" title="RabbitMQ学习-集群">RabbitMQ学习-集群</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2018/05/18/7-rabbitmq-study-Cluster/">
+				        <h2 class="post-title">
+                            RabbitMQ学习-集群
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            cluster
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2018-05-18</p> -->
+				</div>
+				<hr>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2018-05-12">2018-05-12</time>
+				  <a href="/2018/05/12/6-rabbitmq-study-exchange/" title="RabbitMQ学习-交换器">RabbitMQ学习-交换器</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2018/05/12/6-rabbitmq-study-exchange/">
+				        <h2 class="post-title">
+                            RabbitMQ学习-交换器
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            exchange
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2018-05-12</p> -->
+				</div>
+				<hr>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2018-05-08">2018-05-08</time>
+				  <a href="/2018/05/08/5-rabbitmq-study-php-amqplib/" title="RabbitMQ学习-php-amqplib">RabbitMQ学习-php-amqplib</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2018/05/08/5-rabbitmq-study-php-amqplib/">
+				        <h2 class="post-title">
+                            RabbitMQ学习-php-amqplib
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            php-amqplib
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2018-05-08</p> -->
+				</div>
+				<hr>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2018-05-08">2018-05-08</time>
+				  <a href="/2018/05/08/4-rabbitmq-study-web-management/" title="RabbitMQ学习-web管理页面">RabbitMQ学习-web管理页面</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2018/05/08/4-rabbitmq-study-web-management/">
+				        <h2 class="post-title">
+                            RabbitMQ学习-web管理页面
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            web-management
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2018-05-08</p> -->
+				</div>
+				<hr>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2018-05-08">2018-05-08</time>
+				  <a href="/2018/05/08/3-rabbitmq-study-server-command/" title="RabbitMQ学习-服务器命令">RabbitMQ学习-服务器命令</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2018/05/08/3-rabbitmq-study-server-command/">
+				        <h2 class="post-title">
+                            RabbitMQ学习-服务器命令
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            server-command
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2018-05-08</p> -->
+				</div>
+				<hr>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2018-05-08">2018-05-08</time>
+				  <a href="/2018/05/08/2-rabbitmq-study-problems/" title="RabbitMQ学习-遇到的问题">RabbitMQ学习-遇到的问题</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2018/05/08/2-rabbitmq-study-problems/">
+				        <h2 class="post-title">
+                            RabbitMQ学习-遇到的问题
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            problems
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2018-05-08</p> -->
+				</div>
+				<hr>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2018-05-08">2018-05-08</time>
+				  <a href="/2018/05/08/1-rabbitmq-study-prepare-environment/" title="RabbitMQ学习-环境准备">RabbitMQ学习-环境准备</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2018/05/08/1-rabbitmq-study-prepare-environment/">
+				        <h2 class="post-title">
+                            RabbitMQ学习-环境准备
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            prepare-environment
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2018-05-08</p> -->
+				</div>
+				<hr>
+				
+			</div>
+			
+			<div class="one-tag-list">
+			  	<span class="fa fa-tag listing-seperator" id="laravel">
+                    <span class="tag-text">laravel</span>
+                </span>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2018-06-06">2018-06-06</time>
+				  <a href="/2018/06/06/7-laravel-study-routing/" title="laravel学习（七）-路由">laravel学习（七）-路由</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2018/06/06/7-laravel-study-routing/">
+				        <h2 class="post-title">
+                            laravel学习（七）-路由
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            Routing
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2018-06-06</p> -->
+				</div>
+				<hr>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2018-06-06">2018-06-06</time>
+				  <a href="/2018/06/06/6-laravel-study-contracts/" title="laravel学习（六）-契约">laravel学习（六）-契约</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2018/06/06/6-laravel-study-contracts/">
+				        <h2 class="post-title">
+                            laravel学习（六）-契约
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            Contracts
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2018-06-06</p> -->
+				</div>
+				<hr>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2018-06-06">2018-06-06</time>
+				  <a href="/2018/06/06/5-laravel-study-facades/" title="laravel学习（五）-外观">laravel学习（五）-外观</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2018/06/06/5-laravel-study-facades/">
+				        <h2 class="post-title">
+                            laravel学习（五）-外观
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            Facades
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2018-06-06</p> -->
+				</div>
+				<hr>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2018-06-06">2018-06-06</time>
+				  <a href="/2018/06/06/4-laravel-study-service-providers/" title="laravel学习（四）-服务提供者">laravel学习（四）-服务提供者</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2018/06/06/4-laravel-study-service-providers/">
+				        <h2 class="post-title">
+                            laravel学习（四）-服务提供者
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            Service Providers
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2018-06-06</p> -->
+				</div>
+				<hr>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2018-06-06">2018-06-06</time>
+				  <a href="/2018/06/06/3-laravel-study-service-container/" title="laravel学习（三）-服务容器">laravel学习（三）-服务容器</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2018/06/06/3-laravel-study-service-container/">
+				        <h2 class="post-title">
+                            laravel学习（三）-服务容器
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            Service Container
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2018-06-06</p> -->
+				</div>
+				<hr>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2018-06-06">2018-06-06</time>
+				  <a href="/2018/06/06/2-laravel-study-request-lifecycle/" title="laravel学习（二）-请求周期">laravel学习（二）-请求周期</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2018/06/06/2-laravel-study-request-lifecycle/">
+				        <h2 class="post-title">
+                            laravel学习（二）-请求周期
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            Request Lifecycle
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2018-06-06</p> -->
+				</div>
+				<hr>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2018-06-06">2018-06-06</time>
+				  <a href="/2018/06/06/1-laravel-study-architecture/" title="laravel学习（一）-核心架构">laravel学习（一）-核心架构</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2018/06/06/1-laravel-study-architecture/">
+				        <h2 class="post-title">
+                            laravel学习（一）-核心架构
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            Architecture Concepts
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2018-06-06</p> -->
+				</div>
+				<hr>
+				
+			</div>
+			
+			<div class="one-tag-list">
+			  	<span class="fa fa-tag listing-seperator" id="redis">
+                    <span class="tag-text">redis</span>
+                </span>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2018-10-12">2018-10-12</time>
+				  <a href="/2018/10/12/redis-cluster/" title="redis的集群">redis的集群</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2018/10/12/redis-cluster/">
+				        <h2 class="post-title">
+                            redis的集群
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            Redis Cluster
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2018-10-12</p> -->
+				</div>
+				<hr>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2018-10-09">2018-10-09</time>
+				  <a href="/2018/10/09/redis-sentinel/" title="redis的哨兵">redis的哨兵</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2018/10/09/redis-sentinel/">
+				        <h2 class="post-title">
+                            redis的哨兵
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            Redis Sentinel
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2018-10-09</p> -->
+				</div>
+				<hr>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2018-10-02">2018-10-02</time>
+				  <a href="/2018/10/02/redis-master-slave/" title="redis的主从">redis的主从</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2018/10/02/redis-master-slave/">
+				        <h2 class="post-title">
+                            redis的主从
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            Redis Master Slave
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2018-10-02</p> -->
+				</div>
+				<hr>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2018-09-24">2018-09-24</time>
+				  <a href="/2018/09/24/redis-install/" title="redis的安装">redis的安装</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2018/09/24/redis-install/">
+				        <h2 class="post-title">
+                            redis的安装
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            Redis Install
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2018-09-24</p> -->
+				</div>
+				<hr>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2018-09-12">2018-09-12</time>
+				  <a href="/2018/09/12/redis-memory/" title="redis的内存">redis的内存</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2018/09/12/redis-memory/">
+				        <h2 class="post-title">
+                            redis的内存
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            Redis Memory
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2018-09-12</p> -->
+				</div>
+				<hr>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2018-08-21">2018-08-21</time>
+				  <a href="/2018/08/21/redis-api/" title="redis的api使用">redis的api使用</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2018/08/21/redis-api/">
+				        <h2 class="post-title">
+                            redis的api使用
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            Redis Api
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2018-08-21</p> -->
+				</div>
+				<hr>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2018-08-03">2018-08-03</time>
+				  <a href="/2018/08/03/redis-online-wrong/" title="redis上线的问题">redis上线的问题</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2018/08/03/redis-online-wrong/">
+				        <h2 class="post-title">
+                            redis上线的问题
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            Redis Online Wrong
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2018-08-03</p> -->
+				</div>
+				<hr>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2018-06-06">2018-06-06</time>
+				  <a href="/2018/06/06/redis-pconnect-connect/" title="redis中pconnect与connect">redis中pconnect与connect</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2018/06/06/redis-pconnect-connect/">
+				        <h2 class="post-title">
+                            redis中pconnect与connect
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            Pconnect Connect
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2018-06-06</p> -->
+				</div>
+				<hr>
+				
+			</div>
+			
+			<div class="one-tag-list">
+			  	<span class="fa fa-tag listing-seperator" id="swoole">
+                    <span class="tag-text">swoole</span>
+                </span>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2018-07-31">2018-07-31</time>
+				  <a href="/2018/07/31/swoole-process/" title="swoole的进程构成">swoole的进程构成</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2018/07/31/swoole-process/">
+				        <h2 class="post-title">
+                            swoole的进程构成
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            swoole process
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2018-07-31</p> -->
+				</div>
+				<hr>
+				
+			</div>
+			
+			<div class="one-tag-list">
+			  	<span class="fa fa-tag listing-seperator" id="mysql">
+                    <span class="tag-text">mysql</span>
+                </span>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2019-05-15">2019-05-15</time>
+				  <a href="/2019/05/15/timeout/" title="mysql超时时间">mysql超时时间</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2019/05/15/timeout/">
+				        <h2 class="post-title">
+                            mysql超时时间
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            Mysql Timeout
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2019-05-15</p> -->
+				</div>
+				<hr>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2019-03-28">2019-03-28</time>
+				  <a href="/2019/03/28/mysql-transaction-isolation-levels/" title="mysql-事务隔离级别">mysql-事务隔离级别</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2019/03/28/mysql-transaction-isolation-levels/">
+				        <h2 class="post-title">
+                            mysql-事务隔离级别
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            transaction isolation levels
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2019-03-28</p> -->
+				</div>
+				<hr>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2018-08-30">2018-08-30</time>
+				  <a href="/2018/08/30/mysql-connection-pool/" title="mysql连接池">mysql连接池</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2018/08/30/mysql-connection-pool/">
+				        <h2 class="post-title">
+                            mysql连接池
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            Mysql Connection Pool
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2018-08-30</p> -->
+				</div>
+				<hr>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2018-08-28">2018-08-28</time>
+				  <a href="/2018/08/28/mysql-persistent/" title="mysql持久化连接">mysql持久化连接</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2018/08/28/mysql-persistent/">
+				        <h2 class="post-title">
+                            mysql持久化连接
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            Mysql Persistent
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2018-08-28</p> -->
+				</div>
+				<hr>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2018-08-14">2018-08-14</time>
+				  <a href="/2018/08/14/install-mysql/" title="mysql安装">mysql安装</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2018/08/14/install-mysql/">
+				        <h2 class="post-title">
+                            mysql安装
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            Install Mysql
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2018-08-14</p> -->
+				</div>
+				<hr>
+				
+			</div>
+			
+			<div class="one-tag-list">
+			  	<span class="fa fa-tag listing-seperator" id="架构">
+                    <span class="tag-text">架构</span>
+                </span>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2018-09-26">2018-09-26</time>
+				  <a href="/2018/09/26/web-architecture/" title="网站架构基础">网站架构基础</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2018/09/26/web-architecture/">
+				        <h2 class="post-title">
+                            网站架构基础
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            Web Architecture 101
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2018-09-26</p> -->
+				</div>
+				<hr>
+				
+			</div>
+			
+			<div class="one-tag-list">
+			  	<span class="fa fa-tag listing-seperator" id="git">
+                    <span class="tag-text">git</span>
+                </span>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2019-04-05">2019-04-05</time>
+				  <a href="/2019/04/05/git-study-introduction/" title="Git学习-入门">Git学习-入门</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2019/04/05/git-study-introduction/">
+				        <h2 class="post-title">
+                            Git学习-入门
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            git introduction
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2019-04-05</p> -->
+				</div>
+				<hr>
+				
+			</div>
+			
+			<div class="one-tag-list">
+			  	<span class="fa fa-tag listing-seperator" id="tcp/ip">
+                    <span class="tag-text">tcp/ip</span>
+                </span>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2019-05-23">2019-05-23</time>
+				  <a href="/2019/05/23/tujie-tcp-ip/" title="图解TCP/IP笔记">图解TCP/IP笔记</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2019/05/23/tujie-tcp-ip/">
+				        <h2 class="post-title">
+                            图解TCP/IP笔记
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            tcp ip
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2019-05-23</p> -->
+				</div>
+				<hr>
+				
+			</div>
+			
+			<div class="one-tag-list">
+			  	<span class="fa fa-tag listing-seperator" id="http">
+                    <span class="tag-text">http</span>
+                </span>
+				
+				  <!-- <li class="listing-item">
+				  <time datetime="2019-06-24">2019-06-24</time>
+				  <a href="/2019/06/24/tujie-http/" title="图解HTTP笔记">图解HTTP笔记</a>
+				  </li> -->
+				 <div class="post-preview">
+				    <a href="/2019/06/24/tujie-http/">
+				        <h2 class="post-title">
+                            图解HTTP笔记
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            tcp ip
+				        </h3>
+				        
+				    </a>
+				    <!-- <p class="post-meta">2019-06-24</p> -->
+				</div>
+				<hr>
+				
+			</div>
+			
+
+		</div>
+	</div>
+</div>
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+                    
+
+                    <!-- add Weibo, Zhihu by Hux, add target = "_blank" to <a> by Hux -->
+                    
+                    
+
+
+                    
+                    
+                    
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; zwtisme 2022
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<!-- Currently, only navbar scroll-down effect at desktop still depends on this -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+<!-- Service Worker -->
+
+<script src="/js/snackbar.js "></script>
+<script src="/js/sw-registration.js "></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async('/js/jquery.tagcloud.js',function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-49627206-1';
+    var _gaDomain = 'https://zwtisme.github.io/';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+<!-- Side Catalog -->
+
+
+
+<!-- Multi-Lingual -->
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

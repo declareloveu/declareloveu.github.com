@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keywords"  content=" ">
+    <meta name="theme-color" content="#000000">
+    
+    <title>RabbitMQ学习-集群 - zwt's Blog</title>
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/pwa/manifest.json">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="http://localhost:4001/2018/05/18/7-rabbitmq-study-Cluster/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">zwtisme</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    
+                    
+                    
+                    
+                    <li>
+                        <a href="/articles/">Articles</a>
+                    </li>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    <li>
+                        <a href="/tags/">Tags</a>
+                    </li>
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    var __HuxNav__ = {
+        close: function(){
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        },
+        open: function(){
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+
+    // Bind Event
+    $toggle.addEventListener('click', function(e){
+        if ($navbar.className.indexOf('in') > 0) {
+            __HuxNav__.close()
+        }else{
+            __HuxNav__.open()
+        }
+    })
+
+    /**
+     * Since Fastclick is used to delegate 'touchstart' globally
+     * to hack 300ms delay in iOS by performing a fake 'click',
+     * Using 'e.stopPropagation' to stop 'touchstart' event from 
+     * $toggle/$collapse will break global delegation.
+     * 
+     * Instead, we use a 'e.target' filter to prevent handler
+     * added to document close HuxNav.  
+     *
+     * Also, we use 'click' instead of 'touchstart' as compromise
+     */
+    document.addEventListener('click', function(e){
+        if(e.target == $toggle) return;
+        if(e.target.className == 'icon-bar') return;
+        __HuxNav__.close();
+    })
+</script>
+
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/post-bg-2015.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/post-bg-2015.jpg')
+    }
+
+    
+</style>
+<header class="intro-header" >
+    <div class="header-mask"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/#rabbitmq" title="rabbitmq">rabbitmq</a>
+                        
+                        <a class="tag" href="/tags/#php" title="php">php</a>
+                        
+                    </div>
+                    <h1>RabbitMQ学习-集群</h1>
+                    
+                    
+                    <h2 class="subheading">cluster</h2>
+                    
+                    <span class="meta">Posted by zwtisme on May 18, 2018</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                 col-lg-8 col-lg-offset-2
+                 col-md-10 col-md-offset-1
+                 post-container">
+
+                <!-- Multi-Lingual -->
+                
+
+                <blockquote>
+  <p>介绍RabbitMQ中，如何搭建普通集群与镜像集群。</p>
+</blockquote>
+
+<h2 id="机器准备">机器准备</h2>
+
+<p>
+这里我们建立一个3台机器组成的集群，事先先在3台机器上安装好RabbitMQ服务。
+</p>
+
+<p>
+机器IP：<br />
+10.100.3.106<br />
+10.100.2.234<br />
+10.100.2.235<br />
+</p>
+
+<h2 id="普通集群">普通集群</h2>
+
+<h4 id="1概要">1.概要</h4>
+
+<p>
+每台物理机是一个节点，消息实体只保存在一个节点上。
+</p>
+
+<p>
+当节点出现故障时：
+</p>
+
+<ul>
+  <li>消息持久化：当节点恢复时，可获取此节点未消费的消息<br /></li>
+  <li>消息未持久化：则会丢失此节点上未消费的消息<br /></li>
+</ul>
+
+<p>
+当从A节点消费B节点上消息时，会通过消费者消费的队列找到该队列所在的节点，从此节点获取获取后，返回给消费者。
+</p>
+
+<h5 id="节点内部元数据">节点内部元数据</h5>
+
+<ul>
+  <li>队列元数据：队列名称和它们的属性（是否可持久化，是否自动删除）</li>
+  <li>交换器元数据：交换器名称，类型和属性（是否持久化等）</li>
+  <li>绑定元数据：一张简单的表格展示了如何将消息路由到队列</li>
+  <li>vhost元数据：为虚拟主机内的队列，交换器和绑定提供命名空间和安全属性</li>
+</ul>
+
+<h5 id="队列">队列</h5>
+
+<ul>
+  <li>队列的所有者节点：存储队列的元数据、状态、内容</li>
+  <li>非队列的所有者节点：保存队列的元数据和指向队列所有者的指针</li>
+</ul>
+
+<p>
+队列类似于节点上运行的进程，每个进程拥有自己的进程ID（集群中的Erlang地址），信道将消息进行匹配后，会建立到队列PID的连接，然后将消息发送过去。
+</p>
+
+<p><img src="http://localhost:4001/img/2018-05-18-7-rabbitmq-study-Cluster/20190402152335.png?raw=true" alt="image" /></p>
+
+<h5 id="交换器">交换器</h5>
+
+<p>
+不同于队列拥有自己的进程，交换器只是队列与路由键的关系表，当消息发送到交换器时，信道会将消息上的路由键与交换器的关系表进行匹配，从而决定将消息路由到哪个队列。
+</p>
+
+<p>
+由于交换器只是一张关系表，所以交换器会在整个集群中进行同步复制，集群中每个节点都拥有每个交换器的信息，节点故障时可以不用重新声明交换器。
+</p>
+
+<h5 id="节点类型">节点类型</h5>
+
+<ul>
+  <li>内存节点（ram）：队列、交换机、绑定、用户、权限、vhost的元数据都存储在内存中</li>
+  <li>磁盘节点（disk）：元数据存放在磁盘上。一个集群至少要有一个磁盘节点，用来保存集群的配置信息</li>
+</ul>
+
+<p>
+正常使用时都使用磁盘节点，除非需要改进有高队列、交换或绑定的性能集群（将部分节点调整为内存节点）。RAM节点并不提供更高的消息速率。
+</p>
+
+<p>
+磁盘节点适合队列长存服务器的应用；内存节点适合RPC等频繁创建或销毁队列的应用。
+</p>
+
+<h4 id="2hosts配置">2.hosts配置</h4>
+
+<p>
+在每个主机的<code>/etc/hosts</code>文件中加入如下配置，便于节点间访问：
+</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#rabbitmq_node1
+10.100.3.106 DEV-HROEx64
+#rabbitmq_node2
+10.100.2.234 DEV-mHRO
+#rabbitmq_node3
+10.100.2.235 DEV-mHRO64
+</code></pre></div></div>
+
+<p>
+如果需要主机名比较一致，可以修改主机名。
+</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root@DEV-HROEx64 ~]# vim /etc/sysconfig/network
+
+NETWORKING=yes
+HOSTNAME=DEV-HROEx64
+#HOSTNAME=rabbitmq_node1
+
+[root@DEV-HROEx64 ~]# reboot
+</code></pre></div></div>
+
+<h4 id="3erlang-cookie设置">3.Erlang Cookie设置</h4>
+
+<p>
+RabbitMQ节点之间和命令行工具（如rabbitmqctl）是使用Cookie来确认是否允许互相通信的。对于多个能够通信的节点必须要有相同的Erlang Cookie。Cookie是一组随机的数字+字母的字符串，最大为255字节。
+</p>
+
+<p>
+当Erlang Cookie文件不存在时，Erlang VM将尝试在RabbitMQ服务器启动时创建一个随机生成的值。
+</p>
+
+<p>
+<code>.erlang.cookie</code>文件一般在如下2个地方：<br />
+
+1. /var/lib/rabbitmq/.erlang.cookie
+2. $HOME/.erlang.cookie
+</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#这里我们将rabbitmq_node2与rabbitmq_node3上的cookie，都使用rabbitmq_node1上的cookie
+[root@DEV-mHRO otp_src_20.3]# scp -r root@rabbitmq_node1:/root/.erlang.cookie /root/.erlang.cookie 
+[root@DEV-mHRO64 bmsource]# scp -r root@rabbitmq_node1:/root/.erlang.cookie /root/.erlang.cookie 
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#确认一下3台机器上的cookie是否一致
+#rabbitmq_node1
+# cat /root/.erlang.cookie 
+ISIHBJETBSGTLNHVJLTQ
+
+#rabbitmq_node2
+# cat /root/.erlang.cookie 
+ISIHBJETBSGTLNHVJLTQ
+
+#rabbitmq_node3
+# cat /root/.erlang.cookie 
+ISIHBJETBSGTLNHVJLTQ
+</code></pre></div></div>
+
+<h4 id="4重启rabbitmq服务">4.重启RabbitMQ服务</h4>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#启动RabbitMQ服务
+
+#rabbitmq_node1
+[root@DEV-HROEx64 ~]# rabbitmq-server -detached
+
+#rabbitmq_node2
+[root@DEV-HROEx64 ~]# rabbitmq-server -detached
+
+#rabbitmq_node3
+[root@DEV-HROEx64 ~]# rabbitmq-server -detached
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#查看每个节点集群状态
+
+#rabbitmq_node1
+[root@DEV-HROEx64 ~]# rabbitmqctl cluster_status
+Cluster status of node 'rabbit@DEV-HROEx64'
+[{nodes,[{disc,['rabbit@DEV-HROEx64']}]},
+ {running_nodes,['rabbit@DEV-HROEx64']},
+ {cluster_name,&lt;&lt;"rabbit@DEV-HROEx64"&gt;&gt;},
+ {partitions,[]},
+ {alarms,[{'rabbit@DEV-HROEx64',[]}]}]
+
+#rabbitmq_node2
+[root@DEV-mHRO otp_src_20.3]# rabbitmqctl cluster_status
+Cluster status of node 'rabbit@DEV-mHRO'
+[{nodes,[{disc,['rabbit@DEV-mHRO']}]},
+ {running_nodes,['rabbit@DEV-mHRO']},
+ {cluster_name,&lt;&lt;"rabbit@DEV-mHRO"&gt;&gt;},
+ {partitions,[]},
+ {alarms,[{'rabbit@DEV-mHRO',[]}]}]
+
+#rabbitmq_node3
+[root@DEV-mHRO64 bmsource]# rabbitmqctl cluster_status
+Cluster status of node 'rabbit@DEV-mHRO64'
+[{nodes,[{disc,['rabbit@DEV-mHRO64']}]},
+ {running_nodes,['rabbit@DEV-mHRO64']},
+ {cluster_name,&lt;&lt;"rabbit@DEV-mHRO64"&gt;&gt;},
+ {partitions,[]},
+ {alarms,[{'rabbit@DEV-mHRO64',[]}]}]
+</code></pre></div></div>
+
+<h4 id="5创建集群">5.创建集群</h4>
+
+<p>
+通过将rabbitmq_node2与rabbitmq_node3加入到rabbitmq_node1中，我们可以搭建一个集群。
+</p>
+
+<p>
+在rabbitmq-server启动时，会一起启动节点和应用，它预先设置RabbitMQ应用为standalone模式。要将一个节点加入到现有的集群中，需要停止这个应用并将节点设置为原始状态，然后就为加入集群准备好了。如果使用<code>rabbitmqctl stop</code>，应用和节点都将被关闭，而使用<code>rabbitmqctl stop_app</code>仅仅关闭应用。
+</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#rabbitmq_node2加入到rabbitmq_node1
+[root@DEV-mHRO otp_src_20.3]# rabbitmqctl stop_app
+Stopping rabbit application on node 'rabbit@DEV-mHRO'
+[root@DEV-mHRO otp_src_20.3]# rabbitmqctl join_cluster rabbit@DEV-HROEx64
+Clustering node 'rabbit@DEV-mHRO' with 'rabbit@DEV-HROEx64'
+[root@DEV-mHRO otp_src_20.3]# rabbitmqctl start_app
+Starting node 'rabbit@DEV-mHRO'
+
+#rabbitmq_node3加入到rabbitmq_node1
+[root@DEV-mHRO64 bmsource]# rabbitmqctl stop_app
+Stopping rabbit application on node 'rabbit@DEV-mHRO64'
+You have mail in /var/spool/mail/root
+[root@DEV-mHRO64 bmsource]# rabbitmqctl join_cluster rabbit@DEV-HROEx64
+Clustering node 'rabbit@DEV-mHRO64' with 'rabbit@DEV-HROEx64'
+[root@DEV-mHRO64 bmsource]# rabbitmqctl start_app
+Starting node 'rabbit@DEV-mHRO64'
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#查看每个节点集群状态
+
+#rabbitmq_node1
+[root@DEV-HROEx64 ~]# rabbitmqctl cluster_status
+Cluster status of node 'rabbit@DEV-HROEx64'
+[{nodes,[{disc,['rabbit@DEV-HROEx64','rabbit@DEV-mHRO','rabbit@DEV-mHRO64']}]},
+ {running_nodes,['rabbit@DEV-mHRO64','rabbit@DEV-mHRO','rabbit@DEV-HROEx64']},
+ {cluster_name,&lt;&lt;"rabbit@DEV-HROEx64"&gt;&gt;},
+ {partitions,[]},
+ {alarms,[{'rabbit@DEV-mHRO64',[]},
+          {'rabbit@DEV-mHRO',[]},
+          {'rabbit@DEV-HROEx64',[]}]}]
+
+#rabbitmq_node2
+[root@DEV-mHRO otp_src_20.3]# rabbitmqctl cluster_status
+Cluster status of node 'rabbit@DEV-mHRO'
+[{nodes,[{disc,['rabbit@DEV-HROEx64','rabbit@DEV-mHRO','rabbit@DEV-mHRO64']}]},
+ {running_nodes,['rabbit@DEV-mHRO64','rabbit@DEV-HROEx64','rabbit@DEV-mHRO']},
+ {cluster_name,&lt;&lt;"rabbit@DEV-HROEx64"&gt;&gt;},
+ {partitions,[]},
+ {alarms,[{'rabbit@DEV-mHRO64',[]},
+          {'rabbit@DEV-HROEx64',[]},
+          {'rabbit@DEV-mHRO',[]}]}]
+
+#rabbitmq_node3
+[root@DEV-mHRO64 bmsource]# rabbitmqctl cluster_status
+Cluster status of node 'rabbit@DEV-mHRO64'
+[{nodes,[{disc,['rabbit@DEV-HROEx64','rabbit@DEV-mHRO','rabbit@DEV-mHRO64']}]},
+ {running_nodes,['rabbit@DEV-HROEx64','rabbit@DEV-mHRO','rabbit@DEV-mHRO64']},
+ {cluster_name,&lt;&lt;"rabbit@DEV-HROEx64"&gt;&gt;},
+ {partitions,[]},
+ {alarms,[{'rabbit@DEV-HROEx64',[]},
+          {'rabbit@DEV-mHRO',[]},
+          {'rabbit@DEV-mHRO64',[]}]}]
+</code></pre></div></div>
+
+<p>
+上面集群中各节点都是磁盘节点，如果希望节点是内存节点，可以参考如下设置方法。
+</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root@DEV-mHRO otp_src_20.3]# rabbitmqctl stop_app
+Stopping rabbit application on node 'rabbit@DEV-mHRO'
+[root@DEV-mHRO otp_src_20.3]# rabbitmqctl join_cluster --ram rabbit@DEV-HROEx64
+Clustering node 'rabbit@DEV-mHRO' with 'rabbit@DEV-HROEx64'
+[root@DEV-mHRO otp_src_20.3]# rabbitmqctl start_app
+Starting node 'rabbit@DEV-mHRO'
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#查看集群状态
+
+[root@DEV-HROEx64 ~]# rabbitmqctl cluster_status
+Cluster status of node 'rabbit@DEV-HROEx64'
+[{nodes,[{disc,['rabbit@DEV-HROEx64','rabbit@DEV-mHRO64']},
+         {ram,['rabbit@DEV-mHRO']}]},
+ {running_nodes,['rabbit@DEV-mHRO','rabbit@DEV-mHRO64','rabbit@DEV-HROEx64']},
+ {cluster_name,&lt;&lt;"rabbit@DEV-HROEx64"&gt;&gt;},
+ {partitions,[]},
+ {alarms,[{'rabbit@DEV-mHRO',[]},
+          {'rabbit@DEV-mHRO64',[]},
+          {'rabbit@DEV-HROEx64',[]}]}]
+
+</code></pre></div></div>
+
+<p>
+如果原先集群的挂载的节点(rabbit@DEV-HROEx64)从集群(rabbit@DEV-HROEx64)脱离了，在重新挂载到集群时，会报如下错误。
+</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root@DEV-HROEx64 /]# rabbitmqctl join_cluster rabbit@DEV-HROEx64
+Clustering node 'rabbit@DEV-HROEx64' with 'rabbit@DEV-HROEx64'
+Error: cannot_cluster_node_with_itself
+</code></pre></div></div>
+
+<p>
+可将节点挂载到集群中的任意有效节点(rabbit@DEV-mHRO)，则节点也会进入到集群中。
+</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root@DEV-HROEx64 /]# rabbitmqctl join_cluster rabbit@DEV-mHRO
+</code></pre></div></div>
+
+<h4 id="6从集群中移除节点">6.从集群中移除节点</h4>
+
+<h5 id="61在要脱离的节点机器上">6.1.在要脱离的节点机器上</h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root@DEV-mHRO otp_src_20.3]# rabbitmqctl stop_app
+Stopping rabbit application on node 'rabbit@DEV-mHRO'
+You have mail in /var/spool/mail/root
+[root@DEV-mHRO otp_src_20.3]# rabbitmqctl reset
+Resetting node 'rabbit@DEV-mHRO'
+[root@DEV-mHRO otp_src_20.3]# rabbitmqctl start_app
+Starting node 'rabbit@DEV-mHRO'
+</code></pre></div></div>
+
+<h5 id="62在其他节点机器上">6.2.在其他节点机器上</h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#模拟rabbitmq_node2没服务了
+[root@DEV-mHRO otp_src_20.3]# rabbitmqctl stop_app
+Stopping rabbit application on node 'rabbit@DEV-mHRO'
+
+#在rabbitmq_node1上移除rabbitmq_node2
+[root@DEV-HROEx64 ~]# rabbitmqctl forget_cluster_node rabbit@DEV-mHRO
+Removing node 'rabbit@DEV-mHRO' from cluster
+</code></pre></div></div>
+
+<h4 id="7web管理端查看集群状态">7.web管理端查看集群状态</h4>
+
+<h5 id="71新增集群账号">7.1.新增集群账号</h5>
+
+<p>
+在集群中任意一个节点上，新增一个可用账号。
+</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#rabbitmq_node1添加账号
+[root@DEV-HROEx64 ~]# rabbitmqctl add_user admin admin
+[root@DEV-HROEx64 ~]# rabbitmqctl set_permissions -p / admin ".*" ".*" ".*"
+Setting permissions for user "admin" in vhost "/"
+[root@DEV-HROEx64 ~]# rabbitmqctl set_user_tags admin administrator
+Setting tags for user "admin" to [administrator]
+</code></pre></div></div>
+
+<h5 id="72开启rabbitmq_management插件">7.2.开启rabbitmq_management插件</h5>
+
+<p>
+为了监控数据的准确性需要开启每台服务器的rabbitmq_management插件。
+</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#rabbitmq_node1
+[root@DEV-HROEx64 ~]# rabbitmq-plugins enable rabbitmq_management
+
+#rabbitmq_node2
+[root@DEV-mHRO ~]# rabbitmq-plugins enable rabbitmq_management
+
+#rabbitmq_node3
+[root@DEV-mHRO64 ~]# rabbitmq-plugins enable rabbitmq_management
+</code></pre></div></div>
+
+<h5 id="73登录web管理端查看集群状态">7.3.登录web管理端查看集群状态</h5>
+
+<p><img src="http://localhost:4001/img/2018-05-18-7-rabbitmq-study-Cluster/20180526161717.png?raw=true" alt="image" /></p>
+
+<h4 id="8集群使用测试">8.集群使用测试</h4>
+
+<p>
+为了验证集群的可用性，我们将消息发送到<code>rabbitmq_node1</code>上的队列，在<code>rabbitmq_node2</code>与<code>rabbitmq_node3</code>获取队列里的消息。
+</p>
+
+<h5 id="81测试代码">8.1.测试代码</h5>
+
+<p><a href="https://github.com/zwtisme/rabbitmq-study/blob/master/direct_cluster_producer.php">生产-node1</a></p>
+
+<p><a href="https://github.com/zwtisme/rabbitmq-study/blob/master/direct_cluster_consumer1.php">消费-node2</a></p>
+
+<p><a href="https://github.com/zwtisme/rabbitmq-study/blob/master/direct_cluster_consumer2.php">消费-node3</a></p>
+
+<h5 id="82web管理端信息">8.2.web管理端信息</h5>
+
+<p><img src="http://localhost:4001/img/2018-05-18-7-rabbitmq-study-Cluster/20180526170231.png?raw=true" alt="image" /></p>
+
+<p><img src="http://localhost:4001/img/2018-05-18-7-rabbitmq-study-Cluster/20180526170706.png?raw=true" alt="image" /></p>
+
+<h2 id="镜像集群">镜像集群</h2>
+
+<h4 id="1概要-1">1.概要</h4>
+
+<p>
+与普通集群不同的是，镜像集群会把队列结构与消息存放在多个节点，消息会在镜像节点间同步，从而实现高可用的架构。
+</p>
+
+<p>
+由于需要进行节点间的同步，所以镜像集群在性能方面会降低；如果镜像队列数量过多，加之大量的消息进入，集群内部的网络带宽将会被这种同步通讯大量消耗。所以这种模式应用于可靠性要求较高的场合中。
+</p>
+
+<p style="color:red;">
+Tips：如果将消息存储置于SSD的话，就可以极大提升持久化消息通信的性能。
+</p>
+
+<h4 id="2如何配置">2.如何配置</h4>
+
+<p>
+镜像功能，需要通过<a href="https://www.rabbitmq.com/parameters.html#policies" target="_blank">RabbitMQ策略</a>来实现。策略可以控制一个集群内某个vhost中的队列与交换器的镜像行为。在集群的任意节点创建策略，策略都会同步到其他节点。
+</p>
+
+<p>
+
+- Pattern：正则表达式，【\^】代表所有队列，【\^test】代表test开头的队列
+- HA mode：可选【all,exactly,nodes】，正常都使用【all】，如果使用【exactly,nodes】还需要配置HA params
+</p>
+
+<h4 id="3环境准备">3.环境准备</h4>
+
+<p>
+镜像集群是普通集群的扩展使用，所以可以参照普通集群的搭建方式事先进行搭建。
+</p>
+
+<h4 id="4创建镜像策略">4.创建镜像策略</h4>
+
+<h5 id="41web管理端">4.1.web管理端</h5>
+
+<p><img src="http://localhost:4001/img/2018-05-18-7-rabbitmq-study-Cluster/20180526183111.png?raw=true" alt="image" /></p>
+
+<p><img src="http://localhost:4001/img/2018-05-18-7-rabbitmq-study-Cluster/20180526183151.png?raw=true" alt="image" /></p>
+
+<h5 id="42cli命令行">4.2.cli命令行</h5>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root@DEV-HROEx64 ~]# rabbitmqctl set_policy -p / test_policy2 '^' '{"ha-mode":"all"}'
+Setting policy "test_policy2" for pattern "^" to "{\"ha-mode\":\"all\"}" with priority "0"
+</code></pre></div></div>
+
+<h5 id="43策略查看">4.3.策略查看</h5>
+
+<p>
+检查3台机器上的策略已经同步为一致了。
+</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#rabbitmq_node1
+[root@DEV-HROEx64 ~]# rabbitmqctl list_policies
+Listing policies
+/	test_policy2	all	^	{"ha-mode":"all"}	0
+/	test_policy	    all	^	{"ha-mode":"all"}	0
+
+#rabbitmq_node2
+[root@DEV-mHRO ~]# rabbitmqctl list_policies
+Listing policies
+/	test_policy2	all	^	{"ha-mode":"all"}	0
+/	test_policy	    all	^	{"ha-mode":"all"}	0
+
+#rabbitmq_node3
+[root@DEV-mHRO64 ~]# rabbitmqctl list_policies
+Listing policies
+/	test_policy2	all	^	{"ha-mode":"all"}	0
+/	test_policy	    all	^	{"ha-mode":"all"}	0
+</code></pre></div></div>
+
+<h4 id="5镜像集群使用测试">5.镜像集群使用测试</h4>
+
+<p>
+测试代码同上面普通集群的测试代码。
+</p>
+
+<p><img src="http://localhost:4001/img/2018-05-18-7-rabbitmq-study-Cluster/20180526190556.png?raw=true" alt="image" /></p>
+
+<p><img src="http://localhost:4001/img/2018-05-18-7-rabbitmq-study-Cluster/20180526190945.png?raw=true" alt="image" /></p>
+
+<h2 id="参考资料">参考资料</h2>
+
+<p><a href="https://www.rabbitmq.com/clustering.html">普通集群</a></p>
+
+<p><a href="https://www.rabbitmq.com/ha.html">镜像集群</a></p>
+
+
+                <hr style="visibility: hidden;">
+
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2018/05/12/6-rabbitmq-study-exchange/" data-toggle="tooltip" data-placement="top" title="RabbitMQ学习-交换器">
+                            Previous<br>
+                            <span>RabbitMQ学习-交换器</span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/2018/05/19/8-rabbitmq-study-HignAvailable/" data-toggle="tooltip" data-placement="top" title="RabbitMQ学习-高可用">
+                            Next<br>
+                            <span>RabbitMQ学习-高可用</span>
+                        </a>
+                    </li>
+                    
+                </ul>
+
+
+                
+                <!-- disqus 评论框 start -->
+                <div class="comment">
+                    <div id="disqus_thread" class="disqus-thread"></div>
+                </div>
+                <!-- disqus 评论框 end -->
+                
+
+                
+            </div>  
+
+            <!-- Side Catalog Container -->
+            
+            <div class="
+                 col-lg-2 col-lg-offset-0
+                 visible-lg-block
+                 sidebar-container
+                 catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
+            <!-- Sidebar Container -->
+            <div class="
+                 col-lg-8 col-lg-offset-2
+                 col-md-10 col-md-offset-1
+                 sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+
+                        
+                        
+                            
+                            
+                                
+                                <a href="/tags/#php" title="php" rel="21">
+                                    php
+                                </a>
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                        
+                            
+                            
+                                
+                            
+                                
+                            
+                                
+                                <a href="/tags/#rabbitmq" title="rabbitmq" rel="11">
+                                    rabbitmq
+                                </a>
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                        
+                            
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                                <a href="/tags/#redis" title="redis" rel="8">
+                                    redis
+                                </a>
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                        
+                            
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                                <a href="/tags/#laravel" title="laravel" rel="7">
+                                    laravel
+                                </a>
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                        
+                            
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                                <a href="/tags/#mysql" title="mysql" rel="5">
+                                    mysql
+                                </a>
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                        
+                            
+                            
+                                
+                            
+                                
+                                <a href="/tags/#linux" title="linux" rel="2">
+                                    linux
+                                </a>
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                        
+                            
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                                <a href="/tags/#swoole" title="swoole" rel="1">
+                                    swoole
+                                </a>
+                                
+                            
+                                
+                            
+                                
+                                <a href="/tags/#架构" title="架构" rel="1">
+                                    架构
+                                </a>
+                                
+                            
+                                
+                                <a href="/tags/#git" title="git" rel="1">
+                                    git
+                                </a>
+                                
+                            
+                                
+                                <a href="/tags/#tcp/ip" title="tcp/ip" rel="1">
+                                    tcp/ip
+                                </a>
+                                
+                            
+                                
+                                <a href="/tags/#http" title="http" rel="1">
+                                    http
+                                </a>
+                                
+                            
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>LINKS</h5>
+                <ul class="list-inline">
+                    
+                    <li><a href="http://www.ruanyifeng.com/home.html">阮一峰的个人网站</a></li>
+                    
+                    <li><a href="https://www.zhangxinxu.com/">张鑫旭的个人主页</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "zwtisme";
+    var disqus_identifier = "/2018/05/18/7-rabbitmq-study-Cluster";
+    var disqus_url = "http://localhost:4001/2018/05/18/7-rabbitmq-study-Cluster/";
+    /*
+     (function() {
+     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+     dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+     })();
+     */
+</script>
+<!-- disqus 公共JS代码 end -->
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+        var d = document, t = 'script',
+                o = d.createElement(t),
+                s = d.getElementsByTagName(t)[0];
+        o.src = u;
+        if (c) {
+            o.addEventListener('load', function (e) {
+                c(null, e);
+            }, false);
+        }
+        s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js", function () {
+        anchors.options = {
+            visible: 'always',
+            placement: 'right',
+            icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+                    
+
+                    <!-- add Weibo, Zhihu by Hux, add target = "_blank" to <a> by Hux -->
+                    
+                    
+
+
+                    
+                    
+                    
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; zwtisme 2022
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<!-- Currently, only navbar scroll-down effect at desktop still depends on this -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+<!-- Service Worker -->
+
+<script src="/js/snackbar.js "></script>
+<script src="/js/sw-registration.js "></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async('/js/jquery.tagcloud.js',function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-49627206-1';
+    var _gaDomain = 'https://zwtisme.github.io/';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog (selector) {
+
+        // interop with multilangual 
+        if (false) {
+            _containerSelector = 'div.post-container.active'
+        } else {
+            _containerSelector = 'div.post-container'
+        }
+
+        // init
+        var P = $(_containerSelector),a,n,t,l,i,c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        // clean
+        $(selector).html('')
+
+        // appending
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#"+$(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="'+i+'" rel="nofollow">'+t+'</a>');
+            l = $('<li class="'+n+'_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function(e){
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+<!-- Multi-Lingual -->
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

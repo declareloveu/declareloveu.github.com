@@ -1,0 +1,1448 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keywords"  content=" ">
+    <meta name="theme-color" content="#000000">
+    
+    <title>mysql超时时间 - zwt's Blog</title>
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/pwa/manifest.json">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="http://localhost:4001/2019/05/15/timeout/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">zwtisme</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    
+                    
+                    
+                    
+                    <li>
+                        <a href="/articles/">Articles</a>
+                    </li>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    <li>
+                        <a href="/tags/">Tags</a>
+                    </li>
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    var __HuxNav__ = {
+        close: function(){
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        },
+        open: function(){
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+
+    // Bind Event
+    $toggle.addEventListener('click', function(e){
+        if ($navbar.className.indexOf('in') > 0) {
+            __HuxNav__.close()
+        }else{
+            __HuxNav__.open()
+        }
+    })
+
+    /**
+     * Since Fastclick is used to delegate 'touchstart' globally
+     * to hack 300ms delay in iOS by performing a fake 'click',
+     * Using 'e.stopPropagation' to stop 'touchstart' event from 
+     * $toggle/$collapse will break global delegation.
+     * 
+     * Instead, we use a 'e.target' filter to prevent handler
+     * added to document close HuxNav.  
+     *
+     * Also, we use 'click' instead of 'touchstart' as compromise
+     */
+    document.addEventListener('click', function(e){
+        if(e.target == $toggle) return;
+        if(e.target.className == 'icon-bar') return;
+        __HuxNav__.close();
+    })
+</script>
+
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/post-bg-2015.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/post-bg-2015.jpg')
+    }
+
+    
+</style>
+<header class="intro-header" >
+    <div class="header-mask"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/#mysql" title="mysql">mysql</a>
+                        
+                    </div>
+                    <h1>mysql超时时间</h1>
+                    
+                    
+                    <h2 class="subheading">Mysql Timeout</h2>
+                    
+                    <span class="meta">Posted by zwtisme on May 15, 2019</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                 col-lg-8 col-lg-offset-2
+                 col-md-10 col-md-offset-1
+                 post-container">
+
+                <!-- Multi-Lingual -->
+                
+
+                <blockquote>
+  <p>介绍mysql中一些常用的超时时间的作用。</p>
+</blockquote>
+
+<h2 id="概述">概述</h2>
+
+<p>
+通过如下命令可以获取到所有与timeout相关的配置，下面来看看这些配置大致都有什么作用。
+</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#查看会话级别（session）的变量
+mysql&gt; show variables like '%timeout%';
++-----------------------------+----------+
+| Variable_name               | Value    |
++-----------------------------+----------+
+| connect_timeout             | 10       |
+| delayed_insert_timeout      | 300      |
+| have_statement_timeout      | YES      |
+| innodb_flush_log_at_timeout | 1        |
+| innodb_lock_wait_timeout    | 60       |
+| innodb_rollback_on_timeout  | OFF      |
+| interactive_timeout         | 10       |
+| lock_wait_timeout           | 31536000 |
+| net_read_timeout            | 30       |
+| net_write_timeout           | 60       |
+| rpl_stop_slave_timeout      | 31536000 |
+| slave_net_timeout           | 60       |
+| wait_timeout                | 10       |
++-----------------------------+----------+
+
+#查看全局级别（global）的变量
+mysql&gt; show global variables like '%timeout%';
+</code></pre></div></div>
+
+<p style="color:red;">
+Tips：在设置变量时，如果想要在全局生效需要加入<code>global</code>前缀，如<code>set global wait_timeout=20</code>。
+</p>
+
+<h2 id="connect_timeout">connect_timeout</h2>
+
+<h4 id="定义">定义</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>属性</th>
+      <th>值</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>命令行格式</td>
+      <td>–connect-timeout=#</td>
+    </tr>
+    <tr>
+      <td>系统变量名</td>
+      <td>connect_timeout</td>
+    </tr>
+    <tr>
+      <td>作用域</td>
+      <td>Global</td>
+    </tr>
+    <tr>
+      <td>可动态配置</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>类型</td>
+      <td>Integer</td>
+    </tr>
+    <tr>
+      <td>默认值</td>
+      <td>10</td>
+    </tr>
+    <tr>
+      <td>最小值</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>最小值</td>
+      <td>31536000</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>
+服务器在返回错误握手信息前等待的时间，也可以说是握手超时时间。
+</p>
+
+<ul>
+  <li>mysql大致连接过程：</li>
+  <li>1.监听到连接请求（会进行3次握手）</li>
+  <li>2.服务端创建线程处理请求（客户端此时阻塞，等待服务端消息）</li>
+  <li>3.服务端与客户端交互验证用户名密码</li>
+  <li>4.验证通用，握手完成</li>
+</ul>
+
+<p>
+在整个连接握手过程中可能会出现出错，这个connect_timeout值就是指这个超时时间。
+</p>
+
+<h4 id="测试">测试</h4>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#1.使用telnet连接
+[root@DEV-HROEx64 ~]# telnet localhost 3306
+Trying ::1...
+Connected to localhost.
+Escape character is '^]'.
+N
+5.7.11-log5+
+             -Tn)EF&gt;g'uQR7mysql_native_password
+
+#2.查看连接信息
+mysql&gt; show full processlist;
++-------+----------------------+--------------------+----------------+---------+------+-----------------------+-----------------------+
+| Id    | User                 | Host               | db             | Command | Time | State                 | Info                  |
++-------+----------------------+--------------------+----------------+---------+------+-----------------------+-----------------------+
+| 23693 | unauthenticated user | ::1:52495          | NULL           | Connect |    4 | Receiving from client | NULL                  |
++-------+----------------------+--------------------+----------------+---------+------+-----------------------+-----------------------+
+             
+#3.等待10s，服务器关闭连接
+Connection closed by foreign host
+</code></pre></div></div>
+
+<h2 id="interactive_timeout--wait_timeout">interactive_timeout &amp; wait_timeout</h2>
+
+<h4 id="定义-1">定义</h4>
+
+<h5 id="interactive_timeout">interactive_timeout</h5>
+
+<table>
+  <thead>
+    <tr>
+      <th>属性</th>
+      <th>值</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>命令行格式</td>
+      <td>–interactive-timeout=#</td>
+    </tr>
+    <tr>
+      <td>系统变量名</td>
+      <td>interactive_timeout</td>
+    </tr>
+    <tr>
+      <td>作用域</td>
+      <td>Global, Session</td>
+    </tr>
+    <tr>
+      <td>可动态配置</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>类型</td>
+      <td>Integer</td>
+    </tr>
+    <tr>
+      <td>默认值</td>
+      <td>28800</td>
+    </tr>
+    <tr>
+      <td>最小值</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>
+服务器在关闭交互式连接（客户端在通过mysql_real_connect连接时，使用CLIENT_INTERACTIVE 参数）之前等待活动的秒数。
+</p>
+
+<h5 id="wait_timeout">wait_timeout</h5>
+
+<table>
+  <thead>
+    <tr>
+      <th>属性</th>
+      <th>值</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>命令行格式</td>
+      <td>–wait-timeout=#</td>
+    </tr>
+    <tr>
+      <td>系统变量名</td>
+      <td>wait_timeout</td>
+    </tr>
+    <tr>
+      <td>作用域</td>
+      <td>Global, Session</td>
+    </tr>
+    <tr>
+      <td>可动态配置</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>类型</td>
+      <td>Integer</td>
+    </tr>
+    <tr>
+      <td>默认值</td>
+      <td>28800</td>
+    </tr>
+    <tr>
+      <td>最小值</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>最大值（other）</td>
+      <td>31536000</td>
+    </tr>
+    <tr>
+      <td>最大值（windows）</td>
+      <td>2147483</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>
+服务器在关闭非交互式连接（客户端在通过mysql_real_connect连接时，不使用CLIENT_INTERACTIVE 参数）之前等待活动的秒数。
+</p>
+
+<p>
+以上2个变量都是定义服务器在自动关闭连接前等待的时间，区别是如果连接是交互式连接则使用<code>interactive_timeout</code>，如果连接是非交互式连接（如程序代码中的连接）则使用<code>wait_timeout</code>。
+</p>
+
+<h4 id="测试-1">测试</h4>
+
+<h5 id="交互式连接">交互式连接</h5>
+
+<ul>
+  <li>SecureCRT，Navivat Premium等连接工具</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#1.设置交互连接超时时间10s
+mysql&gt; set global interactive_timeout=10;
+
+#2.退出，重新进入，当前wait_timeout=10
+mysql&gt; show variables like '%timeout%';
++-----------------------------+----------+
+| Variable_name               | Value    |
++-----------------------------+----------+
+| connect_timeout             | 10       |
+| delayed_insert_timeout      | 300      |
+| have_statement_timeout      | YES      |
+| innodb_flush_log_at_timeout | 1        |
+| innodb_lock_wait_timeout    | 60       |
+| innodb_rollback_on_timeout  | OFF      |
+| interactive_timeout         | 10       |
+| lock_wait_timeout           | 31536000 |
+| net_read_timeout            | 30       |
+| net_write_timeout           | 60       |
+| rpl_stop_slave_timeout      | 31536000 |
+| slave_net_timeout           | 60       |
+| wait_timeout                | 10       |
++-----------------------------+----------+
+
+#3.等待10s，再执行如上命令，就会出现超时重连的信息了
+mysql&gt; show variables like '%timeout%';
+ERROR 2006 (HY000): MySQL server has gone away
+No connection. Trying to reconnect...
+Connection id:    22933
+Current database: *** NONE ***
+
++-----------------------------+----------+
+| Variable_name               | Value    |
++-----------------------------+----------+
+| connect_timeout             | 10       |
+| delayed_insert_timeout      | 300      |
+| have_statement_timeout      | YES      |
+| innodb_flush_log_at_timeout | 1        |
+| innodb_lock_wait_timeout    | 60       |
+| innodb_rollback_on_timeout  | OFF      |
+| interactive_timeout         | 10       |
+| lock_wait_timeout           | 31536000 |
+| net_read_timeout            | 30       |
+| net_write_timeout           | 60       |
+| rpl_stop_slave_timeout      | 31536000 |
+| slave_net_timeout           | 60       |
+| wait_timeout                | 10       |
++-----------------------------+----------+
+
+</code></pre></div></div>
+
+<h5 id="非交互式连接">非交互式连接</h5>
+
+<ul>
+  <li>程序代码中连接</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#1.设置非交互连接超时时间20s
+mysql&gt; set global wait_timeout=20;
+
+#2.建立连接后持续查看进程
+mysql&gt; show full processlist;
++-------+------------+---------------------+-------------+---------+------+----------+-----------------------+
+| Id    | User       | Host                | db          | Command | Time | State    | Info                  |
++-------+------------+---------------------+-------------+---------+------+----------+-----------------------+
+| 22974 | hrodbadmin | 10.100.50.115:34504 | interview   | Sleep   |    1 |          | NULL                  |
++-------+------------+---------------------+-------------+---------+------+----------+-----------------------+
+
+mysql&gt; show full processlist;
++-------+------------+---------------------+-------------+---------+------+----------+-----------------------+
+| Id    | User       | Host                | db          | Command | Time | State    | Info                  |
++-------+------------+---------------------+-------------+---------+------+----------+-----------------------+
+| 22974 | hrodbadmin | 10.100.50.115:34504 | interview   | Sleep   |    15 |          | NULL                  |
++-------+------------+---------------------+-------------+---------+------+----------+-----------------------+
+
+mysql&gt; show full processlist;
++-------+------------+---------------------+-------------+---------+------+----------+-----------------------+
+| Id    | User       | Host                | db          | Command | Time | State    | Info                  |
++-------+------------+---------------------+-------------+---------+------+----------+-----------------------+
+| 22974 | hrodbadmin | 10.100.50.115:34504 | interview   | Sleep   |    20 |          | NULL                  |
++-------+------------+---------------------+-------------+---------+------+----------+-----------------------+
+
+#3.当sleep超过20s后连接被自动关闭
+mysql&gt; show full processlist;
++-------+------------+---------------------+-------------+---------+------+----------+-----------------------+
+| Id    | User       | Host                | db          | Command | Time | State    | Info                  |
++-------+------------+---------------------+-------------+---------+------+----------+-----------------------+
+</code></pre></div></div>
+
+<h2 id="innodb_lock_wait_timeout--innodb_rollback_on_timeout">innodb_lock_wait_timeout &amp; innodb_rollback_on_timeout</h2>
+
+<h4 id="定义-2">定义</h4>
+
+<h5 id="innodb_lock_wait_timeout">innodb_lock_wait_timeout</h5>
+
+<table>
+  <thead>
+    <tr>
+      <th>属性</th>
+      <th>值</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>命令行格式</td>
+      <td>–innodb-lock-wait-timeout=#</td>
+    </tr>
+    <tr>
+      <td>系统变量名</td>
+      <td>innodb_lock_wait_timeout</td>
+    </tr>
+    <tr>
+      <td>作用域</td>
+      <td>Global, Session</td>
+    </tr>
+    <tr>
+      <td>可动态配置</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>类型</td>
+      <td>Integer</td>
+    </tr>
+    <tr>
+      <td>默认值</td>
+      <td>50</td>
+    </tr>
+    <tr>
+      <td>最小值</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>最大值</td>
+      <td>1073741824</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>
+InnoDB事务等待<code>行锁</code>的超时时间，当一个事务尝试获取被另一个事务锁定的行时会出现，超时会出现如下错误：
+</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ERROR 1205 (HY000): Lock wait timeout exceeded; try restarting transaction
+</code></pre></div></div>
+
+<p>
+当错误出现时，会回滚当前语句，而不是整个事务（除非设置了<code>innodb_rollback_on_timeout</code>）。
+</p>
+
+<h5 id="innodb_rollback_on_timeout">innodb_rollback_on_timeout</h5>
+
+<table>
+  <thead>
+    <tr>
+      <th>属性</th>
+      <th>值</th>
+      <th> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>命令行格式</td>
+      <td>–innodb-rollback-on-timeout[={OFF</td>
+      <td>ON}]</td>
+    </tr>
+    <tr>
+      <td>系统变量名</td>
+      <td>innodb_rollback_on_timeout</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>作用域</td>
+      <td>Global</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>可动态配置</td>
+      <td>No</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>类型</td>
+      <td>Boolean</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>默认值</td>
+      <td>OFF</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>
+默认情况下，InnoDB只回滚事务中超时的最后一条语句。如果设置了	<code>innodb_rollback_on_timeout=ON</code>，则事务超时将导致InnoDB中止并回滚整个事务。
+</p>
+
+<h4 id="测试-2">测试</h4>
+
+<p>
+准备test表，里面包含2条数据。
+</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysql&gt; select * from test;
++----+-------+
+| id | cname |
++----+-------+
+|  1 | a     |
+|  2 | b     |
++----+-------+
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#事务1 
+
+#1.开启事务
+begin;
+
+#2.加行锁
+select * from test where id=2 for update;
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#事务2 
+
+#1.开启事务
+begin;
+
+#2.不请求行锁
+delete from test where id=1;
+
+#3.请求行锁
+delete from test where id=2;
+##请求超时，出现如下错误
+##[Err] 1205 - Lock wait timeout exceeded; try restarting transaction
+
+#4.数据查询，id=1的数据被删除了
+select * from test;
++----+-------+
+| id | cname |
++----+-------+
+|  2 | b     |
++----+-------+
+</code></pre></div></div>
+
+<p>
+如果想要id=1的数据不被删除，需要在启动mysql时设置<code>innodb_rollback_on_timeout=On</code>
+</p>
+
+<h2 id="lock_wait_timeout">lock_wait_timeout</h2>
+
+<h4 id="定义-3">定义</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>属性</th>
+      <th>值</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>命令行格式</td>
+      <td>–lock-wait-timeout=#</td>
+    </tr>
+    <tr>
+      <td>系统变量名</td>
+      <td>lock_wait_timeout</td>
+    </tr>
+    <tr>
+      <td>作用域</td>
+      <td>Global, Session</td>
+    </tr>
+    <tr>
+      <td>可动态配置</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>类型</td>
+      <td>Integer</td>
+    </tr>
+    <tr>
+      <td>默认值</td>
+      <td>31536000</td>
+    </tr>
+    <tr>
+      <td>最小值</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>最大值</td>
+      <td>31536000</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>
+尝试获取元数据锁的超时时间，适用于所有使用元数据锁的语句。包括表、视图、存储过程和存储函数上的DML（select,update,delete,insert）和DDL（create,alter,drop）操作，以及锁表、用读锁刷新表和处理程序语句。
+</p>
+
+<h4 id="测试-3">测试</h4>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#事务1
+
+#1.开启事务
+begin;
+
+#2.执行查询，获取表的元数据锁
+select * from test;
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#事务2
+
+#1.开启事务
+begin;
+
+#2.修改表结构的元数据（drop,alter）
+drop table test;
+##请求超时，出现如下错误
+##[Err] 1205 - Lock wait timeout exceeded; try restarting transaction
+</code></pre></div></div>
+
+<h2 id="net_read_timeout--net_write_timeout">net_read_timeout &amp; net_write_timeout</h2>
+
+<h4 id="定义-4">定义</h4>
+
+<h5 id="net_read_timeout">net_read_timeout</h5>
+
+<table>
+  <thead>
+    <tr>
+      <th>属性</th>
+      <th>值</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>命令行格式</td>
+      <td>–net-read-timeout=#</td>
+    </tr>
+    <tr>
+      <td>系统变量名</td>
+      <td>net_read_timeout</td>
+    </tr>
+    <tr>
+      <td>作用域</td>
+      <td>Global, Session</td>
+    </tr>
+    <tr>
+      <td>可动态配置</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>类型</td>
+      <td>Integer</td>
+    </tr>
+    <tr>
+      <td>默认值</td>
+      <td>30</td>
+    </tr>
+    <tr>
+      <td>最小值</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>
+当服务器从客户端获取数据时（如导入数据），等待从连接获取数据的超时时间。
+</p>
+
+<h5 id="net_write_timeout">net_write_timeout</h5>
+
+<table>
+  <thead>
+    <tr>
+      <th>属性</th>
+      <th>值</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>命令行格式</td>
+      <td>–net-write-timeout=#</td>
+    </tr>
+    <tr>
+      <td>系统变量名</td>
+      <td>net_write_timeout</td>
+    </tr>
+    <tr>
+      <td>作用域</td>
+      <td>Global, Session</td>
+    </tr>
+    <tr>
+      <td>可动态配置</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>类型</td>
+      <td>Integer</td>
+    </tr>
+    <tr>
+      <td>默认值</td>
+      <td>30</td>
+    </tr>
+    <tr>
+      <td>最小值</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>
+当服务器向客户端写入数据时（如执行查询），等待将数据写入连接的超时时间。
+</p>
+
+<h2 id="总结">总结</h2>
+
+<ul>
+  <li>connect_timeout：用于连接过程中的超时控制</li>
+  <li>interactive_timeout与wait_timeout：用于连接空闲阶段的超时控制</li>
+  <li>net_read_timeout与net_write_timeout：用于连接繁忙阶段的超时控制</li>
+</ul>
+
+<h2 id="参考资料">参考资料</h2>
+
+<p><a href="https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html">Server System Variables</a></p>
+
+<p><a href="https://dev.mysql.com/doc/refman/5.7/en/innodb-parameters.html">InnoDB Startup Options and System Variables</a></p>
+
+<p><a href="https://www.2cto.com/database/201501/372765.html">mysqltimeout知多少</a></p>
+
+<p><a href="http://www.cnblogs.com/dato/p/7049343.html">浅谈 DML、DDL、DCL的区别</a></p>
+
+
+                <hr style="visibility: hidden;">
+
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2019/04/05/git-study-introduction/" data-toggle="tooltip" data-placement="top" title="Git学习-入门">
+                            Previous<br>
+                            <span>Git学习-入门</span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/2019/05/23/tujie-tcp-ip/" data-toggle="tooltip" data-placement="top" title="图解TCP/IP笔记">
+                            Next<br>
+                            <span>图解TCP/IP笔记</span>
+                        </a>
+                    </li>
+                    
+                </ul>
+
+
+                
+                <!-- disqus 评论框 start -->
+                <div class="comment">
+                    <div id="disqus_thread" class="disqus-thread"></div>
+                </div>
+                <!-- disqus 评论框 end -->
+                
+
+                
+            </div>  
+
+            <!-- Side Catalog Container -->
+            
+            <div class="
+                 col-lg-2 col-lg-offset-0
+                 visible-lg-block
+                 sidebar-container
+                 catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+            
+
+            <!-- Sidebar Container -->
+            <div class="
+                 col-lg-8 col-lg-offset-2
+                 col-md-10 col-md-offset-1
+                 sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+
+                        
+                        
+                            
+                            
+                                
+                                <a href="/tags/#php" title="php" rel="21">
+                                    php
+                                </a>
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                        
+                            
+                            
+                                
+                            
+                                
+                            
+                                
+                                <a href="/tags/#rabbitmq" title="rabbitmq" rel="11">
+                                    rabbitmq
+                                </a>
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                        
+                            
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                                <a href="/tags/#redis" title="redis" rel="8">
+                                    redis
+                                </a>
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                        
+                            
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                                <a href="/tags/#laravel" title="laravel" rel="7">
+                                    laravel
+                                </a>
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                        
+                            
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                                <a href="/tags/#mysql" title="mysql" rel="5">
+                                    mysql
+                                </a>
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                        
+                            
+                            
+                                
+                            
+                                
+                                <a href="/tags/#linux" title="linux" rel="2">
+                                    linux
+                                </a>
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                        
+                            
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                                <a href="/tags/#swoole" title="swoole" rel="1">
+                                    swoole
+                                </a>
+                                
+                            
+                                
+                            
+                                
+                                <a href="/tags/#架构" title="架构" rel="1">
+                                    架构
+                                </a>
+                                
+                            
+                                
+                                <a href="/tags/#git" title="git" rel="1">
+                                    git
+                                </a>
+                                
+                            
+                                
+                                <a href="/tags/#tcp/ip" title="tcp/ip" rel="1">
+                                    tcp/ip
+                                </a>
+                                
+                            
+                                
+                                <a href="/tags/#http" title="http" rel="1">
+                                    http
+                                </a>
+                                
+                            
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>LINKS</h5>
+                <ul class="list-inline">
+                    
+                    <li><a href="http://www.ruanyifeng.com/home.html">阮一峰的个人网站</a></li>
+                    
+                    <li><a href="https://www.zhangxinxu.com/">张鑫旭的个人主页</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+
+
+<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "zwtisme";
+    var disqus_identifier = "/2019/05/15/timeout";
+    var disqus_url = "http://localhost:4001/2019/05/15/timeout/";
+    /*
+     (function() {
+     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+     dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+     })();
+     */
+</script>
+<!-- disqus 公共JS代码 end -->
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+        var d = document, t = 'script',
+                o = d.createElement(t),
+                s = d.getElementsByTagName(t)[0];
+        o.src = u;
+        if (c) {
+            o.addEventListener('load', function (e) {
+                c(null, e);
+            }, false);
+        }
+        s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js", function () {
+        anchors.options = {
+            visible: 'always',
+            placement: 'right',
+            icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+                    
+
+                    <!-- add Weibo, Zhihu by Hux, add target = "_blank" to <a> by Hux -->
+                    
+                    
+
+
+                    
+                    
+                    
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; zwtisme 2022
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<!-- Currently, only navbar scroll-down effect at desktop still depends on this -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+<!-- Service Worker -->
+
+<script src="/js/snackbar.js "></script>
+<script src="/js/sw-registration.js "></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async('/js/jquery.tagcloud.js',function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-49627206-1';
+    var _gaDomain = 'https://zwtisme.github.io/';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog (selector) {
+
+        // interop with multilangual 
+        if (false) {
+            _containerSelector = 'div.post-container.active'
+        } else {
+            _containerSelector = 'div.post-container'
+        }
+
+        // init
+        var P = $(_containerSelector),a,n,t,l,i,c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        // clean
+        $(selector).html('')
+
+        // appending
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#"+$(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="'+i+'" rel="nofollow">'+t+'</a>');
+            l = $('<li class="'+n+'_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function(e){
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+<!-- Multi-Lingual -->
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

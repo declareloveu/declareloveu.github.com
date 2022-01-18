@@ -1,0 +1,5414 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>zwtisme</title>
+    <description></description>
+    <link>http://localhost:4001/</link>
+    <atom:link href="http://localhost:4001/feed.xml" rel="self" type="application/rss+xml" />
+    <pubDate>Tue, 18 Jan 2022 18:02:12 +0800</pubDate>
+    <lastBuildDate>Tue, 18 Jan 2022 18:02:12 +0800</lastBuildDate>
+    <generator>Jekyll v4.2.1</generator>
+    
+      <item>
+        <title>composer安装</title>
+        <description>&lt;h2 id=&quot;安装&quot;&gt;安装&lt;/h2&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@localhost bmsource]# php -r &quot;copy(&apos;https://install.phpcomposer.com/installer&apos;, &apos;composer-setup.php&apos;);&quot;
+[root@localhost bmsource]# php composer-setup.php
+#移动到bin目录，供全局调用
+[root@localhost bmsource]# mv composer.phar /usr/local/bin/composer
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;添加国内镜像&quot;&gt;添加国内镜像&lt;/h2&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#全局配置
+[root@localhost bmsource]# composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/
+#取消全局配置
+[root@localhost bmsource]# composer config -g --unset repos.packagist
+
+#项目配置
+[root@localhost bmsource]# composer config repo.packagist composer https://mirrors.aliyun.com/composer/
+#取消项目配置
+[root@localhost bmsource]# composer config --unset repos.packagist
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;常用命令&quot;&gt;常用命令&lt;/h2&gt;
+
+&lt;h4 id=&quot;安装依赖包&quot;&gt;安装依赖包&lt;/h4&gt;
+
+&lt;h5 id=&quot;install&quot;&gt;install&lt;/h5&gt;
+
+&lt;p&gt;
+需要事先创建composer.json文件,来描述项目的依赖关系。
+&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;{
+    &quot;require&quot;: {
+        &quot;monolog/monolog&quot;: &quot;1.2.*&quot;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@localhost test]# composer install
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h5 id=&quot;require&quot;&gt;require&lt;/h5&gt;
+
+&lt;p&gt;
+可以使用require命令快速的安装一个依赖而不需要手动在composer.json里添加依赖信息
+&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@localhost test]# composer require monolog/monolog
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;update&quot;&gt;update&lt;/h4&gt;
+
+&lt;p&gt;
+update 命令用于更新项目里所有的包，或者指定的某些包：
+&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# 更新所有依赖
+$ composer update
+
+# 更新指定的包
+$ composer update monolog/monolog
+
+# 更新指定的多个包
+$ composer update monolog/monolog symfony/dependency-injection
+
+# 还可以通过通配符匹配包
+$ composer update monolog/monolog symfony/*
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;remove&quot;&gt;remove&lt;/h4&gt;
+
+&lt;p&gt;
+移除一个包及其依赖（在依赖没有被其他包使用的情况下），如果依赖被其他包使用，则无法移除：
+&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ composer remove monolog/monolog
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;search&quot;&gt;search&lt;/h4&gt;
+
+&lt;p&gt;
+查找包，输出包及其描述信息
+&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ composer search monolog
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;
+只输出包名可以使用 --only-name 参数：
+&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ composer search --only-name monolog
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;show&quot;&gt;show&lt;/h4&gt;
+
+&lt;p&gt;
+列出当前项目使用到包的信息：
+&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# 列出所有已经安装的包
+$ composer show
+
+# 可以通过通配符进行筛选
+$ composer show monolog/*
+
+# 显示具体某个包的信息
+$ composer show monolog/monolog
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.runoob.com/w3cnote/composer-install-and-usage.html&quot;&gt;Composer 安装与使用&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://laravelacademy.org/post/19806.html&quot;&gt;阿里云、腾讯云推出 Composer 全量镜像了&lt;/a&gt;&lt;/p&gt;
+
+</description>
+        <pubDate>Tue, 30 Jul 2019 20:30:00 +0800</pubDate>
+        <link>http://localhost:4001/2019/07/30/composer-install/</link>
+        <guid isPermaLink="true">http://localhost:4001/2019/07/30/composer-install/</guid>
+        
+        <category>php</category>
+        
+        <category>linux</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>图解HTTP笔记</title>
+        <description>&lt;blockquote&gt;
+  &lt;p&gt;介绍了HTTP协议报文的构成，响应状态码，请求与响应的首部字段。为了应对新场景需求的Ajax，Comet，WebSocket等技术。通过HTTPS与用户认证实现安全通信，一些常见的Web攻击技术。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;了解web&quot;&gt;了解Web&lt;/h2&gt;
+
+&lt;h4 id=&quot;tcpip通信传输流&quot;&gt;TCP/IP通信传输流&lt;/h4&gt;
+
+&lt;p&gt;
+发送端：在层与层之间传输数据时，每经过一层时必定会被打上一个该层所属的首部信息。
+&lt;/p&gt;
+
+&lt;p&gt;
+接收端：在层与层传输数据时，每经过一层时会把对应的首部去掉。
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-06-24-tujie-http/tu_1.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;各协议与http协议的关系&quot;&gt;各协议与HTTP协议的关系&lt;/h4&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-06-24-tujie-http/tu_2.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;uri与url&quot;&gt;URI与URL&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;URI：统一资源标识符&lt;/li&gt;
+  &lt;li&gt;URL：统一资源定位符，属于URI的子集&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h5 id=&quot;uri格式&quot;&gt;URI格式&lt;/h5&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-06-24-tujie-http/tu_3.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;协议名：使用&lt;code&gt;http:&lt;/code&gt;或&lt;code&gt;https:&lt;/code&gt;等协议方案名获取访问资源时要指定协议类型。不区分字母大小写，最后附加一个冒号&lt;code&gt;:&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;登录信息（可选）：指定用户名和密码作为从服务器端获取资源时必要的登录信息&lt;/li&gt;
+  &lt;li&gt;服务器地址：使用绝对URI必须指定待访问的服务器地址。如域名，IPv4地址，IPv6地址&lt;/li&gt;
+  &lt;li&gt;服务器端口号（可选）：指定服务器连接的网络端口号&lt;/li&gt;
+  &lt;li&gt;带层次的文件路径：指定服务器上的文件路径来定位特指的资源&lt;/li&gt;
+  &lt;li&gt;查询字符串（可选）：针对已指定的文件路径内的资源，可以使用查询字符串传入任意参数&lt;/li&gt;
+  &lt;li&gt;片段标识符（可选）：标记已获取资源的子资源&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;简单的http协议&quot;&gt;简单的HTTP协议&lt;/h2&gt;
+
+&lt;h4 id=&quot;http协议的作用&quot;&gt;HTTP协议的作用&lt;/h4&gt;
+
+&lt;p&gt;
+HTTP协议用于客户端与服务端之间的通信，应用HTTP协议时，必定是一端担任客户端角色，另一端担任服务器端角色。
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-06-24-tujie-http/tu_4.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;http协议的工作方式&quot;&gt;HTTP协议的工作方式&lt;/h4&gt;
+
+&lt;p&gt;
+HTTP协议通过请求和响应的交换达成通信，请求从客户端发出，最后服务器端响应请求并返回。
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-06-24-tujie-http/tu_5.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-06-24-tujie-http/tu_6.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;http支持的方法&quot;&gt;HTTP支持的方法&lt;/h4&gt;
+
+&lt;p&gt;
+向请求URI指定的资源发送请求报文时，采用称为&lt;code&gt;方法&lt;/code&gt;的命令，方法名区分大小写，注意要使用&lt;code&gt;大写字母&lt;/code&gt;。
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-06-24-tujie-http/tu_7.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;http持久连接&quot;&gt;HTTP持久连接&lt;/h4&gt;
+
+&lt;p&gt;
+持久连接（HTTP Persistent Connections/HTTP Keep-alive）：只要客户端或服务端的任意一端没有明确提出断开连接，则保持TCP连接状态。
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-06-24-tujie-http/tu_8.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;
+管线化（pipelining）：不用等待每个请求的响应，直接发送下一个请求。
+&lt;/p&gt;
+
+&lt;h4 id=&quot;cookie&quot;&gt;Cookie&lt;/h4&gt;
+
+&lt;p&gt;
+Cookie通过在请求和响应报文中写入Cookie信息来控制客户端的状态。
+&lt;/p&gt;
+
+&lt;h2 id=&quot;http报文内的http信息&quot;&gt;HTTP报文内的HTTP信息&lt;/h2&gt;
+
+&lt;h4 id=&quot;http报文&quot;&gt;HTTP报文&lt;/h4&gt;
+
+&lt;p&gt;
+HTTP报文：由&lt;code&gt;报文首部&lt;/code&gt;和&lt;code&gt;报文主体&lt;/code&gt;构成，使用&lt;code&gt;CR+LF&lt;/code&gt;分割。客户端为请求报文，服务端为响应报文。
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-06-24-tujie-http/tu_9.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;请求报文与响应报文结构&quot;&gt;请求报文与响应报文结构&lt;/h4&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-06-24-tujie-http/tu_10.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;请求行：用于请求的方法，请求的URI或HTTP版本&lt;/li&gt;
+  &lt;li&gt;状态行：表明响应结果的状态码，原因短语和HTTP版本&lt;/li&gt;
+  &lt;li&gt;首部字段：表示请求和响应的各种条件和属性的各类首部&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;编码传输&quot;&gt;编码传输&lt;/h4&gt;
+
+&lt;h5 id=&quot;报文主体与实体主体&quot;&gt;报文主体与实体主体&lt;/h5&gt;
+
+&lt;p&gt;
+HTTP报文的主体用于传输请求或响应的实体主体。
+&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;报文（message）：HTTP通信的基本单位，由8位组字节流组成，通过HTTP传输&lt;/li&gt;
+  &lt;li&gt;实体（entity）：作为请求或响应的有效载荷数据被传输，由实体首部和实体主体组成&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h5 id=&quot;常用压缩编码&quot;&gt;常用压缩编码&lt;/h5&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;gzip（GUN zip）&lt;/li&gt;
+  &lt;li&gt;compress（UNIX系统的标准压缩）&lt;/li&gt;
+  &lt;li&gt;deflate（zlib）&lt;/li&gt;
+  &lt;li&gt;identity（不进行编码）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h5 id=&quot;发送多种数据&quot;&gt;发送多种数据&lt;/h5&gt;
+
+&lt;p&gt;
+类似于发送邮件时的多个附件，HTTP协议也采纳了多部分对象集合，发送的一份报文主体内可含有多类型实体。通常用在图片或文件的上传。
+&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;multipart/form-data；在Web表单文件上传时使用&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-06-24-tujie-http/tu_11.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;
+使用&lt;code&gt;boundary&lt;/code&gt;字符串来划分多部分对象集合指明的各类实体。在&lt;code&gt;boundary&lt;/code&gt;字符串指定的各个实体的起始行之前插入&lt;code&gt;--&lt;/code&gt;标记（如:--AaB03x），而在多部分对象集合对应的字符串的最后插入&lt;code&gt;--&lt;/code&gt;标记（如:--AaB03x--）作为结束。
+&lt;/p&gt;
+
+&lt;h2 id=&quot;返回结果的http状态码&quot;&gt;返回结果的HTTP状态码&lt;/h2&gt;
+
+&lt;p&gt;
+状态码：当客户端向服务器端发送请求时，描述返回的请求结果。
+&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;状态码分类&lt;/th&gt;
+      &lt;th&gt;类别&lt;/th&gt;
+      &lt;th&gt;原因短语&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;1**&lt;/td&gt;
+      &lt;td&gt;Informational（信息性状态码）&lt;/td&gt;
+      &lt;td&gt;接收的请求正在处理&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;2**&lt;/td&gt;
+      &lt;td&gt;Success（成功状态码）&lt;/td&gt;
+      &lt;td&gt;请求正常处理完毕&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;3**&lt;/td&gt;
+      &lt;td&gt;Redirection（重定向状态码）&lt;/td&gt;
+      &lt;td&gt;需要进行附加操作以完成请求&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;4**&lt;/td&gt;
+      &lt;td&gt;Client Error（客户端错误状态码）&lt;/td&gt;
+      &lt;td&gt;服务器无法处理请求&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;5**&lt;/td&gt;
+      &lt;td&gt;Server Error（服务端错误状态码）&lt;/td&gt;
+      &lt;td&gt;服务器处理请求出错&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h4 id=&quot;2成功&quot;&gt;2**成功&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;200 OK：从客户端发来的请求在服务器端被正常处理了&lt;/li&gt;
+  &lt;li&gt;204 No Content：服务器接收的请求已成功处理，但在返回的响应报文中不含实体的主体部分&lt;/li&gt;
+  &lt;li&gt;206 Partial Content：客户端进行了范围请求，服务器成功执行了这部分GET请求&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;3重定向&quot;&gt;3**重定向&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;301 Moved Permanently：永久性重定向。请求的资源已被分配了新的URI，以后应使用新URI访问资源&lt;/li&gt;
+  &lt;li&gt;302 Found：临时性重定向。请求的资源已被分配了新的URI，用户（本次）能使用新的URI访问&lt;/li&gt;
+  &lt;li&gt;303 See Other：请求对应的资源存在着另一个URI，应使用GET方法重定向获取请求的资源&lt;/li&gt;
+  &lt;li&gt;304 Not Modified：客户端发送附带条件（If-Match,If-Modified-Since,If-None-Match,If-Range,If-Unmodified-Since）的请求，服务器端允许请求访问资源，但条件未满足&lt;/li&gt;
+  &lt;li&gt;307 Temporary Redirect：临时重定向&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;4客户端错误&quot;&gt;4**客户端错误&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;400 Bad Request：请求报文中存在语法错误&lt;/li&gt;
+  &lt;li&gt;401 Unauthorized：发送的请求需要有通过HTTP认证（BASIC认证，DIGEST认证）的认证信息&lt;/li&gt;
+  &lt;li&gt;403 Forbidden：对请求资源的访问被服务器拒绝了&lt;/li&gt;
+  &lt;li&gt;404 Not Found：服务器上无法找到请求的资源&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;5服务器错误&quot;&gt;5**服务器错误&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;500 Internal Server Error：服务器端在执行请求时发生了错误&lt;/li&gt;
+  &lt;li&gt;503 Service Unavailable：服务器暂时处于超负载或正在进行停机维护&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;与http协作的web服务器&quot;&gt;与HTTP协作的Web服务器&lt;/h2&gt;
+
+&lt;h4 id=&quot;虚拟主机&quot;&gt;虚拟主机&lt;/h4&gt;
+
+&lt;p&gt;
+在一台HTTP服务器上可通过虚拟主机（Virtual Host）搭建多个Web站点。
+&lt;/p&gt;
+
+&lt;h4 id=&quot;通信数据转发&quot;&gt;通信数据转发&lt;/h4&gt;
+
+&lt;h5 id=&quot;代理&quot;&gt;代理&lt;/h5&gt;
+
+&lt;p&gt;
+代理是一种有转发功能的程序，它扮演了位于服务器和客户端&lt;code&gt;中间人&lt;/code&gt;的角色，接收由客户端发来的请求并转发给服务器，同时接收服务器返回的响应并转发给客户端。
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-06-24-tujie-http/tu_12.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;
+代理的作用：利用缓存技术减少网络带宽的流量；针对特定网站进行访问控制
+&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;缓存代理（Caching Proxy）：预先将资源副本保存在代理服务器上，供请求获取&lt;/li&gt;
+  &lt;li&gt;透明代理（Transparent Proxy）：转发请求或响应时，不对报文做任何加工&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h5 id=&quot;网关&quot;&gt;网关&lt;/h5&gt;
+
+&lt;p&gt;
+网关是转发其他服务器通信数据的服务器，接收从客户端发来的请求时，它就像自己拥有资源的源服务器一样对请求处理。
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-06-24-tujie-http/tu_13.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;
+网关的作用：提高通信的安全性；使通信线路上的服务器提供非HTTP协议服务
+&lt;/p&gt;
+
+&lt;h5 id=&quot;隧道&quot;&gt;隧道&lt;/h5&gt;
+
+&lt;p&gt;
+隧道是在相隔较远的客户端与服务器之间进行中转，并保持双方通信连接的程序。
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-06-24-tujie-http/tu_14.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;
+隧道的作用：建立一条与其他服务器的通信线路，通过SSL加密手段，确保客户端能与服务器进行安全通信
+&lt;/p&gt;
+
+&lt;h4 id=&quot;缓存&quot;&gt;缓存&lt;/h4&gt;
+
+&lt;p&gt;
+缓存：代理服务器或客户端本地磁盘内保存的副本资源。
+&lt;/p&gt;
+
+&lt;h5 id=&quot;缓存的有效性&quot;&gt;缓存的有效性&lt;/h5&gt;
+
+&lt;p&gt;
+需要根据客户端的请求、缓存的有效性等因素，向源服务器确认资源的有效性，从而确认是否需要更新缓存。
+&lt;/p&gt;
+
+&lt;h5 id=&quot;客户端缓存&quot;&gt;客户端缓存&lt;/h5&gt;
+
+&lt;p&gt;
+缓存的功能同代理服务器，缓存的位置在客户端浏览器中，同样也需要根据有效性更新缓存。
+&lt;/p&gt;
+
+&lt;h2 id=&quot;http首部&quot;&gt;HTTP首部&lt;/h2&gt;
+
+&lt;h4 id=&quot;http首部字段&quot;&gt;http首部字段&lt;/h4&gt;
+
+&lt;p&gt;
+在客户端与服务器之间以HTTP协议进行通信的过程中，无论是请求还是响应都会使用首部字段，起到传递额外重要信息的作用。
+&lt;/p&gt;
+
+&lt;h5 id=&quot;首部字段结构&quot;&gt;首部字段结构&lt;/h5&gt;
+
+&lt;p&gt;
+首部字段由&lt;code&gt;首部字段名&lt;/code&gt;和&lt;code&gt;字段值&lt;/code&gt;构成，使用&lt;code&gt;:&lt;/code&gt;分隔。
+&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;格式：
+首部字段名:字段值
+
+如：
+Content-Type:text/html
+Keep-Alive:timeout=5,max=100
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h5 id=&quot;4种首部字段类型&quot;&gt;4种首部字段类型&lt;/h5&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;通用首部字段（General Header Fields）：请求报文和响应报文都会使用的首部&lt;/li&gt;
+  &lt;li&gt;请求首部字段（Request Header Fields）：从客户端向服务器端发送请求报文时使用的首部&lt;/li&gt;
+  &lt;li&gt;响应首部字段（Response Header Fields）：从服务器端向客户端返回响应报文时使用的首部&lt;/li&gt;
+  &lt;li&gt;实体首部字段（Entity Header Fields）：请求报文和响应报文的实体部分使用的首部&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h5 id=&quot;按代理转发区分&quot;&gt;按代理转发区分&lt;/h5&gt;
+
+&lt;p&gt;
+缓存代理（端到端首部 End-to-end Header）：在此类别中的首部会转发给请求/响应对应的最终接收目标，且必须保存在由缓存生成的响应中，必须被转发。
+&lt;/p&gt;
+
+&lt;p&gt;
+非缓存代理（逐跳首部 Hop-by-hop Header）：在此类别中的首部只对单次转发有效，会因为通过缓存或代理而不再转发，如果要使用此首部需提供Connection首部字段。
+&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;属于逐跳首部的字段，除此之外都是端到端首部&lt;/li&gt;
+  &lt;li&gt;Connection&lt;/li&gt;
+  &lt;li&gt;Keep-Alive&lt;/li&gt;
+  &lt;li&gt;Proxy-Authenticate&lt;/li&gt;
+  &lt;li&gt;Proxy-Authorization&lt;/li&gt;
+  &lt;li&gt;Trailer&lt;/li&gt;
+  &lt;li&gt;TE&lt;/li&gt;
+  &lt;li&gt;Transfer-Encoding&lt;/li&gt;
+  &lt;li&gt;Upgrade&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;通用首部字段&quot;&gt;通用首部字段&lt;/h4&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;首部字段名&lt;/th&gt;
+      &lt;th&gt;说明&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Cache-Control&lt;/td&gt;
+      &lt;td&gt;控制缓存的行为&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Connection&lt;/td&gt;
+      &lt;td&gt;逐跳首部，连接的管理&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Date&lt;/td&gt;
+      &lt;td&gt;创建报文的日期时间&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Pragma&lt;/td&gt;
+      &lt;td&gt;报文指令&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Trailer&lt;/td&gt;
+      &lt;td&gt;报文末端的首部一览&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Transfer-Encoding&lt;/td&gt;
+      &lt;td&gt;指定报文主体的传输编码方式&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Upgrade&lt;/td&gt;
+      &lt;td&gt;升级为其他协议&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Via&lt;/td&gt;
+      &lt;td&gt;代理服务器的相关信息&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Warning&lt;/td&gt;
+      &lt;td&gt;错误通知&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h5 id=&quot;cache-control&quot;&gt;Cache-Control&lt;/h5&gt;
+
+&lt;p&gt;
+通过指定Cache-Control的指令，来控制缓存的工作机制。指令的参数是可选的，多个指令之间通过&lt;code&gt;,&lt;/code&gt;分隔。
+&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Cache-Control:private,max-age=0,no-cache
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;
+请求的缓存指令
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-06-24-tujie-http/tu_15.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;
+响应的缓存指令
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-06-24-tujie-http/tu_16.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;connection&quot;&gt;Connection&lt;/h5&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;控制不再转发给代理的首部字段&lt;/li&gt;
+  &lt;li&gt;管理持久连接（keep-alive,close）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;请求首部字段&quot;&gt;请求首部字段&lt;/h4&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;首部字段名&lt;/th&gt;
+      &lt;th&gt;说明&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Accept&lt;/td&gt;
+      &lt;td&gt;用户代理可处理的媒体类型&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Accept-Charset&lt;/td&gt;
+      &lt;td&gt;优先的字符集&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Accept-Encoding&lt;/td&gt;
+      &lt;td&gt;优先的内容编码&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Accept-Language&lt;/td&gt;
+      &lt;td&gt;优先的语言（自然语言）&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Authorization&lt;/td&gt;
+      &lt;td&gt;Web认证信息&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Expect&lt;/td&gt;
+      &lt;td&gt;期待服务器的特性行为&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;From&lt;/td&gt;
+      &lt;td&gt;用户的电子邮箱地址&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Host&lt;/td&gt;
+      &lt;td&gt;请求资源所在的服务器&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;If-Match&lt;/td&gt;
+      &lt;td&gt;比较实体标记（ETag）&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;If-None-Match&lt;/td&gt;
+      &lt;td&gt;比较实体标记（与If-Match相反）&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;If-Modified-Since&lt;/td&gt;
+      &lt;td&gt;比较资源的更新时间&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;If-Unmodified-Since&lt;/td&gt;
+      &lt;td&gt;比较资源的更新时间（与If-Modified-Since相反）&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;If-Range&lt;/td&gt;
+      &lt;td&gt;资源未更新时发送实体Byte的范围请求&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Max-Forwards&lt;/td&gt;
+      &lt;td&gt;最大传输逐跳数&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Proxy-Authorization&lt;/td&gt;
+      &lt;td&gt;代理服务器要求客户端的认证信息&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Range&lt;/td&gt;
+      &lt;td&gt;实体的字节范围请求&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Referer&lt;/td&gt;
+      &lt;td&gt;对请求中URI的原始获取方&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;TE&lt;/td&gt;
+      &lt;td&gt;传输编码的优先级&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;User-Agent&lt;/td&gt;
+      &lt;td&gt;HTTP客户端程序的信息&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h5 id=&quot;accept&quot;&gt;Accept&lt;/h5&gt;
+
+&lt;p&gt;
+告知服务端用户代理能够处理的媒体类型及相对优先级，使用&lt;code&gt;type/subtype&lt;/code&gt;格式表示，可指定多种媒体类型，使用&lt;code&gt;,&lt;/code&gt;分隔。
+&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://www.w3school.com.cn/media/media_mimeref.asp&quot;&gt;可用媒体类型&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;
+媒体类型优先级，使用&lt;code&gt;q=&lt;/code&gt;来表示权重值（范围：0-1）。不指定权重时，默认权重为&lt;code&gt;q=1.0&lt;/code&gt;。当服务器提供多种内容时，优先返回权值较高的媒体类型。
+&lt;/p&gt;
+
+&lt;h5 id=&quot;authorization&quot;&gt;Authorization&lt;/h5&gt;
+
+&lt;p&gt;
+用户代理的认证信息。
+&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;格式：
+Authorization:Basic 认证信息
+
+python:
+认证信息=base64.b64encode(&quot;%s:%s&quot; % (username,password))
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;响应首部字段&quot;&gt;响应首部字段&lt;/h4&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;首部字段名&lt;/th&gt;
+      &lt;th&gt;说明&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Accept-Ranges&lt;/td&gt;
+      &lt;td&gt;是否接收字节范围请求&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Age&lt;/td&gt;
+      &lt;td&gt;推算资源采集经过的时间&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;ETag&lt;/td&gt;
+      &lt;td&gt;资源的匹配信息&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Location&lt;/td&gt;
+      &lt;td&gt;令客户端重定向到指定的URI&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Proxy-Authenticate&lt;/td&gt;
+      &lt;td&gt;代理服务器对客户端的认证信息&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Retry-After&lt;/td&gt;
+      &lt;td&gt;对再次发起请求的时机要求&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Server&lt;/td&gt;
+      &lt;td&gt;HTTP服务器的安装信息&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Vary&lt;/td&gt;
+      &lt;td&gt;代理服务器缓存的管理信息&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;WWW-Authenticate&lt;/td&gt;
+      &lt;td&gt;服务器对客户端的认证信息&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h4 id=&quot;实体首部字段&quot;&gt;实体首部字段&lt;/h4&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;首部字段名&lt;/th&gt;
+      &lt;th&gt;说明&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Allow&lt;/td&gt;
+      &lt;td&gt;资源可支持的HTTP方法&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Content-Encoding&lt;/td&gt;
+      &lt;td&gt;实体主体适用的编码方式&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Content-Language&lt;/td&gt;
+      &lt;td&gt;实体主体的自然语言&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Content-Length&lt;/td&gt;
+      &lt;td&gt;实体主体的大小（单位：字节）&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Content-Location&lt;/td&gt;
+      &lt;td&gt;替代对应资源的URI&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Content-MD5&lt;/td&gt;
+      &lt;td&gt;实体主体的报文摘要&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Content-Range&lt;/td&gt;
+      &lt;td&gt;实体主体的位置范围&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Content-Type&lt;/td&gt;
+      &lt;td&gt;实体主体的媒体类型&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Expires&lt;/td&gt;
+      &lt;td&gt;实体主体过期的日期时间&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Last-Modified&lt;/td&gt;
+      &lt;td&gt;资源的最后修改日期时间&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h4 id=&quot;cookie首部字段&quot;&gt;Cookie首部字段&lt;/h4&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;首部字段名&lt;/th&gt;
+      &lt;th&gt;说明&lt;/th&gt;
+      &lt;th&gt;首部类型&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Set-Cookie&lt;/td&gt;
+      &lt;td&gt;开始状态管理所使用的Cookie信息(服务端-&amp;gt;客户端)&lt;/td&gt;
+      &lt;td&gt;响应首部字段&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Cookie&lt;/td&gt;
+      &lt;td&gt;服务器接收到的Cookie信息(客户端-&amp;gt;服务端)&lt;/td&gt;
+      &lt;td&gt;请求首部字段&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h5 id=&quot;set-cookie&quot;&gt;Set-Cookie&lt;/h5&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;属性&lt;/th&gt;
+      &lt;th&gt;说明&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;NAME=VALUE&lt;/td&gt;
+      &lt;td&gt;赋予Cookie的名称和值(必填)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;expires=DATE&lt;/td&gt;
+      &lt;td&gt;Cookie有效期(不指定的话默认为浏览器关闭为止)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;path=PATH&lt;/td&gt;
+      &lt;td&gt;将服务器上文件目录作为Cookie的适用对象(默认值是设置 Cookie 时的当前目录)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;domain=域名&lt;/td&gt;
+      &lt;td&gt;作为Cookie适用对象的域名(默认值是设置 Cookie 时的域名)&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Secure&lt;/td&gt;
+      &lt;td&gt;仅在https安全通信时才会发送Cookie&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;HttpOnly&lt;/td&gt;
+      &lt;td&gt;增加限制，使Cookie不能被JavaScript访问&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&quot;http的追加协议&quot;&gt;HTTP的追加协议&lt;/h2&gt;
+
+&lt;h4 id=&quot;http自身改进&quot;&gt;HTTP自身改进&lt;/h4&gt;
+
+&lt;h5 id=&quot;ajax&quot;&gt;Ajax&lt;/h5&gt;
+
+&lt;p&gt;
+Ajax（异步JavaScript与XML技术）：可异步加载数据，以达到局部更新Web页面。
+&lt;/p&gt;
+
+&lt;p&gt;
+缺点：利用Ajax实时地从服务器获取内容，可能会导致大量的请求产生，如果服务器内容未更新，还会有很多无效请求。
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-06-24-tujie-http/tu_19.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;comet&quot;&gt;Comet&lt;/h5&gt;
+
+&lt;p&gt;
+接收到请求时，Comet先将响应挂起，当服务器端有内容更新时，再返回响应，达到实时更新的目的。
+&lt;/p&gt;
+
+&lt;p&gt;
+缺点：为了保留响应，一次连接的持续时间变长，为了维持连接会消耗更多的资源。
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-06-24-tujie-http/tu_20.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;websocket&quot;&gt;WebSocket&lt;/h4&gt;
+
+&lt;p&gt;
+由客户端发起连接，一旦建立WebSocket协议的通信连接后，所有的通信都依靠这个专用协议进行，可互相发送JSON、XML、HTML、图片等任意数据格式。
+&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;推送功能：不必等待客户端请求，就可以直接从服务端向客户端发送数据&lt;/li&gt;
+  &lt;li&gt;减少通信量：只要WebSocket连接后，就可以一直通信；WebSocket的首部信息也较少&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;
+为了实现WebSocket通信，在HTTP连接建立后，需要完成一次握手。
+&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#握手-请求
+GET /chat HTTP/1.1 
+Host: server.example.com 
+Upgrade: websocket //告诉服务器现在发送的是WebSocket协议
+Connection: Upgrade 
+Sec-WebSocket-Key: x3JJHMbDL1EzLkh9GBhXDw== //是一个Base64encode的值，这个是浏览器随机生成的，用于验证服务器端返回数据是否是WebSocket助理
+Sec-WebSocket-Protocol: chat, superchat 
+Sec-WebSocket-Version: 13 
+Origin: http://example.com
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#握手-响应
+HTTP/1.1 101 Switching Protocols 
+Upgrade: websocket //依然是固定的，告诉客户端即将升级的是Websocket协议，而不是mozillasocket，lurnarsocket或者shitsocket
+Connection: Upgrade 
+Sec-WebSocket-Accept: HSmrc0sMlYUkAGmm5OPpG2HaGWk= //这个则是经过服务器确认，并且加密过后的 Sec-WebSocket-Key,也就是client要求建立WebSocket验证的凭证
+Sec-WebSocket-Protocol: chat
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-06-24-tujie-http/tu_21.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;https安全通信&quot;&gt;HTTPS安全通信&lt;/h2&gt;
+
+&lt;h4 id=&quot;http的缺点&quot;&gt;HTTP的缺点&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;通信使用明文（不加密），内容可能会被窃听&lt;/li&gt;
+  &lt;li&gt;不验证通信方的身份，有可能遭遇伪装&lt;/li&gt;
+  &lt;li&gt;无法证明报文的完整性，有可能已遭篡改&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;https&quot;&gt;HTTPS&lt;/h4&gt;
+
+&lt;p&gt;
+HTTPS（HTTP Secure）：HTTP+通信加密+证书+完整性保护
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-06-24-tujie-http/tu_17.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;
+HTTPS并非是应用层的一种新协议，只是HTTP通信接口部分用SSL（Secure Socket Layer 安全套接层）和TLS（Transport Layer Security 安全层传输协议）协议代替而已。通常，HTTP直接和TCP通信，当使用SSL时，则变为先和SSL通信，再由SSL和TCP通信。&lt;span style=&quot;color:red;font-weight:bold;&quot;&gt;所谓HTTPS，就是身披SSL协议外壳的HTTP&lt;/span&gt;
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-06-24-tujie-http/tu_18.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;
+SSL是独立于HTTP的协议，所以不光是HTTP协议，其他运行在应用层的SMTP和Telnet等协议均可配合SSL协议使用。可以说，SSL是当今世界上应用最为广泛的网络安全技术。在采用了SSL之后，HTTP就拥有了HTTPS的加密、证书和完整性保护这些功能。
+&lt;/p&gt;
+
+&lt;h2 id=&quot;用户身份认证&quot;&gt;用户身份认证&lt;/h2&gt;
+
+&lt;h4 id=&quot;basic认证基本认证&quot;&gt;BASIC认证（基本认证）&lt;/h4&gt;
+
+&lt;p&gt;
+不够灵活，达不到多数Web网站期望的安全性等级（直接发送明文密码BASE64编码），因此它并不常用。
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-06-24-tujie-http/tu_24.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;digest认证摘要认证&quot;&gt;DIGEST认证（摘要认证）&lt;/h4&gt;
+
+&lt;p&gt;
+采用质询响应方式，相比BASIC认证，密码泄露的可能性就降低了。相对HTTPS认证较弱，因此适用范围有限。
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-06-24-tujie-http/tu_25.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;ssl客户端认证&quot;&gt;SSL客户端认证&lt;/h4&gt;
+
+&lt;p&gt;
+借助HTTPS的客户端证书完成认证，凭借客户端证书认证，服务器可确认访问是否来自已登录的客户端。
+&lt;/p&gt;
+
+&lt;h4 id=&quot;formbase认证表单认证&quot;&gt;FormBase认证（表单认证）&lt;/h4&gt;
+
+&lt;p&gt;
+将客户端发送到服务端的账号和密码与数据库中的信息进行匹配，再借助Cookie与Session的机制来完成认证。。  
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-06-24-tujie-http/tu_26.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;web攻击技术&quot;&gt;Web攻击技术&lt;/h2&gt;
+
+&lt;h4 id=&quot;攻击模式&quot;&gt;攻击模式&lt;/h4&gt;
+
+&lt;h5 id=&quot;主动攻击&quot;&gt;主动攻击&lt;/h5&gt;
+
+&lt;p&gt;
+攻击者直接访问web应用，把攻击代码传入的攻击模式。主要有SQL注入攻击，OS命令攻击。
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-06-24-tujie-http/tu_22.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;被动攻击&quot;&gt;被动攻击&lt;/h5&gt;
+
+&lt;p&gt;
+利用圈套策略执行攻击代码的攻击模式，在被动攻击过程中，攻击者不直接对目标Web应用访问发起攻击。
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-06-24-tujie-http/tu_23.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;攻击类型&quot;&gt;攻击类型&lt;/h4&gt;
+
+&lt;h5 id=&quot;sql注入攻击主动&quot;&gt;SQL注入攻击(主动)&lt;/h5&gt;
+
+&lt;p&gt;
+SQL注入（SQL Injection）是指针对Web应用使用的数据库，通过运行非法的SQL而产生的攻击。该安全隐患有可能引起极大的威胁，有时会直接导致个人信息及机密信息的泄露。
+&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;非法查看或篡改数据库内的数据&lt;/li&gt;
+  &lt;li&gt;规避认证&lt;/li&gt;
+  &lt;li&gt;执行和数据库服务器业务关联的程序等&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h5 id=&quot;os命令注入攻击主动&quot;&gt;OS命令注入攻击(主动)&lt;/h5&gt;
+
+&lt;p&gt;
+OS命令注入攻击（OS Command Injection）是指通过Web应用，执行非法的操作系统命令达到攻击的目的。只要在能调用Shell函数的地方就有存在被攻击的风险。
+&lt;/p&gt;
+
+&lt;h5 id=&quot;dos攻击主动&quot;&gt;Dos攻击(主动)&lt;/h5&gt;
+
+&lt;p&gt;
+DoS攻击（Denial of Service attack）是一种让运行中的服务呈停止状态的攻击。有时也叫作服务停止或拒绝服务攻击
+&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;集中利用访问请求造成资源过载，资源用尽的同时，实际上也就呈停止状态&lt;/li&gt;
+  &lt;li&gt;通过攻击安全漏洞使服务停止&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h5 id=&quot;跨站脚本攻击被动&quot;&gt;跨站脚本攻击(被动)&lt;/h5&gt;
+
+&lt;p&gt;
+跨站脚本攻击（Cross-Site Scripting，XSS）是指通过存在安全漏洞的Web网站注册用户的浏览器内运行非法的HTML标签或者JavaScript脚本进行攻击的一种攻击。
+&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;利用虚假输入表单骗取用户个人信息&lt;/li&gt;
+  &lt;li&gt;利用脚本窃取用户的Cookie值，被害者在不知情的情况下，帮助攻击者发送恶意请求&lt;/li&gt;
+  &lt;li&gt;显示伪造的文章或者图片&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h5 id=&quot;http首部注入攻击被动&quot;&gt;HTTP首部注入攻击(被动)&lt;/h5&gt;
+
+&lt;p&gt;
+HTTP首部注入攻击（HTTP Header Injection）是指攻击者通过在响应首部字段内插入换行，添加任意响应首部或主体的一种攻击。
+&lt;/p&gt;
+
+&lt;h5 id=&quot;会话管理疏忽引发的漏洞被动&quot;&gt;会话管理疏忽引发的漏洞(被动)&lt;/h5&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;会话劫持（Session Hijack）：攻击者通过某种手段拿到了用户的会话ID，并非法使用此会话ID伪装成用户，达到攻击的目的&lt;/li&gt;
+  &lt;li&gt;会话固定攻击（Session Fixation）：强制用户使用攻击者指定的会话ID&lt;/li&gt;
+  &lt;li&gt;跨站点请求伪造（Cross-Site Request Forgeries，CSRF）：攻击者通过设置好的陷阱，强制对已完成认证的用户进行非预期的个人信息或设定信息等某些状态更新&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://item.jd.com/11449491.html&quot;&gt;图解HTTP&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.jianshu.com/p/eba76cfc0424&quot;&gt;HTTP首部Connection实践&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.cnblogs.com/jiangzuo/p/5896301.html&quot;&gt;浅谈php中使用websocket&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://wiki.swoole.com/wiki/page/397.html&quot;&gt;Swoole WebSocket&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Mon, 24 Jun 2019 14:10:00 +0800</pubDate>
+        <link>http://localhost:4001/2019/06/24/tujie-http/</link>
+        <guid isPermaLink="true">http://localhost:4001/2019/06/24/tujie-http/</guid>
+        
+        <category>http</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>图解TCP/IP笔记</title>
+        <description>&lt;h2 id=&quot;网络基础知识&quot;&gt;网络基础知识&lt;/h2&gt;
+
+&lt;h4 id=&quot;计算机与网络发展的7个阶段&quot;&gt;计算机与网络发展的7个阶段&lt;/h4&gt;
+
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td style=&quot;width:120px&quot;&gt;年代&lt;/td&gt;
+&lt;td&gt;内容&lt;/td&gt;
+&lt;td&gt;说明&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;20世纪50年代&lt;/td&gt;
+&lt;td&gt;批处理&lt;/td&gt;
+&lt;td&gt;Batch Processing：
+事先将用户程序和数据装入卡带或磁带，让计算机按照一定的顺序读取，使用户所要执行的这些程序和数据能够一并得到批量处理&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;20世纪60年代&lt;/td&gt;
+&lt;td&gt;分时系统&lt;/td&gt;
+&lt;td&gt;Time Sharing System：
+多个终端与同一个计算机连接，允许多个用户同时使用一台计算机系统。特性：
+1.多路性
+2.独占性
+3.交互性
+4.及时性&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;20世纪70年代&lt;/td&gt;
+&lt;td&gt;计算机之间的通信&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;20世纪80年代&lt;/td&gt;
+&lt;td&gt;计算机网络的产生&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;20世纪90年代&lt;/td&gt;
+&lt;td&gt;互联网的普及&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2000年&lt;/td&gt;
+&lt;td&gt;以互联网为中心的时代&lt;/td&gt;
+&lt;td&gt;通过IP（Internet Protocol）网可将，个人电脑，手机终端，电视机，电话，相机，家用电器等结合到一起。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2010年&lt;/td&gt;
+&lt;td&gt;从&quot;单纯建立连接&quot;到&quot;安全建立连接&quot;&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;h4 id=&quot;协议&quot;&gt;协议&lt;/h4&gt;
+
+&lt;p&gt;
+&lt;code&gt;协议&lt;/code&gt;是计算机与计算机之间通过网络实现通信事先达成的一种“约定”。这种“约定”使那些由不同厂商的设备、不同的CPU以及不同的操作系统组成的计算机之间，只要遵循相同的协议就能够实现通信。反之，如果使用的协议不同，就无法通信。
+&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-linux&quot;&gt;举例说明：
+
+协议：人会的语言（如汉语，英语）
+通信：人的聊天
+数据：聊天的内容
+
+只有双方使用同样的语言，才能够互相交流。
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5 id=&quot;分组交换协议&quot;&gt;分组交换协议&lt;/h5&gt;
+
+&lt;p&gt;
+将大数据拆分成多个较小的包（Packet）进行传输。
+&lt;/p&gt;
+
+&lt;p&gt;
+&lt;code&gt;包=报文首部（分组序号+源主机地址+目标主机地址+数据处理规则等）+原始数据&lt;/code&gt;
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-05-22-tcp-ip/tu_1_14.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;协议分层与osi参考模型&quot;&gt;协议分层与OSI参考模型&lt;/h4&gt;
+
+&lt;p&gt;
+OSI的7个分层。
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-05-22-tcp-ip/tu_1_18.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;
+各个分层的作用。
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-05-22-tcp-ip/tu_1_19.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;传输方式分类&quot;&gt;传输方式分类&lt;/h4&gt;
+
+&lt;h5 id=&quot;面向有连接型与面向无连接型&quot;&gt;面向有连接型与面向无连接型&lt;/h5&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;面向有连接型：在发送数据之前，需要在收发主机之间建立一条通信线路。&lt;/li&gt;
+  &lt;li&gt;面向无连接型：不要建立和断开连接，发送端可在任何时候发送数据，接收端不知道何时会接收到数据，需要定时确认是否收到数据。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-05-22-tcp-ip/tu_1_29.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;电路交换与分组交换&quot;&gt;电路交换与分组交换&lt;/h5&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;电路交换(不能共享连接)：主要用于以前的电话网络。相互通信的计算机独占一条连接的电路。&lt;/li&gt;
+  &lt;li&gt;分组交换(能共享连接)：主要用于现在的TCP/IP。将发送的数据拆分成多个数据包（包含首部），按顺序发送到分组交换机（路由器），交换机将数据缓存到本地，再顺序发送给目标计算机。可共享连接。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-05-22-tcp-ip/tu_1_30.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;接收端数量&quot;&gt;接收端数量&lt;/h5&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;单播（UniCast）：1对1通信。如早期固定电话。&lt;/li&gt;
+  &lt;li&gt;广播（BroadCast）：1对多通信，将消息发送给所有与主机相连的机器。如电视播放。&lt;/li&gt;
+  &lt;li&gt;多播（MultiCast）：类似于广播，不过要限定一定主机作为接收端。如电视会议。&lt;/li&gt;
+  &lt;li&gt;任播（AnyCast）：在特定的多个主机中选出一台进行通信。如DNS根域名解析服务器。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-05-22-tcp-ip/tu_1_32.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;地址&quot;&gt;地址&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;唯一性：一个地址必须明确的表示一个主体对象，在同一个通信网络中不允许有两个相同地址的通信主体存在。可对由多个设备组成的一组通信对象赋予唯一的通信地址。&lt;/li&gt;
+  &lt;li&gt;层次性：便于高效的从很多地址中找出通信的目标地址。如ip地址的分层(127.0.0.1)。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;网络的构成要素&quot;&gt;网络的构成要素&lt;/h4&gt;
+
+&lt;table&gt;
+&lt;tr&gt;
+&lt;td style=&quot;width:220px&quot;&gt;设备&lt;/td&gt;
+&lt;td&gt;作用&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;网卡&lt;/td&gt;
+&lt;td&gt;计算机联网的设备。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;中继器（Repeater）/1层交换机&lt;/td&gt;
+&lt;td&gt;从物理层上延长网络的设备。
+将电缆传过来的电信号或光信号经由中继器波形调整和放大再传给另一个电缆（不能无限连接）。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;网桥（Bridge）/2层交换机&lt;/td&gt;
+&lt;td&gt;从数据链路层上延长网络的设备。
+根据物理地址（MAC地址）进行处理。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;路由器（Router）/3层交换机&lt;/td&gt;
+&lt;td&gt;通过网络层转发分组数据的设备。
+根据IP地址进行处理。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;4-7层交换机&lt;/td&gt;
+&lt;td&gt;处理传输层以上各层网络传输的设备。
+如负载均衡器，广域网加速器，特殊应用访问加速，防火墙等。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;网关（Gateway）&lt;/td&gt;
+&lt;td&gt;转换协议的设备。
+负责将从传输层到应用层的数据进行转换和转发的设备。
+如代理服务器&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&quot;tcpip基础知识&quot;&gt;TCP/IP基础知识&lt;/h2&gt;
+
+&lt;h4 id=&quot;tcpip出现的背景&quot;&gt;TCP/IP出现的背景&lt;/h4&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-05-22-tcp-ip/tu_zi_1.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;tcpip的标准化&quot;&gt;TCP/IP的标准化&lt;/h4&gt;
+
+&lt;p&gt;
+含义：利用IP进行通信时所必须用到的协议群的统称。
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-05-22-tcp-ip/tu_2_3.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;
+TCP/IP的规范为RFC（Request For Comment），记录了协议规范内容，协议的实现和运用的相关信息，以及实验方面的信息。
+&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;RFC规范特性&lt;/li&gt;
+  &lt;li&gt;开放性：允许任何人加入组织并进行讨论&lt;/li&gt;
+  &lt;li&gt;实用性：先开发，再写规范，在标准确定时已经在很多设备上进行了验证&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;
+RFC制定流程通常包括如下阶段
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-05-22-tcp-ip/tu_zi_2.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;tcpip协议分层模型&quot;&gt;TCP/IP协议分层模型&lt;/h4&gt;
+
+&lt;p&gt;
+TCP/IP与OSI在分层模块上稍有区别，OSI参考模型注重的是&lt;code&gt;通信协议必要的功能是什么&lt;/code&gt;，TCP/IP主要的是&lt;code&gt;在计算机上实现协议应该开发哪种程序&lt;/code&gt;。
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-05-22-tcp-ip/tu_2_8.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;硬件物理层&quot;&gt;硬件（物理层）&lt;/h5&gt;
+
+&lt;p&gt;
+以太网或电话线路等物理层设备。
+&lt;/p&gt;
+
+&lt;h5 id=&quot;网络接口层数据链路层&quot;&gt;网络接口层（数据链路层）&lt;/h5&gt;
+
+&lt;p&gt;
+利用以太网中的数据链路层进行通信。
+&lt;/p&gt;
+
+&lt;h5 id=&quot;互联网层网络层&quot;&gt;互联网层（网络层）&lt;/h5&gt;
+
+&lt;p&gt;
+互联网层使用IP协议，IP协议基于IP地址转发分包数据。
+&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;ARP（Address Resolution Protocol 地址解析协议）：从分组数据包的IP地址中解析出物理（MAC）地址。&lt;/li&gt;
+  &lt;li&gt;IP（Internet Protocol 网络协议，非可靠性传输协议）：使用IP地址作为主机标识，跨越网络传送数据包，整个互联网都能收到数据。&lt;/li&gt;
+  &lt;li&gt;ICMP（Internet Control Message Protocol 控制报文协议）：在IP数据包因为异常到不了目标地址时，通知发送端出现异常。
+    &lt;h5 id=&quot;传输层&quot;&gt;传输层&lt;/h5&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;
+在应用程序之间实现通信。
+&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;TCP（Transmission Control Protocol 传输控制协议）：面向有连接的、可靠的、基于字节流的传输层通信协议。由于复杂的规则，不利于视频会议等场合。&lt;/li&gt;
+  &lt;li&gt;UDP（User Datagram Protocol 用户数据报协议）：面向无连接的、不可靠的传输层协议。由于规则简单，可用于视频、音频等传输场合。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h5 id=&quot;应用层会话层表示层应用层&quot;&gt;应用层（会话层，表示层，应用层）&lt;/h5&gt;
+
+&lt;p&gt;
+一般在应用程序中实现了OSI模型中会话层，表示层，应用层的功能。TCP/IP应用的架构大多数属于客户端/服务端模型。
+&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;WWW：浏览器与服务端使用HTTP（HyperText Transfer Protocol，应用层）协议传输HTML（HyperText Markup Language，表示层）数据&lt;/li&gt;
+  &lt;li&gt;EMail（电子邮件）：使用SMTP（Simple Mail Transfer Protocol，应用层）协议传输的MIME（表示层）邮件数据&lt;/li&gt;
+  &lt;li&gt;FTP（文件传输）：使用FTP（File Transfer Protocol）协议传输文件数据，需要建立2个TCP连接，一个用于发出传输请求时用到的控制连接，一个用于传输数据时用到的数据连接&lt;/li&gt;
+  &lt;li&gt;TELNET与SSH（远程登录）：登录到远程的计算机，运行那台计算机上的功能&lt;/li&gt;
+  &lt;li&gt;SNMP（网络管理）：使用SNMP（Simple Network Management Protocol，应用层）协议来管理网络，管理信息可通过MIB（Management Information Base，表示层）访问&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;tcpip分层模型与通信示例&quot;&gt;TCP/IP分层模型与通信示例&lt;/h4&gt;
+
+&lt;h5 id=&quot;数据包首部&quot;&gt;数据包首部&lt;/h5&gt;
+
+&lt;p&gt;
+每个分层中，都会对所发送的数据附加一个首部，首部中包含了该层的必要信息（如发送的目标地址以及协议相关信息），为协议提供的信息为&lt;code&gt;包首部&lt;/code&gt;，所要发送的内容为&lt;code&gt;数据&lt;/code&gt;。
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-05-22-tcp-ip/tu_2_17.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;数据包传输过程&quot;&gt;数据包传输过程&lt;/h5&gt;
+
+&lt;p&gt;
+通过从主机A向主机B发送电子邮件来看TCP/IP的通信过程。
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-05-22-tcp-ip/tu_2_18.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;经过数据链路的包&quot;&gt;经过数据链路的包&lt;/h5&gt;
+
+&lt;p&gt;
+分组数据包经过以太网的数据链路时大致流程如下。
+&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;包首部中包含的必要信息：&lt;/li&gt;
+  &lt;li&gt;1.发送端与接收端地址&lt;/li&gt;
+  &lt;li&gt;2.上一层的协议类型（用于数据到接受端后向上层传递时的依据）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-05-22-tcp-ip/tu_2_19.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;数据链路&quot;&gt;数据链路&lt;/h2&gt;
+
+&lt;h4 id=&quot;数据链路的作用&quot;&gt;数据链路的作用&lt;/h4&gt;
+
+&lt;p&gt;
+数据链路层的协议：定义了通过通信媒介（双绞线电缆、同轴电缆、光纤、电波、红外线等）&lt;span style=&quot;color:red;&quot;&gt;直接互连&lt;/span&gt;的设备之间传输的规范。
+&lt;/p&gt;
+
+&lt;h5 id=&quot;网络拓扑&quot;&gt;网络拓扑&lt;/h5&gt;
+
+&lt;p&gt;
+定义：网络的连接和构成的形态，分为总线型、环形，星型、网状型等
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-05-22-tcp-ip/tu_3_3.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;数据链路的相关技术&quot;&gt;数据链路的相关技术&lt;/h4&gt;
+
+&lt;h5 id=&quot;mac地址&quot;&gt;MAC地址&lt;/h5&gt;
+
+&lt;p&gt;
+作用：用于识别数据链路中互连的节点。
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-05-22-tcp-ip/tu_3_4.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;
+MAC地址长度为48位（二进制），但是一般使用16进制表示，则为6个16进制数值连接。
+&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;第1位：单播地址（0）/多播地址（1）&lt;/li&gt;
+  &lt;li&gt;第2位：全局地址（0）/本地地址（1）&lt;/li&gt;
+  &lt;li&gt;第3-24位：由IEEE管理，并保证各厂商之间不重复&lt;/li&gt;
+  &lt;li&gt;第25-48位：有厂商管理，并保证产品之间不重复&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-05-22-tcp-ip/tu_3_5.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;通信介质&quot;&gt;通信介质&lt;/h5&gt;
+
+&lt;p&gt;
+通信介质类型：
+&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;共享介质型网络（半双工通信）：多个设备共享通信介质&lt;/li&gt;
+  &lt;li&gt;非共享介质型网络（全双工通信）：多个设备不共享通信介质，直连交换机，由交换机转发数据帧&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;
+共享介质型网络中的介质访问控制方式：
+&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;争用方式（Contention）：争夺获取数据传输的权利，通常是先到先得的方式占用信道发送数据&lt;/li&gt;
+  &lt;li&gt;令牌传递方式：沿着令牌环发送“令牌”，获得令牌的站可以发送数据&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;
+半双工通信与全双工通信区别：
+&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;半双工通信：只发送或只接收的通信方式，如无线电收发器&lt;/li&gt;
+  &lt;li&gt;全双工通信：同时发送与接收的通信方式，如电话&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h5 id=&quot;根据mac地址转发&quot;&gt;根据MAC地址转发&lt;/h5&gt;
+
+&lt;p&gt;
+以太网交换机：拥有多个端口的网桥，根据数据链路层中的每个帧的目标MAC地址，决定从哪个网络端口发送数据。
+&lt;/p&gt;
+
+&lt;p&gt;
+转发表（Forwarding Table）：记录源MAC地址与接受数据的网络端口的对应关系
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-05-22-tcp-ip/tu_3_12.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;环路检测技术&quot;&gt;环路检测技术&lt;/h5&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;生成树方式：&lt;/li&gt;
+  &lt;li&gt;源路由法：&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h5 id=&quot;vlan&quot;&gt;VLAN&lt;/h5&gt;
+
+&lt;p&gt;
+VLAN：在交换机上按照端口划分出不同的网段，从而限制了广播数据的传输范围、减少了网络负载、提交了网络安全性。
+&lt;/p&gt;
+
+&lt;p&gt;
+TAG VLAN：数据经过交换机时，加入&lt;code&gt;VLAN ID&lt;/code&gt;可实现跨网段的数据传输。
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-05-22-tcp-ip/tu_3_15.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;数据链路的传输方式&quot;&gt;数据链路的传输方式&lt;/h4&gt;
+
+&lt;h5 id=&quot;以太网&quot;&gt;以太网&lt;/h5&gt;
+
+&lt;p&gt;
+以太网连接形式：
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-05-22-tcp-ip/tu_3_18.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;
+以太网帧格式：
+&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;FCS（Frame Check Sequence）：帧检测序列，用来检测数据帧是否损坏。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-05-22-tcp-ip/tu_3_20.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;类型：网络层协议类型&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-05-22-tcp-ip/biao_3_2.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;无线通信&quot;&gt;无线通信&lt;/h5&gt;
+
+&lt;p&gt;
+定义：通常使用电磁波、红外线、激光等方式进行传输数据。
+&lt;/p&gt;
+
+&lt;h5 id=&quot;ppp&quot;&gt;PPP&lt;/h5&gt;
+
+&lt;p&gt;
+定义（Point-to-Point Protocol）：点对点，即1对1的连接计算机的协议。
+&lt;/p&gt;
+
+&lt;h2 id=&quot;ip协议&quot;&gt;IP协议&lt;/h2&gt;
+
+&lt;h4 id=&quot;网络层的作用&quot;&gt;网络层的作用&lt;/h4&gt;
+
+&lt;p&gt;
+作用：实现终端节点（需要直接相连）间的通信（end-to-end），可跨越多种数据链路。
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-05-22-tcp-ip/tu_4_1.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;
+以外出旅行为例：
+&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;数据链路层：旅途中所需要的机票、车票、船票等，用于2个相邻目的地间的交通工具&lt;/li&gt;
+  &lt;li&gt;网络层：旅途行程表，用于确定什么时候该坐哪种交通工具，从而完成整个旅程&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-05-22-tcp-ip/tu_4_2.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;ip基础知识&quot;&gt;IP基础知识&lt;/h4&gt;
+
+&lt;h5 id=&quot;ip地址&quot;&gt;IP地址&lt;/h5&gt;
+
+&lt;p&gt;
+定义：网络层的地址，用于在连接到网络中的所有主机中识别出进行通信的目标地址。
+&lt;/p&gt;
+
+&lt;p&gt;
+IP属于面向无连接型的传输，为了传输的可靠性，上一层的TCP采用面向有连接型的传输。
+&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;简化：面向连接比面向无连接处理相对复杂&lt;/li&gt;
+  &lt;li&gt;提速：每次通信之前都要事先建立连接，会降低处理速度&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h5 id=&quot;路由控制&quot;&gt;路由控制&lt;/h5&gt;
+
+&lt;p&gt;
+定义：Routing，将分组数据发送到最终目的地址的功能。不管网络多么复杂，也可以通过路由控制确定到达目标地址的通路。
+&lt;/p&gt;
+
+&lt;p&gt;
+Hop中文叫“跳”，它是指网络中的一个区间，IP包正是在网络中一个跳间被转发。数据链路实现某一个区间（一跳）内的通信，而IP实现直至最终目标地址的通信（点对点）。
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-05-22-tcp-ip/tu_4_5.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;
+为了将数据包发送给目标主机，所有主机都维护者一张路由控制表（Routing Table），该表记录IP数据在下一步应该发给哪一个路由器。IP包将根据这个路由表在各个数据链路上传输。
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-05-22-tcp-ip/tu_4_8.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;
+以快递运输为例：
+&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;IP数据包：送的包裹&lt;/li&gt;
+  &lt;li&gt;数据链路：送货车&lt;/li&gt;
+  &lt;li&gt;网络层：送货目的地&lt;/li&gt;
+  &lt;li&gt;路由控制：转运站&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-05-22-tcp-ip/tu_4_7.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;ip地址-1&quot;&gt;IP地址&lt;/h4&gt;
+
+&lt;p&gt;
+IP地址（IPv4）在计算机内部由32位二进制表示，在日常使用中由4个10进制表示，如&lt;code&gt;192.168.1.1&lt;/code&gt;。由“网络标识”与“主机标识”组成。
+&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;网络标识：在数据链路的每个段配置不同的值，相互连接的每个段不能重复&lt;/li&gt;
+  &lt;li&gt;主机标识：同一网段内的主机标识不能重复，但网络标识必须相同&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;ip数据包分组与合并处理&quot;&gt;IP数据包分组与合并处理&lt;/h4&gt;
+
+&lt;p&gt;
+每种数据链路的最大传输单元（MTU）不一定相同，当发送的报文比较大时，在路由器中会对报文进行分片，被主机接收时进行合并。
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-05-22-tcp-ip/tu_4_24.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;ipv4与ipv6&quot;&gt;IPV4与IPv6&lt;/h4&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-05-22-tcp-ip/tu_4_31.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-05-22-tcp-ip/tu_4_33.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;ip协议相关技术&quot;&gt;IP协议相关技术&lt;/h2&gt;
+
+&lt;h4 id=&quot;dns&quot;&gt;DNS&lt;/h4&gt;
+
+&lt;p&gt;
+DNS（Domain Name System）：管理主机名和IP地址之间对应关系的系统。
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-05-22-tcp-ip/tu_5_5.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;arp&quot;&gt;ARP&lt;/h4&gt;
+
+&lt;p&gt;
+ARP（Address Resolution Protocol）：以目标IP地址为线索，定位下一个应该接收数据分包的网络设备对应的MAC地址。如果目标主机不在同一个链路上，则可通过ARP查询下一跳路由的MAC地址。
+&lt;/p&gt;
+
+&lt;p&gt;
+Tips：ARP只适用于IPv4，IPv6需要使用&lt;code&gt;ICMPv6&lt;/code&gt;来探索邻居信息。
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-05-22-tcp-ip/tu_5_6.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;
+RARP（Reverse Address Resolution Protocol）：从MAC地址定位IP地址的一种协议。
+&lt;/p&gt;
+
+&lt;h4 id=&quot;icmp&quot;&gt;ICMP&lt;/h4&gt;
+
+&lt;p&gt;
+ICMP（Internet Control Message Protocol）：控制报文协议，确认IP包是否成功送达目标地址，通知在发送过程中IP包被废弃的具体原因，改善网络设置等。如&lt;code&gt;ping&lt;/code&gt;命令，就是典型的ICMP应用。
+&lt;/p&gt;
+
+&lt;p&gt;
+ICMP消息类型：
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-05-22-tcp-ip/biao_5_2.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;dhcp&quot;&gt;DHCP&lt;/h4&gt;
+
+&lt;p&gt;
+DHCP（Dynamic Host Configuration Protocol）：动态主机配置协议，自动设置IP地址，统一管理IP地址分配。
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-05-22-tcp-ip/tu_5_17.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;nat&quot;&gt;NAT&lt;/h4&gt;
+
+&lt;p&gt;
+NAT（Network Address Translator）：在本地网络中使用私有地址，在连接互联网时转而使用全局IP地址。
+&lt;/p&gt;
+
+&lt;p&gt;
+NAPT（Network Address Ports Translator）：除了转换IP地址，还可以转换TCP，UDP的端口。
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-05-22-tcp-ip/tu_5_19.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-05-22-tcp-ip/tu_5_20.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;ip隧道&quot;&gt;IP隧道&lt;/h4&gt;
+
+&lt;p&gt;
+在一个网络环境中，网络A与B使用IPv6，如果处于中间位置的网络C支持IPv4的话，网络A与网络B之间将无法直接进行通信。为了能让它们之间正常通信，需要采用IP隧道功能。
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-05-22-tcp-ip/tu_5_22.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;
+IP隧道中可以将那些从网络A发过来的IPv6包统和为一个数据，再为之追加一个IPv4的首部转发给网络C，这种在网络层的首部后面继续追加网络层首部的通信方法叫做&lt;code&gt;IP隧道&lt;/code&gt;。
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-05-22-tcp-ip/tu_5_23.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;tcp与udp&quot;&gt;TCP与UDP&lt;/h2&gt;
+
+&lt;h4 id=&quot;传输层的作用&quot;&gt;传输层的作用&lt;/h4&gt;
+
+&lt;h5 id=&quot;tcp&quot;&gt;TCP&lt;/h5&gt;
+
+&lt;p&gt;
+TCP是面向连接的，可靠的&lt;code&gt;流&lt;/code&gt;协议。
+&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;流是指不间断的数据结构，你可以把它想象成排水管道中的水流。
+当应用程序采用TCP发送消息时，虽然可以保证发送的顺序，但还是犹如没有任何间隔的数据流发送给客户端。
+因此在发送端发送消息时，可以设置一个表示长度或间隔的字段信息。
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h5 id=&quot;udp&quot;&gt;UDP&lt;/h5&gt;
+
+&lt;p&gt;
+UDP是面向无连接的，不可靠的&lt;code&gt;数据报&lt;/code&gt;协议。
+&lt;/p&gt;
+
+&lt;h5 id=&quot;tcp与udp使用场景&quot;&gt;TCP与UDP使用场景&lt;/h5&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;TCP：用于在传输层有必要实现可靠传输的情况。因为它具备顺序控制、重发控制等机制。&lt;/li&gt;
+  &lt;li&gt;UDP：用于对高速传输和实时性有较高要求的通信或广播通信。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h5 id=&quot;socket&quot;&gt;Socket&lt;/h5&gt;
+
+&lt;p&gt;
+在日常使用TCP或UDP时，会用到操作系统提供的类库，这种类库一般被称为API，对于TCP或UDP来说会广泛使用到套接字（Socket）的API。应用程序使用套接字时，可以设置对端的IP地址、端口号，并实现数据的发送与接收。
+&lt;/p&gt;
+
+&lt;h4 id=&quot;端口号&quot;&gt;端口号&lt;/h4&gt;
+
+&lt;p&gt;
+端口号用来识别同一台计算机中进行通信的不同应用程序。
+&lt;/p&gt;
+
+&lt;h5 id=&quot;区分不同通信&quot;&gt;区分不同通信&lt;/h5&gt;
+
+&lt;p&gt;
+源IP地址+目标IP地址+协议号+源端口号+目标端口号
+&lt;/p&gt;
+
+&lt;h5 id=&quot;端口号确定方法&quot;&gt;端口号确定方法&lt;/h5&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://tool.oschina.net/commons?type=7&quot;&gt;知名端口号&lt;/a&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;标准既定的端口号：每个端口号有固定的使用目的。知名端口号:【0-1023】。已注册但可用:【1024-49151】。&lt;/li&gt;
+  &lt;li&gt;时许分配法：根据请求动态分配端口号。动态端口号:【49152-65535】&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;tcp-1&quot;&gt;TCP&lt;/h4&gt;
+
+&lt;p&gt;
+TCP（Transmission Control Protocol）：面向有连接的协议，只有在确认通信对端存在时才会发送数据，从而可以控制通信流量的浪费。
+&lt;/p&gt;
+
+&lt;h5 id=&quot;tcp的特点及目的&quot;&gt;TCP的特点及目的&lt;/h5&gt;
+
+&lt;p&gt;
+TCP通过&lt;span style=&quot;color:red;&quot;&gt;检验和、序列号、确认应答、重发控制、连接管理、以及窗口控制&lt;/span&gt;等机制来实现可靠传输。解决了数据的破坏、重发以及分片顺序混乱等问题。
+&lt;/p&gt;
+
+&lt;h5 id=&quot;通过序列号与确认应答提高可靠性&quot;&gt;通过序列号与确认应答提高可靠性&lt;/h5&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;应答标记：&lt;/li&gt;
+  &lt;li&gt;ACK：确认应答&lt;/li&gt;
+  &lt;li&gt;NACK：非确认应答&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;
+序列号：按顺序给发送数据的每一个字节标记编号。接收端查询接收数据TCP首部中的序列号和数据长度，将自己下一步需要接收的序号作为ACK返送回去。
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-05-22-tcp-ip/tu_6_10.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;重发超时如何确定&quot;&gt;重发超时如何确定&lt;/h5&gt;
+
+&lt;p&gt;
+重发超时：在重发数据之前，等待ACK到来的那个特定时间间隔。通常比【往返时间+偏差时间】稍大一点，为0.5的整数倍。
+&lt;/p&gt;
+
+&lt;h5 id=&quot;连接管理&quot;&gt;连接管理&lt;/h5&gt;
+
+&lt;p&gt;
+一个TCP连接的建立与断开，正常过程至少需要来回发送7个包才能完成，也就是常说的3次握手，2次挥手。
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-05-22-tcp-ip/tu_6_12.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;tcp以段为单位发送数据&quot;&gt;TCP以段为单位发送数据&lt;/h5&gt;
+
+&lt;p&gt;
+MSS（Maximum Segment Size）：最大消息长度，用于对大数据的分割度量，数据重发时的度量。在建立TCP连接时根据通信双方接口能够适应的MSS决定（取小值）。
+&lt;/p&gt;
+
+&lt;h5 id=&quot;利用窗口控制提高速度&quot;&gt;利用窗口控制提高速度&lt;/h5&gt;
+
+&lt;p&gt;
+窗口大小：无需等待确认应答而可以继续发送数据的最大值。
+&lt;/p&gt;
+
+&lt;p&gt;
+滑动窗口控制：使用缓冲区，通过对多个段同时进行确认应答来提高发送性能。缓冲区里的数据会保留到发送成功为止。
+&lt;/p&gt;
+
+&lt;h5 id=&quot;窗口控制与重发控制&quot;&gt;窗口控制与重发控制&lt;/h5&gt;
+
+&lt;p&gt;
+快速的重发服务：接收端在没有收到自己所期望序号的数据时，会对之前收到的数据进行确认应答。发送端则一旦收到某个确认应答后，又连续收到3次同样的确认应答，则认为数据段已丢失，需要进行重发。
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-05-22-tcp-ip/tu_6_18.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;流控制&quot;&gt;流控制&lt;/h5&gt;
+
+&lt;p&gt;
+流控制：TCP提供了一种机制，可以让发送端根据接收端的实际接收能力动态的调整发送的数据量。
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-05-22-tcp-ip/tu_6_19.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;拥塞控制&quot;&gt;拥塞控制&lt;/h5&gt;
+&lt;h5 id=&quot;提高网络利用率规范&quot;&gt;提高网络利用率规范&lt;/h5&gt;
+
+&lt;h5 id=&quot;tcp首部&quot;&gt;TCP首部&lt;/h5&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-05-22-tcp-ip/tu_6_26.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;udp-1&quot;&gt;UDP&lt;/h4&gt;
+
+&lt;p&gt;
+UDP（User Datagram Protocol）：不提供复杂的控制机制，利用IP提供面向无连接的通信服务。因此，它不会负责：流量控制、丢包重发等。
+&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;UDP应用场景：&lt;/li&gt;
+  &lt;li&gt;包总量较少的通信（DNS、SNMP等）&lt;/li&gt;
+  &lt;li&gt;视频、音频等多媒体通信（即时通讯）&lt;/li&gt;
+  &lt;li&gt;限定于LAN等特定网络中的应用通信&lt;/li&gt;
+  &lt;li&gt;广播通信（广播、多播）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h5 id=&quot;udp首部&quot;&gt;UDP首部&lt;/h5&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-05-22-tcp-ip/tu_6_24.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;源端口号：发送端端口号，字段长16位，可为0（表示不需要返回）&lt;/li&gt;
+  &lt;li&gt;目标端口号：接收端端口号，字段长16位&lt;/li&gt;
+  &lt;li&gt;包长度：UDP的首部长度+数据长度。单位为字节(byte)&lt;/li&gt;
+  &lt;li&gt;校验和：用于提供可靠的UDPshoubu和数据&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;路由协议&quot;&gt;路由协议&lt;/h2&gt;
+
+&lt;h4 id=&quot;路由控制的定义&quot;&gt;路由控制的定义&lt;/h4&gt;
+
+&lt;p&gt;
+路由控制：互联网是由路由器连接的网络组合而成，为了能让数据包正确到达目标主机，路由器必须在途中进行正确的转发。
+&lt;/p&gt;
+
+&lt;p&gt;
+静态路由（Static Routing）：事先设置好路由器和主机中并将路由信息固定的一种方法。
+&lt;/p&gt;
+
+&lt;p&gt;
+动态路由（Dynamic Routing）：让路由器协议在运行过程中自动的设置路由控制信息。
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-05-22-tcp-ip/tu_7_1.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;路由控制范围&quot;&gt;路由控制范围&lt;/h4&gt;
+
+&lt;p&gt;
+IGP（Interior Gateway Protocol）：内部网关协议，自治系统内部动态路由采用的协议。
+&lt;/p&gt;
+
+&lt;p&gt;
+EGP（Exterior Gateway Protocol）：外部网关协议，自治系统之间的路由控制采用的是域间路由协议。
+&lt;/p&gt;
+
+&lt;h4 id=&quot;路由算法&quot;&gt;路由算法&lt;/h4&gt;
+
+&lt;h5 id=&quot;距离向量算法&quot;&gt;距离向量算法&lt;/h5&gt;
+
+&lt;p&gt;
+距离向量（Distance Vector）：根据距离（代价）和方向决定目标网络或目标主机位置的方法。
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-05-22-tcp-ip/tu_7_4.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;链路状态算法&quot;&gt;链路状态算法&lt;/h5&gt;
+
+&lt;p&gt;
+链路状态（Link-State）：路由器在了解网络整体连接状态的基础上生成路由控制表的方法。
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-05-22-tcp-ip/tu_7_5.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;路由协议-1&quot;&gt;路由协议&lt;/h4&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;路由协议名&lt;/th&gt;
+      &lt;th&gt;下一层协议&lt;/th&gt;
+      &lt;th&gt;方式&lt;/th&gt;
+      &lt;th&gt;适用范围&lt;/th&gt;
+      &lt;th&gt;循环检测&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;RIP&lt;/td&gt;
+      &lt;td&gt;UDP&lt;/td&gt;
+      &lt;td&gt;距离向量&lt;/td&gt;
+      &lt;td&gt;域内&lt;/td&gt;
+      &lt;td&gt;不可以&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;RIP2&lt;/td&gt;
+      &lt;td&gt;UDP&lt;/td&gt;
+      &lt;td&gt;距离向量&lt;/td&gt;
+      &lt;td&gt;域内&lt;/td&gt;
+      &lt;td&gt;不可以&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;OSFP&lt;/td&gt;
+      &lt;td&gt;IP&lt;/td&gt;
+      &lt;td&gt;链路状态&lt;/td&gt;
+      &lt;td&gt;域内&lt;/td&gt;
+      &lt;td&gt;不可以&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;BGP&lt;/td&gt;
+      &lt;td&gt;TCP&lt;/td&gt;
+      &lt;td&gt;路径向量&lt;/td&gt;
+      &lt;td&gt;对外连接&lt;/td&gt;
+      &lt;td&gt;可以&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h5 id=&quot;rip&quot;&gt;RIP&lt;/h5&gt;
+
+&lt;p&gt;
+RIP（Routing Information Protocol）：距离向量型的一种路由协议，广泛用于LAN。
+&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;广播路由：将路由控制信息定期（30秒一次）向全网广播&lt;/li&gt;
+  &lt;li&gt;确定路由：RIP基于距离向量算法决定路径。距离（Metrics）的单位为“跳数”，指所经过的路由器个数。RIP希望尽可能少通过路由器将数据包转发到目标IP地址&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h5 id=&quot;ospf&quot;&gt;OSPF&lt;/h5&gt;
+
+&lt;p&gt;
+OSPF（Open Shortest Path First）：根据OSI的IS-IS协议提出的链路状态型路由协议，即使网络中环路，也能进行稳定的路由控制。
+&lt;/p&gt;
+
+&lt;h5 id=&quot;bgp&quot;&gt;BGP&lt;/h5&gt;
+
+&lt;p&gt;
+BGP（Border Gateway Protocol）：边界网关协议是连接不同组织机构（或者说连接不同自治系统）的一种协议。
+&lt;/p&gt;
+
+&lt;h5 id=&quot;mpls&quot;&gt;MPLS&lt;/h5&gt;
+
+&lt;h2 id=&quot;应用协议&quot;&gt;应用协议&lt;/h2&gt;
+
+&lt;h4 id=&quot;远程登录&quot;&gt;远程登录&lt;/h4&gt;
+
+&lt;p&gt;
+远程登录：从本地计算机登录到网络的另一个终端计算功能的应用。
+&lt;/p&gt;
+
+&lt;h5 id=&quot;telnet&quot;&gt;TELNET&lt;/h5&gt;
+
+&lt;p&gt;
+利用TCP的一条连接，通过连接向主机发送文字命令并在主机上执行。
+&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;通常情况下TELNET客户端的命令为telnet。
+telnet 主机名 端口号
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h5 id=&quot;ssh&quot;&gt;SSH&lt;/h5&gt;
+
+&lt;p&gt;
+SSH（Secure SHell）：加密的远程登录系统，可加密通信内容，即使被窃听也无法破解所发送的密码，具体命令以及命令返回的结果。
+&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;可以使用更强的认证机制&lt;/li&gt;
+  &lt;li&gt;可以转发文件&lt;/li&gt;
+  &lt;li&gt;可以使用端口转发功能&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;文件传输&quot;&gt;文件传输&lt;/h4&gt;
+
+&lt;p&gt;
+FTP：是在两个相连的计算机之间进行文件传输时使用的协议。
+&lt;/p&gt;
+
+&lt;p&gt;
+FTP工作时需要使用2条TCP连接，一条用来控制（端口21），一条用来数据传输（端口随机分配）。
+&lt;/p&gt;
+
+&lt;h4 id=&quot;电子邮件&quot;&gt;电子邮件&lt;/h4&gt;
+
+&lt;p&gt;
+SMTP（Simple Mail Transfer Protocol）：电子邮件传输协议
+&lt;/p&gt;
+
+&lt;p&gt;
+POP3（Post Office Protocol）：接收邮件时使用的协议
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-05-22-tcp-ip/tu_8_10.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;邮件地址&quot;&gt;邮件地址&lt;/h5&gt;
+
+&lt;p&gt;
+邮件地址：使用电子邮件时需要拥有的地址，相当于通信地址与姓名。
+&lt;/p&gt;
+
+&lt;h5 id=&quot;数据格式&quot;&gt;数据格式&lt;/h5&gt;
+
+&lt;p&gt;
+MIME（Multipurpose Internet Mail Extension）：由首部和正文部分组成。
+&lt;/p&gt;
+
+&lt;p&gt;
+如果MIME首部的“Content-Type”中指定“Multipart/Mixed”，并以“boundary==”后面的字符串作为分隔符，可将多个MIME消息组合成为一个MIME消息。这就叫做multipart。
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-05-22-tcp-ip/biao_8_3.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;发送与接收协议&quot;&gt;发送与接收协议&lt;/h5&gt;
+
+&lt;p&gt;
+SMTP：发送电子邮件的协议，使用的端口25。建立TCP连接后，在这个连接上进行控制，应答以及数据的发送。
+&lt;/p&gt;
+
+&lt;p&gt;
+POP：从POP服务器接收邮件，需要用户验证。
+&lt;/p&gt;
+
+&lt;p&gt;
+IMAP（Internet Mail Access Protocol）：在服务器上保存和管理邮件。
+&lt;/p&gt;
+
+&lt;h4 id=&quot;www&quot;&gt;WWW&lt;/h4&gt;
+
+&lt;p&gt;
+万维网（WWW，World Wide Web）：将互联网中的信息以超文本形式展示的系统。使用WEB浏览器来显示WWW信息。
+&lt;/p&gt;
+
+&lt;h5 id=&quot;uri&quot;&gt;URI&lt;/h5&gt;
+
+&lt;p&gt;
+URL（Uniform Resource Locator）：表示互联网中资源（文件）的具体位置。  
+&lt;/p&gt;
+
+&lt;p&gt;
+URI（Uniform Resource Identifier）：不局限于标记互联网资源，可作为所有资源的识别码。  
+&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://www.iana.org/assignments/uri-schemes/uri-schemes.xhtml&quot;&gt;uri schemes&lt;/a&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;html&quot;&gt;HTML&lt;/h5&gt;
+
+&lt;p&gt;
+HTML（HyperText Markup Language）：记述Web页的一种语言（数据格式），可指定浏览器中显示文字，文字的大小和颜色等。
+&lt;/p&gt;
+
+&lt;h5 id=&quot;http&quot;&gt;HTTP&lt;/h5&gt;
+
+&lt;p&gt;
+HTML（HyperText Transfer Protocol）：Http默认使用80端口，在建立TCP连接后，在这个TCP连接上进行请求的应答以及数据报文的发送。  
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-05-22-tcp-ip/tu_8_18.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;HTTP1.0：每一个命令和应答都会触发一次TCP连接的建立与断开&lt;/li&gt;
+  &lt;li&gt;HTTP1.1：一个TCP连接上发送多个命令和应答&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-05-22-tcp-ip/biao_8_8_1.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-05-22-tcp-ip/biao_8_8_2.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-05-22-tcp-ip/biao_8_8_3.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-05-22-tcp-ip/biao_8_8_4.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-05-22-tcp-ip/biao_8_8_5.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-05-22-tcp-ip/biao_8_8_6.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;网络管理&quot;&gt;网络管理&lt;/h4&gt;
+
+&lt;p&gt;
+SNMP（Simple Network Management Protocol）：基于UDP/IP的协议，管理端叫做管理器（Manager，网络终端监控），被管理端叫做代理（路由器，交换机）。
+&lt;/p&gt;
+
+&lt;p&gt;
+MIB（Management Information Base）：SNMP中交互的信息，是在树形结构的数据库中为每个项目附件编号的一种信息结构。
+&lt;/p&gt;
+
+&lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://item.jd.com/11253710.html&quot;&gt;图解TCP/IP&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Thu, 23 May 2019 14:10:00 +0800</pubDate>
+        <link>http://localhost:4001/2019/05/23/tujie-tcp-ip/</link>
+        <guid isPermaLink="true">http://localhost:4001/2019/05/23/tujie-tcp-ip/</guid>
+        
+        <category>tcp/ip</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>mysql超时时间</title>
+        <description>&lt;blockquote&gt;
+  &lt;p&gt;介绍mysql中一些常用的超时时间的作用。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;概述&quot;&gt;概述&lt;/h2&gt;
+
+&lt;p&gt;
+通过如下命令可以获取到所有与timeout相关的配置，下面来看看这些配置大致都有什么作用。
+&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#查看会话级别（session）的变量
+mysql&amp;gt; show variables like &apos;%timeout%&apos;;
++-----------------------------+----------+
+| Variable_name               | Value    |
++-----------------------------+----------+
+| connect_timeout             | 10       |
+| delayed_insert_timeout      | 300      |
+| have_statement_timeout      | YES      |
+| innodb_flush_log_at_timeout | 1        |
+| innodb_lock_wait_timeout    | 60       |
+| innodb_rollback_on_timeout  | OFF      |
+| interactive_timeout         | 10       |
+| lock_wait_timeout           | 31536000 |
+| net_read_timeout            | 30       |
+| net_write_timeout           | 60       |
+| rpl_stop_slave_timeout      | 31536000 |
+| slave_net_timeout           | 60       |
+| wait_timeout                | 10       |
++-----------------------------+----------+
+
+#查看全局级别（global）的变量
+mysql&amp;gt; show global variables like &apos;%timeout%&apos;;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p style=&quot;color:red;&quot;&gt;
+Tips：在设置变量时，如果想要在全局生效需要加入&lt;code&gt;global&lt;/code&gt;前缀，如&lt;code&gt;set global wait_timeout=20&lt;/code&gt;。
+&lt;/p&gt;
+
+&lt;h2 id=&quot;connect_timeout&quot;&gt;connect_timeout&lt;/h2&gt;
+
+&lt;h4 id=&quot;定义&quot;&gt;定义&lt;/h4&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;属性&lt;/th&gt;
+      &lt;th&gt;值&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;命令行格式&lt;/td&gt;
+      &lt;td&gt;–connect-timeout=#&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;系统变量名&lt;/td&gt;
+      &lt;td&gt;connect_timeout&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;作用域&lt;/td&gt;
+      &lt;td&gt;Global&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;可动态配置&lt;/td&gt;
+      &lt;td&gt;Yes&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;类型&lt;/td&gt;
+      &lt;td&gt;Integer&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;默认值&lt;/td&gt;
+      &lt;td&gt;10&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;最小值&lt;/td&gt;
+      &lt;td&gt;2&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;最小值&lt;/td&gt;
+      &lt;td&gt;31536000&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;
+服务器在返回错误握手信息前等待的时间，也可以说是握手超时时间。
+&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;mysql大致连接过程：&lt;/li&gt;
+  &lt;li&gt;1.监听到连接请求（会进行3次握手）&lt;/li&gt;
+  &lt;li&gt;2.服务端创建线程处理请求（客户端此时阻塞，等待服务端消息）&lt;/li&gt;
+  &lt;li&gt;3.服务端与客户端交互验证用户名密码&lt;/li&gt;
+  &lt;li&gt;4.验证通用，握手完成&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;
+在整个连接握手过程中可能会出现出错，这个connect_timeout值就是指这个超时时间。
+&lt;/p&gt;
+
+&lt;h4 id=&quot;测试&quot;&gt;测试&lt;/h4&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#1.使用telnet连接
+[root@DEV-HROEx64 ~]# telnet localhost 3306
+Trying ::1...
+Connected to localhost.
+Escape character is &apos;^]&apos;.
+N
+5.7.11-log5+
+             -Tn)EF&amp;gt;g&apos;uQR7mysql_native_password
+
+#2.查看连接信息
+mysql&amp;gt; show full processlist;
++-------+----------------------+--------------------+----------------+---------+------+-----------------------+-----------------------+
+| Id    | User                 | Host               | db             | Command | Time | State                 | Info                  |
++-------+----------------------+--------------------+----------------+---------+------+-----------------------+-----------------------+
+| 23693 | unauthenticated user | ::1:52495          | NULL           | Connect |    4 | Receiving from client | NULL                  |
++-------+----------------------+--------------------+----------------+---------+------+-----------------------+-----------------------+
+             
+#3.等待10s，服务器关闭连接
+Connection closed by foreign host
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;interactive_timeout--wait_timeout&quot;&gt;interactive_timeout &amp;amp; wait_timeout&lt;/h2&gt;
+
+&lt;h4 id=&quot;定义-1&quot;&gt;定义&lt;/h4&gt;
+
+&lt;h5 id=&quot;interactive_timeout&quot;&gt;interactive_timeout&lt;/h5&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;属性&lt;/th&gt;
+      &lt;th&gt;值&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;命令行格式&lt;/td&gt;
+      &lt;td&gt;–interactive-timeout=#&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;系统变量名&lt;/td&gt;
+      &lt;td&gt;interactive_timeout&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;作用域&lt;/td&gt;
+      &lt;td&gt;Global, Session&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;可动态配置&lt;/td&gt;
+      &lt;td&gt;Yes&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;类型&lt;/td&gt;
+      &lt;td&gt;Integer&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;默认值&lt;/td&gt;
+      &lt;td&gt;28800&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;最小值&lt;/td&gt;
+      &lt;td&gt;1&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;
+服务器在关闭交互式连接（客户端在通过mysql_real_connect连接时，使用CLIENT_INTERACTIVE 参数）之前等待活动的秒数。
+&lt;/p&gt;
+
+&lt;h5 id=&quot;wait_timeout&quot;&gt;wait_timeout&lt;/h5&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;属性&lt;/th&gt;
+      &lt;th&gt;值&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;命令行格式&lt;/td&gt;
+      &lt;td&gt;–wait-timeout=#&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;系统变量名&lt;/td&gt;
+      &lt;td&gt;wait_timeout&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;作用域&lt;/td&gt;
+      &lt;td&gt;Global, Session&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;可动态配置&lt;/td&gt;
+      &lt;td&gt;Yes&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;类型&lt;/td&gt;
+      &lt;td&gt;Integer&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;默认值&lt;/td&gt;
+      &lt;td&gt;28800&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;最小值&lt;/td&gt;
+      &lt;td&gt;1&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;最大值（other）&lt;/td&gt;
+      &lt;td&gt;31536000&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;最大值（windows）&lt;/td&gt;
+      &lt;td&gt;2147483&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;
+服务器在关闭非交互式连接（客户端在通过mysql_real_connect连接时，不使用CLIENT_INTERACTIVE 参数）之前等待活动的秒数。
+&lt;/p&gt;
+
+&lt;p&gt;
+以上2个变量都是定义服务器在自动关闭连接前等待的时间，区别是如果连接是交互式连接则使用&lt;code&gt;interactive_timeout&lt;/code&gt;，如果连接是非交互式连接（如程序代码中的连接）则使用&lt;code&gt;wait_timeout&lt;/code&gt;。
+&lt;/p&gt;
+
+&lt;h4 id=&quot;测试-1&quot;&gt;测试&lt;/h4&gt;
+
+&lt;h5 id=&quot;交互式连接&quot;&gt;交互式连接&lt;/h5&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;SecureCRT，Navivat Premium等连接工具&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#1.设置交互连接超时时间10s
+mysql&amp;gt; set global interactive_timeout=10;
+
+#2.退出，重新进入，当前wait_timeout=10
+mysql&amp;gt; show variables like &apos;%timeout%&apos;;
++-----------------------------+----------+
+| Variable_name               | Value    |
++-----------------------------+----------+
+| connect_timeout             | 10       |
+| delayed_insert_timeout      | 300      |
+| have_statement_timeout      | YES      |
+| innodb_flush_log_at_timeout | 1        |
+| innodb_lock_wait_timeout    | 60       |
+| innodb_rollback_on_timeout  | OFF      |
+| interactive_timeout         | 10       |
+| lock_wait_timeout           | 31536000 |
+| net_read_timeout            | 30       |
+| net_write_timeout           | 60       |
+| rpl_stop_slave_timeout      | 31536000 |
+| slave_net_timeout           | 60       |
+| wait_timeout                | 10       |
++-----------------------------+----------+
+
+#3.等待10s，再执行如上命令，就会出现超时重连的信息了
+mysql&amp;gt; show variables like &apos;%timeout%&apos;;
+ERROR 2006 (HY000): MySQL server has gone away
+No connection. Trying to reconnect...
+Connection id:    22933
+Current database: *** NONE ***
+
++-----------------------------+----------+
+| Variable_name               | Value    |
++-----------------------------+----------+
+| connect_timeout             | 10       |
+| delayed_insert_timeout      | 300      |
+| have_statement_timeout      | YES      |
+| innodb_flush_log_at_timeout | 1        |
+| innodb_lock_wait_timeout    | 60       |
+| innodb_rollback_on_timeout  | OFF      |
+| interactive_timeout         | 10       |
+| lock_wait_timeout           | 31536000 |
+| net_read_timeout            | 30       |
+| net_write_timeout           | 60       |
+| rpl_stop_slave_timeout      | 31536000 |
+| slave_net_timeout           | 60       |
+| wait_timeout                | 10       |
++-----------------------------+----------+
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h5 id=&quot;非交互式连接&quot;&gt;非交互式连接&lt;/h5&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;程序代码中连接&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#1.设置非交互连接超时时间20s
+mysql&amp;gt; set global wait_timeout=20;
+
+#2.建立连接后持续查看进程
+mysql&amp;gt; show full processlist;
++-------+------------+---------------------+-------------+---------+------+----------+-----------------------+
+| Id    | User       | Host                | db          | Command | Time | State    | Info                  |
++-------+------------+---------------------+-------------+---------+------+----------+-----------------------+
+| 22974 | hrodbadmin | 10.100.50.115:34504 | interview   | Sleep   |    1 |          | NULL                  |
++-------+------------+---------------------+-------------+---------+------+----------+-----------------------+
+
+mysql&amp;gt; show full processlist;
++-------+------------+---------------------+-------------+---------+------+----------+-----------------------+
+| Id    | User       | Host                | db          | Command | Time | State    | Info                  |
++-------+------------+---------------------+-------------+---------+------+----------+-----------------------+
+| 22974 | hrodbadmin | 10.100.50.115:34504 | interview   | Sleep   |    15 |          | NULL                  |
++-------+------------+---------------------+-------------+---------+------+----------+-----------------------+
+
+mysql&amp;gt; show full processlist;
++-------+------------+---------------------+-------------+---------+------+----------+-----------------------+
+| Id    | User       | Host                | db          | Command | Time | State    | Info                  |
++-------+------------+---------------------+-------------+---------+------+----------+-----------------------+
+| 22974 | hrodbadmin | 10.100.50.115:34504 | interview   | Sleep   |    20 |          | NULL                  |
++-------+------------+---------------------+-------------+---------+------+----------+-----------------------+
+
+#3.当sleep超过20s后连接被自动关闭
+mysql&amp;gt; show full processlist;
++-------+------------+---------------------+-------------+---------+------+----------+-----------------------+
+| Id    | User       | Host                | db          | Command | Time | State    | Info                  |
++-------+------------+---------------------+-------------+---------+------+----------+-----------------------+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;innodb_lock_wait_timeout--innodb_rollback_on_timeout&quot;&gt;innodb_lock_wait_timeout &amp;amp; innodb_rollback_on_timeout&lt;/h2&gt;
+
+&lt;h4 id=&quot;定义-2&quot;&gt;定义&lt;/h4&gt;
+
+&lt;h5 id=&quot;innodb_lock_wait_timeout&quot;&gt;innodb_lock_wait_timeout&lt;/h5&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;属性&lt;/th&gt;
+      &lt;th&gt;值&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;命令行格式&lt;/td&gt;
+      &lt;td&gt;–innodb-lock-wait-timeout=#&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;系统变量名&lt;/td&gt;
+      &lt;td&gt;innodb_lock_wait_timeout&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;作用域&lt;/td&gt;
+      &lt;td&gt;Global, Session&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;可动态配置&lt;/td&gt;
+      &lt;td&gt;Yes&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;类型&lt;/td&gt;
+      &lt;td&gt;Integer&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;默认值&lt;/td&gt;
+      &lt;td&gt;50&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;最小值&lt;/td&gt;
+      &lt;td&gt;1&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;最大值&lt;/td&gt;
+      &lt;td&gt;1073741824&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;
+InnoDB事务等待&lt;code&gt;行锁&lt;/code&gt;的超时时间，当一个事务尝试获取被另一个事务锁定的行时会出现，超时会出现如下错误：
+&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ERROR 1205 (HY000): Lock wait timeout exceeded; try restarting transaction
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;
+当错误出现时，会回滚当前语句，而不是整个事务（除非设置了&lt;code&gt;innodb_rollback_on_timeout&lt;/code&gt;）。
+&lt;/p&gt;
+
+&lt;h5 id=&quot;innodb_rollback_on_timeout&quot;&gt;innodb_rollback_on_timeout&lt;/h5&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;属性&lt;/th&gt;
+      &lt;th&gt;值&lt;/th&gt;
+      &lt;th&gt; &lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;命令行格式&lt;/td&gt;
+      &lt;td&gt;–innodb-rollback-on-timeout[={OFF&lt;/td&gt;
+      &lt;td&gt;ON}]&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;系统变量名&lt;/td&gt;
+      &lt;td&gt;innodb_rollback_on_timeout&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;作用域&lt;/td&gt;
+      &lt;td&gt;Global&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;可动态配置&lt;/td&gt;
+      &lt;td&gt;No&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;类型&lt;/td&gt;
+      &lt;td&gt;Boolean&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;默认值&lt;/td&gt;
+      &lt;td&gt;OFF&lt;/td&gt;
+      &lt;td&gt; &lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;
+默认情况下，InnoDB只回滚事务中超时的最后一条语句。如果设置了	&lt;code&gt;innodb_rollback_on_timeout=ON&lt;/code&gt;，则事务超时将导致InnoDB中止并回滚整个事务。
+&lt;/p&gt;
+
+&lt;h4 id=&quot;测试-2&quot;&gt;测试&lt;/h4&gt;
+
+&lt;p&gt;
+准备test表，里面包含2条数据。
+&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql&amp;gt; select * from test;
++----+-------+
+| id | cname |
++----+-------+
+|  1 | a     |
+|  2 | b     |
++----+-------+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#事务1 
+
+#1.开启事务
+begin;
+
+#2.加行锁
+select * from test where id=2 for update;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#事务2 
+
+#1.开启事务
+begin;
+
+#2.不请求行锁
+delete from test where id=1;
+
+#3.请求行锁
+delete from test where id=2;
+##请求超时，出现如下错误
+##[Err] 1205 - Lock wait timeout exceeded; try restarting transaction
+
+#4.数据查询，id=1的数据被删除了
+select * from test;
++----+-------+
+| id | cname |
++----+-------+
+|  2 | b     |
++----+-------+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;
+如果想要id=1的数据不被删除，需要在启动mysql时设置&lt;code&gt;innodb_rollback_on_timeout=On&lt;/code&gt;
+&lt;/p&gt;
+
+&lt;h2 id=&quot;lock_wait_timeout&quot;&gt;lock_wait_timeout&lt;/h2&gt;
+
+&lt;h4 id=&quot;定义-3&quot;&gt;定义&lt;/h4&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;属性&lt;/th&gt;
+      &lt;th&gt;值&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;命令行格式&lt;/td&gt;
+      &lt;td&gt;–lock-wait-timeout=#&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;系统变量名&lt;/td&gt;
+      &lt;td&gt;lock_wait_timeout&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;作用域&lt;/td&gt;
+      &lt;td&gt;Global, Session&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;可动态配置&lt;/td&gt;
+      &lt;td&gt;Yes&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;类型&lt;/td&gt;
+      &lt;td&gt;Integer&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;默认值&lt;/td&gt;
+      &lt;td&gt;31536000&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;最小值&lt;/td&gt;
+      &lt;td&gt;1&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;最大值&lt;/td&gt;
+      &lt;td&gt;31536000&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;
+尝试获取元数据锁的超时时间，适用于所有使用元数据锁的语句。包括表、视图、存储过程和存储函数上的DML（select,update,delete,insert）和DDL（create,alter,drop）操作，以及锁表、用读锁刷新表和处理程序语句。
+&lt;/p&gt;
+
+&lt;h4 id=&quot;测试-3&quot;&gt;测试&lt;/h4&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#事务1
+
+#1.开启事务
+begin;
+
+#2.执行查询，获取表的元数据锁
+select * from test;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#事务2
+
+#1.开启事务
+begin;
+
+#2.修改表结构的元数据（drop,alter）
+drop table test;
+##请求超时，出现如下错误
+##[Err] 1205 - Lock wait timeout exceeded; try restarting transaction
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;net_read_timeout--net_write_timeout&quot;&gt;net_read_timeout &amp;amp; net_write_timeout&lt;/h2&gt;
+
+&lt;h4 id=&quot;定义-4&quot;&gt;定义&lt;/h4&gt;
+
+&lt;h5 id=&quot;net_read_timeout&quot;&gt;net_read_timeout&lt;/h5&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;属性&lt;/th&gt;
+      &lt;th&gt;值&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;命令行格式&lt;/td&gt;
+      &lt;td&gt;–net-read-timeout=#&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;系统变量名&lt;/td&gt;
+      &lt;td&gt;net_read_timeout&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;作用域&lt;/td&gt;
+      &lt;td&gt;Global, Session&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;可动态配置&lt;/td&gt;
+      &lt;td&gt;Yes&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;类型&lt;/td&gt;
+      &lt;td&gt;Integer&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;默认值&lt;/td&gt;
+      &lt;td&gt;30&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;最小值&lt;/td&gt;
+      &lt;td&gt;1&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;
+当服务器从客户端获取数据时（如导入数据），等待从连接获取数据的超时时间。
+&lt;/p&gt;
+
+&lt;h5 id=&quot;net_write_timeout&quot;&gt;net_write_timeout&lt;/h5&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;属性&lt;/th&gt;
+      &lt;th&gt;值&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;命令行格式&lt;/td&gt;
+      &lt;td&gt;–net-write-timeout=#&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;系统变量名&lt;/td&gt;
+      &lt;td&gt;net_write_timeout&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;作用域&lt;/td&gt;
+      &lt;td&gt;Global, Session&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;可动态配置&lt;/td&gt;
+      &lt;td&gt;Yes&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;类型&lt;/td&gt;
+      &lt;td&gt;Integer&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;默认值&lt;/td&gt;
+      &lt;td&gt;30&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;最小值&lt;/td&gt;
+      &lt;td&gt;1&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;
+当服务器向客户端写入数据时（如执行查询），等待将数据写入连接的超时时间。
+&lt;/p&gt;
+
+&lt;h2 id=&quot;总结&quot;&gt;总结&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;connect_timeout：用于连接过程中的超时控制&lt;/li&gt;
+  &lt;li&gt;interactive_timeout与wait_timeout：用于连接空闲阶段的超时控制&lt;/li&gt;
+  &lt;li&gt;net_read_timeout与net_write_timeout：用于连接繁忙阶段的超时控制&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html&quot;&gt;Server System Variables&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://dev.mysql.com/doc/refman/5.7/en/innodb-parameters.html&quot;&gt;InnoDB Startup Options and System Variables&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.2cto.com/database/201501/372765.html&quot;&gt;mysqltimeout知多少&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://www.cnblogs.com/dato/p/7049343.html&quot;&gt;浅谈 DML、DDL、DCL的区别&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Wed, 15 May 2019 11:20:00 +0800</pubDate>
+        <link>http://localhost:4001/2019/05/15/timeout/</link>
+        <guid isPermaLink="true">http://localhost:4001/2019/05/15/timeout/</guid>
+        
+        <category>mysql</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Git学习-入门</title>
+        <description>&lt;blockquote&gt;
+  &lt;p&gt;介绍使用git中一些常用命令来进行版本管理。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;安装与配置&quot;&gt;安装与配置&lt;/h2&gt;
+
+&lt;h4 id=&quot;windows&quot;&gt;windows&lt;/h4&gt;
+
+&lt;h5 id=&quot;安装&quot;&gt;安装&lt;/h5&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://git-scm.com/download/win&quot;&gt;下载地址&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;
+从下载地址选择合适的版本下载，按照提示进行安装即可。
+&lt;/p&gt;
+
+&lt;h5 id=&quot;用户配置&quot;&gt;用户配置&lt;/h5&gt;
+
+&lt;p&gt;
+当用户提交代码时，git服务器可知道是谁进行了操作。
+&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-linux&quot;&gt;$ git config --global user.name &quot;Your Name&quot;
+$ git config --global user.email &quot;email@example.com&quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;
+配置文件位置
+&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-linux&quot;&gt;C:\Users(用户)\$USER\.gitconfig
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5 id=&quot;ssh-key配置&quot;&gt;SSH Key配置&lt;/h5&gt;
+
+&lt;p&gt;
+如果使用GitHub作为代码服务器，为了能与其进行交互，需要创建SSK key并配置到GitHub上。
+&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;1.创建SSH Key&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-linux&quot;&gt;#一路回车就可以
+$ ssh-keygen -t rsa -C &quot;youremail@example.com&quot;
+
+#如果成功在用户目录可以看到id_rsa与id_rsa.pub文件
+$ ll /c/Users/zwtisme/.ssh/
+total 9
+-rw-r--r-- 1 zwtisme 197121 1823 三月   21 06:23 id_rsa
+-rw-r--r-- 1 zwtisme 197121  398 三月   21 06:23 id_rsa.pub
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;2.将Key添加到GitHub&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;
+右上角用户-&amp;gt;设置-&amp;gt;SSH and GPG keys-&amp;gt;New SSH Key。将&lt;code&gt;id_rsa.pub&lt;/code&gt;里的内容填写进去。
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-04-05-git-study-introduction/20190407111122.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;linux&quot;&gt;linux&lt;/h4&gt;
+
+&lt;h5 id=&quot;安装-1&quot;&gt;安装&lt;/h5&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/git/git/releases&quot;&gt;版本地址&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://mirrors.edge.kernel.org/pub/software/scm/git/&quot;&gt;下载地址&lt;/a&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-linux&quot;&gt;[root@iZwz9i8fd8lio2yh3oerizZ bmsource]# wget https://mirrors.edge.kernel.org/pub/software/scm/git/git-2.21.0.tar.gz
+[root@iZwz9i8fd8lio2yh3oerizZ bmsource]# tar -zxf git-2.21.0.tar.gz 
+[root@iZwz9i8fd8lio2yh3oerizZ bmsource]# cd git-2.21.0
+[root@iZwz9i8fd8lio2yh3oerizZ git-2.21.0]# ./configure --prefix=/usr/local/git
+[root@iZwz9i8fd8lio2yh3oerizZ git-2.21.0]# make &amp;amp;&amp;amp; make install
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5 id=&quot;用户配置-1&quot;&gt;用户配置&lt;/h5&gt;
+
+&lt;p&gt;
+当用户提交代码时，git服务器可知道是谁进行了操作。
+&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-linux&quot;&gt;$ git config --global user.name &quot;Your Name&quot;
+$ git config --global user.email &quot;email@example.com&quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;
+配置文件位置
+&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-linux&quot;&gt;/root/.gitconfig
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5 id=&quot;ssh-key配置-1&quot;&gt;SSH Key配置&lt;/h5&gt;
+
+&lt;p&gt;
+如果使用GitHub作为代码服务器，为了能与其进行交互，需要创建SSK key并配置到GitHub上。
+&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;1.创建SSH Key&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-linux&quot;&gt;#一路回车就可以
+$ ssh-keygen -t rsa -C &quot;youremail@example.com&quot;
+
+#如果成功在用户目录可以看到id_rsa与id_rsa.pub文件
+[root@iZwz9i8fd8lio2yh3oerizZ /]# ll /root/.ssh
+total 12
+-rw------- 1 root root 1679 Apr  7 10:59 id_rsa
+-rw-r--r-- 1 root root  398 Apr  7 10:59 id_rsa.pub
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;2.将Key添加到GitHub&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;
+右上角用户-&amp;gt;设置-&amp;gt;SSH and GPG keys-&amp;gt;New SSH Key。将&lt;code&gt;id_rsa.pub&lt;/code&gt;里的内容填写进去。
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-04-05-git-study-introduction/20190407111122.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;创建版本库&quot;&gt;创建版本库&lt;/h2&gt;
+
+&lt;p&gt;
+版本库又名仓库，英文名repository，你可以简单理解成一个目录，这个目录里面的所有文件都可以被Git管理起来，每个文件的修改、删除，Git都能跟踪，以便任何时刻都可以追踪历史，或者在将来某个时刻可以“还原”。
+&lt;/p&gt;
+
+&lt;p&gt;
+版本库可以从远程仓库克隆，也可以在本地创建之后再推送到远程。
+&lt;/p&gt;
+
+&lt;h4 id=&quot;克隆远程仓库&quot;&gt;克隆远程仓库&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-linux&quot;&gt;#定位到本机任意目录
+$ cd /d/gitstudy2_tmp/
+
+#执行克隆命令
+$ git clone git@github.com:izwt/gitstudy2.git
+
+#进入仓库，查看状态
+$ cd gitstudy2/
+$ git status
+
+On branch master
+Your branch is up to date with &apos;origin/master&apos;.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&quot;本地创建&quot;&gt;本地创建&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-linux&quot;&gt;#定位到本机任意目录
+$ cd /d/gitstudy2_tmp/
+
+#创建git目录
+$ mkdir gitstudy3
+$ cd gitstudy3/
+
+#将目录变为git仓库
+$ git init
+
+#查看状态
+$ git status
+On branch master
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;本地版本库管理&quot;&gt;本地版本库管理&lt;/h2&gt;
+
+&lt;p&gt;
+在实际工作中，大部分时间都是在本地版本库里进行操作。本地版本库一般分为3个部分，工作区、暂存区、本地分支库。
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-04-05-git-study-introduction/20190405162654.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;工作区状态&quot;&gt;工作区状态&lt;/h4&gt;
+
+&lt;p&gt;
+查看当前工作区是否有文件修改。
+&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-linux&quot;&gt;$ git status
+
+On branch master
+No commits yet
+
+Untracked files:
+  (use &quot;git add &amp;lt;file&amp;gt;...&quot; to include in what will be committed)
+        file1.txt
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&quot;文件修改比较&quot;&gt;文件修改比较&lt;/h4&gt;
+
+&lt;p&gt;
+查看工作区文件与本地分支上的差异。
+&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-linux&quot;&gt;$ git diff
+
+diff --git a/file1.txt b/file1.txt
+index 9f37f61..2563660 100644
+--- a/file1.txt
++++ b/file1.txt
+@@ -1,3 +1,4 @@
+ file1
+ file11
+ file111
++file1111
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&quot;文件添加&quot;&gt;文件添加&lt;/h4&gt;
+
+&lt;p&gt;
+将修改的文件添加到暂存区。
+&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-linux&quot;&gt;#添加所有修改文件
+$ git add .
+
+On branch master
+No commits yet
+Changes to be committed:
+  (use &quot;git rm --cached &amp;lt;file&amp;gt;...&quot; to unstage)
+        new file:   file1.txt
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-linux&quot;&gt;#添加某个修改文件
+$ git add file1.txt
+
+#添加匹配的修改文件
+$ git add file*
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&quot;文件提交&quot;&gt;文件提交&lt;/h4&gt;
+
+&lt;p&gt;
+将暂存区文件提交到本地分支。
+&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-linux&quot;&gt;$ git commit -m &apos;new file1&apos;
+
+[master (root-commit) c62fa91] new file1
+ 1 file changed, 3 insertions(+)
+ create mode 100644 file1.txt
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&quot;版本提交历史&quot;&gt;版本提交历史&lt;/h4&gt;
+
+&lt;p&gt;
+查看版本所有的提交历史。
+&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-linux&quot;&gt;$ git log
+
+commit c83cf70958f5e9b15d5a92d2b4dd12137b669ef4 (HEAD -&amp;gt; master)
+Author: zwtisme &amp;lt;903628963@qq.com&amp;gt;
+Date:   Sun Apr 7 12:07:10 2019 +0800
+    change file1 1
+
+commit c62fa9142441d4da4778ceaaaa77050b7e908a83
+Author: zwtisme &amp;lt;903628963@qq.com&amp;gt;
+Date:   Sun Apr 7 11:37:14 2019 +0800
+    new file1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-linux&quot;&gt;#单行显示
+$ git log --pretty=oneline
+c83cf70958f5e9b15d5a92d2b4dd12137b669ef4 (HEAD -&amp;gt; master) change file1 1
+c62fa9142441d4da4778ceaaaa77050b7e908a83 new file1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&quot;版本回退&quot;&gt;版本回退&lt;/h4&gt;
+
+&lt;h5 id=&quot;撤销工作区修改&quot;&gt;撤销工作区修改&lt;/h5&gt;
+
+&lt;p&gt;
+撤销工作区某个文件的修改。
+&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-linux&quot;&gt;$ git checkout -- file1.txt
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;
+如果文件已添加到暂存区，可先将文件回退到工作区，再撤销修改。
+&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-linux&quot;&gt;#将文件从暂存区退回
+$ git reset HEAD file1.txt
+
+#撤销修改
+$ git checkout -- file1.txt
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5 id=&quot;回退到历史版本&quot;&gt;回退到历史版本&lt;/h5&gt;
+
+&lt;p&gt;
+需要将工作区文件恢复到某个历史版本。
+&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-linux&quot;&gt;#查看版本信息，当指向为daa07a
+$ git log --pretty=oneline
+daa07a26f742ef888713015a99004cae8da3dae4 (HEAD -&amp;gt; master) change file1 2
+c83cf70958f5e9b15d5a92d2b4dd12137b669ef4 change file1 1
+c62fa9142441d4da4778ceaaaa77050b7e908a83 new file1
+
+#恢复到指定版本
+#字符串代表git上的版本号前面几个字符
+$ git reset --hard c83cf7
+
+#查看版本信息，已经切换到c83cf7
+$ git log --pretty=oneline
+c83cf70958f5e9b15d5a92d2b4dd12137b669ef4 (HEAD -&amp;gt; master) change file1 1
+c62fa9142441d4da4778ceaaaa77050b7e908a83 new file1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;
+查看版本库，历史执行命令。
+&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-linux&quot;&gt;$ git reflog
+c83cf70 (HEAD -&amp;gt; master) HEAD@{0}: reset: moving to c83cf7
+daa07a2 HEAD@{1}: commit: change file1 2
+c83cf70 (HEAD -&amp;gt; master) HEAD@{2}: commit: change file1 1
+c62fa91 HEAD@{3}: commit (initial): new file1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;分支管理&quot;&gt;分支管理&lt;/h2&gt;
+
+&lt;h4 id=&quot;查看分支&quot;&gt;查看分支&lt;/h4&gt;
+
+&lt;p&gt;
+查看本地分支信息，&lt;code&gt;*&lt;/code&gt;表示当前所在分支。
+&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-linux&quot;&gt;$ git branch -av
+
+  dev    c83cf70 change file1 1
+* master c83cf70 change file1 1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&quot;新建分支&quot;&gt;新建分支&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-linux&quot;&gt;$ git branch dev2
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&quot;切换分支&quot;&gt;切换分支&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-linux&quot;&gt;$ git checkout dev2
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&quot;文件贮藏&quot;&gt;文件贮藏&lt;/h4&gt;
+
+&lt;p&gt;
+如果当前分支有文件修改，且还不能提交，这时又需要新建分支进行修改，可将当前工作区贮藏起来，用于之后的恢复。
+&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-linux&quot;&gt;$ git stash
+Saved working directory and index state WIP on dev: 9f666fb 冲突合并
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;
+查看所有贮藏信息。
+&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-linux&quot;&gt;$ git stash list
+stash@{0}: WIP on dev: 9f666fb 冲突合并
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;
+恢复贮藏信息。
+&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-linux&quot;&gt;#恢复上一个贮藏版本，自动删除贮藏信息
+$ git stash pop
+
+#恢复指定贮藏版本，不自动删除贮藏信息，需手动删除
+$ git stash apply stash@{0}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;
+删除贮藏信息。
+&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-linux&quot;&gt;$ git stash drop stash@{0}
+Dropped stash@{0} (e690f81c7f33eb997476a2a24343b203993c3754)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&quot;删除分支&quot;&gt;删除分支&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-linux&quot;&gt;$ git branch -d dev2
+Deleted branch dev2 (was c83cf70).
+
+#强制删除未合并的分支
+$ git branch -D feature
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&quot;合并分支&quot;&gt;合并分支&lt;/h4&gt;
+
+&lt;p&gt;
+将其他分支合并到当前分支。
+&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-linux&quot;&gt;$ git merge master
+Updating c83cf70..e67c9f6
+Fast-forward
+ file1.txt | 1 +
+ 1 file changed, 1 insertion(+)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;
+默认情况下，如果没有文件冲突，Git会使用&lt;code&gt;Fast forward&lt;/code&gt;模式合并，这种模式下，如果删除分支，会丢掉分支信息。
+&lt;/p&gt;
+
+&lt;p&gt;
+合并分支时，加上--no-ff参数就可以用普通模式合并，合并后的历史有分支，能看出来曾经做过合并，而fast forward合并就看不出来曾经做过合并。
+&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-linux&quot;&gt;$ git merge --no-ff -m &quot;merge with no-ff&quot; dev
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;
+查看分支合并图。
+&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-linux&quot;&gt;$ git log --graph --pretty=oneline --abbrev-commit
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&quot;解决冲突&quot;&gt;解决冲突&lt;/h4&gt;
+
+&lt;p&gt;
+如果当前分支与需要合并的分支都对某些文件进行修改，在执行合并命令时，会提示文件冲突，需要手动解决冲突（合并文件的修改），然后再提交。
+&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-linux&quot;&gt;#合并分支，提示文件冲突
+$ git merge master
+Auto-merging file1.txt
+CONFLICT (content): Merge conflict in file1.txt
+Automatic merge failed; fix conflicts and then commit the result.
+
+#查看冲突文件
+$ git status
+
+On branch dev
+You have unmerged paths.
+  (fix conflicts and run &quot;git commit&quot;)
+  (use &quot;git merge --abort&quot; to abort the merge)
+
+Unmerged paths:
+  (use &quot;git add &amp;lt;file&amp;gt;...&quot; to mark resolution)
+        both modified:   file1.txt
+
+#查看某个文件冲突内容
+#head:代表当前分支内容
+#master:代表需要合并的分支内容。
+$ cat file1.txt
+file1
+file11
+file111
+file1111
+file11111
+&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt; HEAD
+file11
+=======
+file1111
+&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt; master
+
+#手动修改文件后提交
+$ git add file1.txt
+$ git commit -m &apos;冲突合并&apos;
+[dev 9f666fb] 冲突合并
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;远程仓库&quot;&gt;远程仓库&lt;/h2&gt;
+
+&lt;h4 id=&quot;克隆仓库&quot;&gt;克隆仓库&lt;/h4&gt;
+
+&lt;p&gt;
+默认只会获取master分支。
+&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-linux&quot;&gt;#克隆
+$ git clone git@github.com:izwt/gitstudy2.git
+
+#分支
+$ git branch
+* master
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&quot;创建远程克隆&quot;&gt;创建远程克隆&lt;/h4&gt;
+
+&lt;p&gt;
+如果远程上是一个空的仓库，则需要创建。
+&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-linux&quot;&gt;1.在GitHub上创建空的仓库
+
+2.本地仓库与远程库关联
+$ git remote add origin git@github.com:izwt/gitstudy.git
+
+3.将本地仓库分支推送到远程
+#第一次
+git push -u origin master
+#之后
+git push origin master
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&quot;查看远程分支&quot;&gt;查看远程分支&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-linux&quot;&gt;$ git remote -v
+origin  git@github.com:izwt/gitstudy2.git (fetch)
+origin  git@github.com:izwt/gitstudy2.git (push)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&quot;获取其他分支&quot;&gt;获取其他分支&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-linux&quot;&gt;$ git checkout --track origin/dev
+Switched to a new branch &apos;dev&apos;
+Branch &apos;dev&apos; set up to track remote branch &apos;dev&apos; from &apos;origin&apos;.
+
+#或者
+$ git checkout -b dev origin/dev
+Switched to a new branch &apos;dev&apos;
+Branch &apos;dev&apos; set up to track remote branch &apos;dev&apos; from &apos;origin&apos;.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&quot;创建分支跟踪&quot;&gt;创建分支跟踪&lt;/h4&gt;
+
+&lt;p&gt;
+操作过程中提示，提示分支未跟踪远程，则添加跟踪。
+&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-linux&quot;&gt;$ git branch --set-upstream-to=origin/dev dev
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&quot;推送分支&quot;&gt;推送分支&lt;/h4&gt;
+
+&lt;p&gt;
+将本地修改的分支推送到远程。
+&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-linux&quot;&gt;$ git push origin master
+
+Enumerating objects: 4, done.
+Counting objects: 100% (4/4), done.
+Delta compression using up to 4 threads
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (3/3), 272 bytes | 68.00 KiB/s, done.
+Total 3 (delta 0), reused 0 (delta 0)
+To github.com:izwt/gitstudy2.git
+   a9c0378..741bc0c  master -&amp;gt; master
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&quot;拉取分支&quot;&gt;拉取分支&lt;/h4&gt;
+
+&lt;p&gt;
+从远程分支拉取最新的内容到本地分支。
+&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-linux&quot;&gt;$ git pull
+
+remote: Enumerating objects: 4, done.
+remote: Counting objects: 100% (4/4), done.
+remote: Compressing objects: 100% (2/2), done.
+remote: Total 3 (delta 0), reused 3 (delta 0), pack-reused 0
+Unpacking objects: 100% (3/3), done.
+From github.com:izwt/gitstudy2
+   a9c0378..741bc0c  master     -&amp;gt; origin/master
+Updating a9c0378..741bc0c
+Fast-forward
+ file1.txt | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 file1.txt
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://git-scm.com/book/zh/v2&quot;&gt;git官方文章&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://git-scm.com/docs&quot;&gt;git文档&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000&quot;&gt;廖雪峰教程&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://localhost:4001/img/2019-04-05-git-study-introduction/git-cheatsheet.pdf&quot;&gt;git-cheatsheet&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Fri, 05 Apr 2019 14:10:00 +0800</pubDate>
+        <link>http://localhost:4001/2019/04/05/git-study-introduction/</link>
+        <guid isPermaLink="true">http://localhost:4001/2019/04/05/git-study-introduction/</guid>
+        
+        <category>git</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>RabbitMQ学习-队列数据同步</title>
+        <description>&lt;blockquote&gt;
+  &lt;p&gt;介绍RabbitMQ镜像集群中，镜像队列的数据同步规则。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;概要&quot;&gt;概要&lt;/h2&gt;
+
+&lt;h4 id=&quot;镜像队列&quot;&gt;镜像队列&lt;/h4&gt;
+
+&lt;p&gt;
+集群的队列创建后默认只在一个节点上，当集群配置为镜像集群时，队列会被镜像到所有节点上。消息发布到信道后，会被投递到主队列及镜像队列中。一个镜像队列包含一个主队列（master）和多个从队列（slave）。
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190403151814.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;非同步队列&quot;&gt;非同步队列&lt;/h4&gt;
+
+&lt;p&gt;
+rabbitmq中同步（synchronised）是用来表示master和slave之间的数据状态是否一致的。如果slave包含master中的所有message，则这个slave是synchronised；如果这个slave并没有包含所有master中的message，则这个slave是unsynchronised。
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190401134813.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;何时出现非同步队列&quot;&gt;何时出现非同步队列&lt;/h4&gt;
+
+&lt;h5 id=&quot;新节点加入&quot;&gt;新节点加入&lt;/h5&gt;
+
+&lt;p&gt;
+当新slave加入到镜像队列时，此时新slave是空的，而master中这时可能已有消息。假设这时master包含了10条消息，当第11条消息被添加到这个镜像队列中，新slave会从第11条消息开始接收。这时新slave就是unsynchronised状态。如果前10条消息从镜像队列中被消费掉了, 新slave会自动变成synchronised状态。
+&lt;/p&gt;
+
+&lt;h5 id=&quot;旧节点重新加入&quot;&gt;旧节点重新加入&lt;/h5&gt;
+
+&lt;p&gt;
+当节点由于异常关闭或其他情况重启加入集群后，如果节点内有消息，那么节点就是unsynchronised状态。当出现如下情况（同样也适用于新节点加入），slave会变成synchronised状态：
+&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;master消息数为0&lt;/li&gt;
+  &lt;li&gt;master中旧有的消息被消费完&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p style=&quot;color:red;&quot;&gt;
+疑问：旧节点重新加入后，可用消息会显示为master的，此时旧节点状态可能还是未同步，内部处理机制是否是未同步的节点，是不提供服务的吗？
+&lt;/p&gt;
+
+&lt;h5 id=&quot;选主模式&quot;&gt;选主模式&lt;/h5&gt;
+
+&lt;p&gt;
+理论上越早加入的slave节点，状态越有机会是同步的，所以rabbitmq通过这种方式选主。当master出现异常因消失时，最老的slave（状态需要为已同步）被提升成master。
+&lt;/p&gt;
+
+&lt;h2 id=&quot;同步模式&quot;&gt;同步模式&lt;/h2&gt;
+
+&lt;p&gt;
+在设置集群策略时，可使用【ha-sync-mode】参数来控制使用手动同步（manual）还是自动同步（automatic），默认为手动同步。
+&lt;/p&gt;
+
+&lt;h4 id=&quot;手动&quot;&gt;手动&lt;/h4&gt;
+
+&lt;p&gt;
+如果镜像队列被设置成manual模式，当一个slave加入或重新加入队列时的行为，队列会根据消息情况来决定是否为同步状态，否则就为未同步状态。当然也可通过命令来进行同步。
+&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-linux&quot;&gt;#手动同步队列
+[root@DEV-mHRO64 redis]# rabbitmqctl sync_queue queue_name
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&quot;自动&quot;&gt;自动&lt;/h4&gt;
+
+&lt;p&gt;
+如果镜像队列被设置成automatic模式，当一个新slave加入或已有slave重新加入时，slave会自动同步master中的所有消息，在所有消息被同步完成之前，队列的所有操作都会被阻塞（blocking）。
+&lt;/p&gt;
+
+&lt;h4 id=&quot;区别&quot;&gt;区别&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;manual：不保证数据可靠性，在某些情况下可能会丢失消息，但是保证了队列的可用性&lt;/li&gt;
+  &lt;li&gt;automatic：提高了数据的可靠性，但是当有新slave加入时，可能会出现队列的暂时不可用&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;同步测试&quot;&gt;同步测试&lt;/h2&gt;
+
+&lt;p&gt;
+针对上面不同的同步场景，进行相应的测试。
+&lt;/p&gt;
+
+&lt;h4 id=&quot;新节点加入-1&quot;&gt;新节点加入&lt;/h4&gt;
+
+&lt;h5 id=&quot;手动模式&quot;&gt;手动模式&lt;/h5&gt;
+
+&lt;p&gt;
+原有节点情况，队列中包含2条消息
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190401165408.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;
+新加入一个节点，因为原先队列有消息，所以新slave为未同步状态
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190401170808.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;
+队列中还在不断的增加消息
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190401174309.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;
+当队列中旧消息消费后，新slave变为同步状态
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190401174409.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;自动模式&quot;&gt;自动模式&lt;/h5&gt;
+
+&lt;p&gt;
+原有节点情况，队列中包含2条消息
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190401165408.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;
+新加入一个节点，rabbitmq执行自动同步（阻塞队列使用），所以新slave为同步状态
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190401175116.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190401174409.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;旧节点重新加入-1&quot;&gt;旧节点重新加入&lt;/h4&gt;
+
+&lt;h5 id=&quot;手动模式-1&quot;&gt;手动模式&lt;/h5&gt;
+
+&lt;p&gt;
+原有节点情况，队列中包含2条消息，总共有3个队列
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190401180216.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;
+某个节点由于各种原因停止服务了，只有2个队列了
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190401180451.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;
+队列中还在不断的消费消息
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190401181316.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;
+当节点重新加入到集群后，为未同步状态
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190401184201.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;
+队列中还在不断的消费消息与增加消息，当队列中旧消息消费后，节点变为同步状态
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190401184537.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190401185432.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;自动模式-1&quot;&gt;自动模式&lt;/h5&gt;
+
+&lt;p&gt;
+原有节点情况，队列中包含2条消息，总共有3个队列
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190401180216.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;
+某个节点由于各种原因停止服务了，只有2个队列了
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190401180451.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;
+队列中还在不断的消费消息
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190401181316.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;
+当节点重新加入到集群后，自动进行同步，为同步状态
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190401193449.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;选主测试&quot;&gt;选主测试&lt;/h2&gt;
+
+&lt;p&gt;
+原有节点情况，&lt;code&gt;rabbit@DEV-HROEx64&lt;/code&gt;为master节点。
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190402111953.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;
+将原有master节点关闭，&lt;code&gt;rabbit@DEV-mHRO64&lt;/code&gt;切换为master节点。
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190402112043.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;
+在启动&lt;code&gt;rabbit@DEV-HROEx64&lt;/code&gt;节点，此节点变成了slave节点。
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-04-01-14-rabbitmq-study-queue-data-sync/20190402112230.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p style=&quot;color:red;&quot;&gt;
+Tips：未同步的slave是不能选为master的，如果不存在已同步的slave，则队列将不能使用。
+&lt;/p&gt;
+
+&lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
+
+</description>
+        <pubDate>Mon, 01 Apr 2019 14:10:00 +0800</pubDate>
+        <link>http://localhost:4001/2019/04/01/14-rabbitmq-study-queue-data-sync/</link>
+        <guid isPermaLink="true">http://localhost:4001/2019/04/01/14-rabbitmq-study-queue-data-sync/</guid>
+        
+        <category>rabbitmq</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>mysql-事务隔离级别</title>
+        <description>&lt;blockquote&gt;
+  &lt;p&gt;介绍mysql中事务并发时可能出现的问题及事务隔离级别。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;概述&quot;&gt;概述&lt;/h2&gt;
+
+&lt;p&gt;
+mysql事务的四大特性ACID，即原子性（automicity）、一致性(insistency)、隔离性(isolation)、持久性(durability)。隔离性最为重要，如果没有设置隔离级别，就可能会出现脏读、不可重复读、幻读。MySQL默认是innodb引擎，默认的隔离级别是repeatable read。
+&lt;/p&gt;
+
+&lt;h2 id=&quot;事务并发的问题&quot;&gt;事务并发的问题&lt;/h2&gt;
+
+&lt;h4 id=&quot;脏读&quot;&gt;脏读&lt;/h4&gt;
+
+&lt;h5 id=&quot;定义&quot;&gt;定义&lt;/h5&gt;
+
+&lt;p&gt;
+当前事务读取了其他事务未提交的数据。
+&lt;/p&gt;
+
+&lt;h5 id=&quot;测试&quot;&gt;测试&lt;/h5&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#A窗口
+
+#设置隔离级别
+set @@session.tx_isolation = &apos;read-uncommitted&apos;;
+select @@session.tx_isolation,@@global.tx_isolation;
+
+#第一次查询
+start transaction;
+select * from test;
+id	cname
+2	a
+
+#第二次查询，B窗口事务不提交，结果为未提交的数据
+select * from test;
+id	cname
+2	aa
+
+#第三次查询，B窗口事务回滚，结果恢复到第一次查询
+select * from test;
+id	cname
+2	a
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#B窗口
+start transaction;
+update test set cname=&apos;aa&apos; where id=2;
+
+rollback;
+commit;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;不可重复读&quot;&gt;不可重复读&lt;/h4&gt;
+
+&lt;h5 id=&quot;定义-1&quot;&gt;定义&lt;/h5&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;可重复读：当前事务读取了数据后，其他事务对数据的修改，不管有无提交，都不会影响当前事务多次读取的结果。&lt;/li&gt;
+  &lt;li&gt;不可重复读：当前事务读取了数据后，其他事务对数据进行了修改会影响当前事务多次读取的结果。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h5 id=&quot;可重复读测试&quot;&gt;可重复读测试&lt;/h5&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#A窗口
+
+#设置隔离级别
+set @@session.tx_isolation = &apos;repeatable-read&apos;;
+select @@session.tx_isolation,@@global.tx_isolation;
+
+#第一次查询
+start transaction;
+select * from test;
+id	cname
+2	a
+
+#第二次查询，B窗口事务不提交，查询结果不变
+select * from test;
+id	cname
+2	a
+
+#第三次查询，B窗口事务提交，查询结果不变
+select * from test;
+id	cname
+2	a
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#B窗口
+start transaction;
+update test set cname=&apos;aa&apos; where id=2;
+
+rollback;
+commit;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h5 id=&quot;不可重复读测试&quot;&gt;不可重复读测试&lt;/h5&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#A窗口
+
+#设置隔离级别
+set @@session.tx_isolation = &apos;read-committed&apos;;
+select @@session.tx_isolation,@@global.tx_isolation;
+
+#第一次查询
+start transaction;
+select * from test;
+id	cname
+2	a
+
+#第二次查询，B窗口事务不提交，查询结果不变
+select * from test;
+id	cname
+2	a
+
+#第三次查询，B窗口事务提交，查询结果变化
+select * from test;
+id	cname
+2	aa
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#B窗口
+start transaction;
+update test set cname=&apos;aa&apos; where id=2;
+
+rollback;
+commit;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;幻读&quot;&gt;幻读&lt;/h4&gt;
+
+&lt;h5 id=&quot;定义-2&quot;&gt;定义&lt;/h5&gt;
+
+&lt;p&gt;
+当前事务读取了数据行后，其他事务对数据行进行新增或删除，会影响当前事务多次读取的数据行。
+&lt;/p&gt;
+
+&lt;h5 id=&quot;幻读测试&quot;&gt;幻读测试&lt;/h5&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#A窗口
+
+#设置隔离级别
+set @@session.tx_isolation = &apos;read-committed&apos;;
+select @@session.tx_isolation,@@global.tx_isolation;
+
+#第一次查询
+start transaction;
+select * from test;
+id	cname
+2	aa
+
+#第二次查询，B窗口事务不提交，查询结果不变
+select * from test;
+id	cname
+2	a
+
+#第三次查询，B窗口事务提交，查询结果变化
+select * from test;
+id	cname
+2	aa
+4   b
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#B窗口
+start transaction;
+insert into test(cname) values(&apos;b&apos;);
+
+rollback;
+commit;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h5 id=&quot;不幻读测试&quot;&gt;不幻读测试&lt;/h5&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#A窗口
+
+#设置隔离级别
+set @@session.tx_isolation = &apos;serializable&apos;;
+select @@session.tx_isolation,@@global.tx_isolation;
+
+#第一次查询
+start transaction;
+select * from test;
+id	cname
+2	aa
+
+#第二次查询，B窗口事务不能提交，查询结果不变
+select * from test;
+id	cname
+2	aa
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#B窗口
+start transaction;
+insert into test(cname) values(&apos;b&apos;);
+
+#此时不能回滚或提交
+rollback;
+commit;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;不可重复读与幻读的区别&quot;&gt;不可重复读与幻读的区别&lt;/h4&gt;
+
+&lt;h5 id=&quot;结果&quot;&gt;结果&lt;/h5&gt;
+
+&lt;p&gt;
+2种问题都会出现事务中多次读取数据与第一次读取的数据不一致的现象。
+&lt;/p&gt;
+
+&lt;h5 id=&quot;控制的数据&quot;&gt;控制的数据&lt;/h5&gt;
+
+&lt;p&gt;
+控制不可重复读，需要锁定的是满足条件（&lt;code&gt;可理解为行锁&lt;/code&gt;）的数据；控制幻读，需要锁定的是满足条件及附近的数据（&lt;code&gt;可理解为表锁&lt;/code&gt;）。
+&lt;/p&gt;
+
+&lt;h5 id=&quot;执行的操作&quot;&gt;执行的操作&lt;/h5&gt;
+
+&lt;p&gt;
+不可重复读针对的是&lt;code&gt;update&lt;/code&gt;，幻读针对的是&lt;code&gt;insert与delete&lt;/code&gt;。
+&lt;/p&gt;
+
+&lt;h2 id=&quot;事务隔离级别&quot;&gt;事务隔离级别&lt;/h2&gt;
+
+&lt;p&gt;
+不同隔离级别对应的并发处理问题：
+&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;隔离级别&lt;/th&gt;
+      &lt;th&gt;脏读&lt;/th&gt;
+      &lt;th&gt;不可重复读(结果是否发生变化)&lt;/th&gt;
+      &lt;th&gt;幻读&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;READ UNCOMMITTED&lt;/td&gt;
+      &lt;td&gt;Y&lt;/td&gt;
+      &lt;td&gt;Y&lt;/td&gt;
+      &lt;td&gt;Y&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;READ COMMITTED&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt;Y&lt;/td&gt;
+      &lt;td&gt;Y&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;REPEATABLE READ&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt;Y&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;SERIALIZABLE&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+      &lt;td&gt;N&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h4 id=&quot;read-uncommitted&quot;&gt;read uncommitted&lt;/h4&gt;
+
+&lt;p&gt;
+读未提交，select语句以非锁定方式执行，会读取到其他事务未提交的数据，此隔离级别会导致脏读。
+&lt;/p&gt;
+
+&lt;h4 id=&quot;read-committed&quot;&gt;read committed&lt;/h4&gt;
+
+&lt;p&gt;
+读已提交，值会读取到其他事务已提交的数据。
+&lt;/p&gt;
+
+&lt;h4 id=&quot;repeatable-read&quot;&gt;repeatable read&lt;/h4&gt;
+
+&lt;p&gt;
+该事务隔离级别只会读取已提交的结果，与read committed不同的是，repeatable-read在开启事务的情况下，同一条件的查询返回的结果永远是一致的，无论其它事物是否提交了新的数据。
+&lt;/p&gt;
+
+&lt;h4 id=&quot;serializable&quot;&gt;serializable&lt;/h4&gt;
+
+&lt;p&gt;
+Serializable隔离级别 ，读用读锁，写用写锁，读锁和写锁互斥，这么做可以有效的避免幻读、不可重复读、脏读等问题，但会极大的降低数据库的并发能力。
+&lt;/p&gt;
+
+&lt;h2 id=&quot;修改隔离级别&quot;&gt;修改隔离级别&lt;/h2&gt;
+
+&lt;p&gt;
+Tips：如果是mysql8及以后版本，需要将&lt;code&gt;tx_isolation&lt;/code&gt;修改为&lt;code&gt;transaction_isolation&lt;/code&gt;。
+&lt;/p&gt;
+
+&lt;h5 id=&quot;查看&quot;&gt;查看&lt;/h5&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#session
+mysql&amp;gt; select @@session.tx_isolation;
++------------------------+
+| @@session.tx_isolation |
++------------------------+
+| READ-UNCOMMITTED       |
++------------------------+
+
+#global
+mysql&amp;gt; select @@global.tx_isolation;
++-----------------------+
+| @@global.tx_isolation |
++-----------------------+
+| READ-UNCOMMITTED      |
++-----------------------+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h5 id=&quot;修改&quot;&gt;修改&lt;/h5&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#session
+mysql&amp;gt; set @@session.tx_isolation = &apos;read-committed&apos;;
+
+#global
+mysql&amp;gt; set @@global.tx_isolation = &apos;read-uncommitted&apos;;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://dev.mysql.com/doc/refman/5.7/en/innodb-transaction-isolation-levels.html&quot;&gt;Transaction Isolation Levels&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://dev.mysql.com/doc/refman/5.7/en/set-transaction.html&quot;&gt;SET TRANSACTION Syntax&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Thu, 28 Mar 2019 14:10:00 +0800</pubDate>
+        <link>http://localhost:4001/2019/03/28/mysql-transaction-isolation-levels/</link>
+        <guid isPermaLink="true">http://localhost:4001/2019/03/28/mysql-transaction-isolation-levels/</guid>
+        
+        <category>mysql</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>RabbitMQ学习-配置</title>
+        <description>&lt;blockquote&gt;
+  &lt;p&gt;介绍RabbitMQ中的参数配置。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;概要&quot;&gt;概要&lt;/h2&gt;
+
+&lt;p&gt;
+rabbitmq在启动时会使用很多默认的配置，这些配置一般在开发或测试环境是可以的。当在线上环境时，某些配置可能需要根据实际情况进行调整。
+&lt;/p&gt;
+
+&lt;h2 id=&quot;环境变量&quot;&gt;环境变量&lt;/h2&gt;
+
+&lt;p&gt;
+rabbitmq的环境变量可用于配置某些服务器参数：节点名称，rabbitmq配置文件位置，节点间通信端口，ErlangVM标志等。rabbitmq的环境变量除了内置的，还可通过shell或rabbitmq-env.conf进行设置。
+&lt;/p&gt;
+
+&lt;p style=&quot;color:red;&quot;&gt;
+Tips：变量优先级为，shell&amp;gt;rabbitmq-env.conf&amp;gt;内置
+&lt;/p&gt;
+
+&lt;h4 id=&quot;shell环境变量&quot;&gt;shell环境变量&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-linux&quot;&gt;#局部设置
+[root@DEV-HROEx64 mnesia]# RABBITMQ_NODE_PORT=5674 rabbitmq-server -detached
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-linux&quot;&gt;#全局直接设置
+[root@DEV-HROEx64 mnesia]# export RABBITMQ_NODE_PORT=5674
+#移除设置
+[root@DEV-HROEx64 mnesia]# export -n RABBITMQ_NODE_PORT
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-linux&quot;&gt;#全局文件设置
+[root@DEV-HROEx64 mnesia]# vim /etc/profile
+[root@DEV-HROEx64 mnesia]# 写入配置保存
+[root@DEV-HROEx64 mnesia]# source /etc/profile
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p style=&quot;color:red;&quot;&gt;
+Tips：变量名需要携带&lt;code&gt;RABBITMQ_&lt;/code&gt;前缀。
+&lt;/p&gt;
+
+&lt;h4 id=&quot;rabbitmq-env配置文件&quot;&gt;rabbitmq-env配置文件&lt;/h4&gt;
+
+&lt;p&gt;
+配置文件的位置一般固定为&lt;code&gt;${install-prefix}/etc/rabbitmq/rabbitmq-env.conf&lt;/code&gt;，如果文件不存在，可手动创建。
+&lt;/p&gt;
+
+&lt;p style=&quot;color:red;&quot;&gt;
+Tips：区别于shell的设置，文件中的变量不需要携带&lt;code&gt;RABBITMQ_&lt;/code&gt;前缀。
+&lt;/p&gt;
+
+&lt;h4 id=&quot;可设置变量&quot;&gt;可设置变量&lt;/h4&gt;
+
+&lt;p&gt;
+文件及目录相关的配置，&lt;code&gt;$RABBITMQ_HOME&lt;/code&gt;为解压的rabbitmq目录。
+&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;名称&lt;/th&gt;
+      &lt;th&gt;默认值/说明&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;RABBITMQ_CONFIG_FILE&lt;/td&gt;
+      &lt;td&gt;$RABBITMQ_HOME/etc/rabbitmq/rabbitmq.conf &lt;br /&gt; 配置文件路径&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;RABBITMQ_MNESIA_BASE&lt;/td&gt;
+      &lt;td&gt;$RABBITMQ_HOME/var/lib/rabbitmq/mnesia &lt;br /&gt; mnesia数据库路径&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;RABBITMQ_MNESIA_DIR&lt;/td&gt;
+      &lt;td&gt;$RABBITMQ_MNESIA_BASE/$RABBITMQ_NODENAME &lt;br /&gt; 节点数据路径&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;RABBITMQ_LOG_BASE&lt;/td&gt;
+      &lt;td&gt;$RABBITMQ_HOME/var/log/rabbitmq &lt;br /&gt; 日志路径&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;RABBITMQ_LOGS&lt;/td&gt;
+      &lt;td&gt;$RABBITMQ_LOG_BASE/$RABBITMQ_NODENAME.log &lt;br /&gt; 节点日志路径&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;RABBITMQ_SASL_LOGS&lt;/td&gt;
+      &lt;td&gt;$RABBITMQ_LOG_BASE/$RABBITMQ_NODENAME-sasl.log&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;RABBITMQ_PLUGINS_DIR&lt;/td&gt;
+      &lt;td&gt;$RABBITMQ_HOME/plugins &lt;br /&gt; 可用组件路径&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;RABBITMQ_ENABLED_PLUGINS_FILE&lt;/td&gt;
+      &lt;td&gt;$RABBITMQ_HOME/etc/rabbitmq/enabled_plugins &lt;br /&gt; 已启用组件&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;RABBITMQ_PID_FILE&lt;/td&gt;
+      &lt;td&gt;$RABBITMQ_MNESIA_DIR.pid &lt;br /&gt; pid文件&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;
+其他配置
+&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;名称&lt;/th&gt;
+      &lt;th&gt;默认值/说明&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;RABBITMQ_NODE_IP_ADDRESS&lt;/td&gt;
+      &lt;td&gt;空，绑定到所有网络接口 &lt;br /&gt; 需要绑定到的网络接口&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;RABBITMQ_NODE_PORT&lt;/td&gt;
+      &lt;td&gt;5672 &lt;br /&gt; 服务端口&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;RABBITMQ_DIST_PORT&lt;/td&gt;
+      &lt;td&gt;RABBITMQ_NODE_PORT + 20000 &lt;br /&gt; 节点间和CLI工具通信的端口&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;RABBITMQ_DISTRIBUTION_BUFFER_SIZE&lt;/td&gt;
+      &lt;td&gt;128000 &lt;br /&gt; 节点间通信连接的传出数据缓冲区大小(千字节)限制，不要低于64M&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;RABBITMQ_IO_THREAD_POOL_SIZE&lt;/td&gt;
+      &lt;td&gt;128 &lt;br /&gt; 用于I / O的线程数，不要使用低于32&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;RABBITMQ_NODENAME&lt;/td&gt;
+      &lt;td&gt;rabbit@$HOSTNAME &lt;br /&gt; 节点名称，不同节点名称需唯一&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;RABBITMQ_CONFIG_FILE&lt;/td&gt;
+      &lt;td&gt;$RABBITMQ_HOME/etc/rabbitmq/rabbitmq &lt;br /&gt; 主配置文件路径&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;RABBITMQ_ADVANCED_CONFIG_FILE&lt;/td&gt;
+      &lt;td&gt;$RABBITMQ_HOME/etc/rabbitmq/advanced &lt;br /&gt; “高级”配置文件路径&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;RABBITMQ_CONF_ENV_FILE&lt;/td&gt;
+      &lt;td&gt;$RABBITMQ_HOME/etc/rabbitmq/rabbitmq-env.conf &lt;br /&gt; 环境变量配置路径&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&quot;配置文件&quot;&gt;配置文件&lt;/h2&gt;
+
+&lt;p&gt;
+虽然RabbitMQ中的某些设置可以使用环境变量进行配置，但大多数设置都是使用配置文件配置的，通常名为rabbitmq.conf，包括核心服务器和插件的配置。
+&lt;/p&gt;
+
+&lt;h4 id=&quot;配置文件位置&quot;&gt;配置文件位置&lt;/h4&gt;
+
+&lt;p&gt;
+根据不同的安装方式，配置文件一般在&lt;code&gt;/etc/rabbitmq/&lt;/code&gt;或&lt;code&gt;{rabbit_install_dir}/etc/rabbitmq/&lt;/code&gt;，如果不存在的话可手动创建。
+&lt;/p&gt;
+
+&lt;p&gt;
+在rabbitmq启动时，可在日志文件的顶部查看加载的配置文件路径。
+&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-linux&quot;&gt;Starting RabbitMQ 3.7.13 on Erlang 20.3
+ Copyright (C) 2007-2019 Pivotal Software, Inc.
+ Licensed under the MPL.  See http://www.rabbitmq.com/
+2019-03-16 13:57:13.007 [info] &amp;lt;0.256.0&amp;gt; 
+ node           : rabbit@vagrant
+ home dir       : /root
+ config file(s) : /usr/local/rabbitmq/etc/rabbitmq/rabbitmq.conf
+ cookie hash    : OIhbODu2Q0A6XyOqVBfFrA==
+ log(s)         : /usr/local/rabbitmq/var/log/rabbitmq/rabbit@vagrant.log
+                : /usr/local/rabbitmq/var/log/rabbitmq/rabbit@vagrant_upgrade.log
+ database dir   : /usr/local/rabbitmq/var/lib/rabbitmq/mnesia/rabbit@vagrant
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;
+如果开启web管理页面的话，也可以在节点的信息中查看配置文件路径。
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2019-03-15-11-rabbitmq-study-configuration/20190316140308.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;配置文件格式&quot;&gt;配置文件格式&lt;/h4&gt;
+
+&lt;p&gt;
+在RabbitMQ 3.7.0之前，RabbitMQ配置文件使用&lt;a href=&quot;http://erlang.org/doc/man/config.html&quot; traget=&quot;_blank&quot;&gt;Erlang术语&lt;/a&gt;配置格式，新版本仍然支持该格式以实现向后兼容性。不过建议运行3.7.0或更高版本的用户考虑新的sysctl格式。
+&lt;/p&gt;
+
+&lt;p&gt;
+老格式配置示例
+&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-linux&quot;&gt;[
+  {rabbit, [{ssl_options, [{cacertfile,           &quot;/path/to/testca/cacert.pem&quot;},
+                           {certfile,             &quot;/path/to/server_certificate.pem&quot;},
+                           {keyfile,              &quot;/path/to/server_key.pem&quot;},
+                           {verify,               verify_peer},
+                           {fail_if_no_peer_cert, true}]}]}
+]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;
+新格式配置示例
+&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-linux&quot;&gt;ssl_options.cacertfile           = /path/to/testca/cacert.pem
+ssl_options.certfile             = /path/to/server_certificate.pem
+ssl_options.keyfile              = /path/to/server_key.pem
+ssl_options.verify               = verify_peer
+ssl_options.fail_if_no_peer_cert = true
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;
+新格式虽然易于理解与编辑，但是如果需要使用深层嵌套的数据结构来表达配置时，还是需要使用老格式的方式，如&lt;a href=&quot;https://www.rabbitmq.com/ldap.html&quot; traget=&quot;_blank&quot;&gt;LDAP功能&lt;/a&gt;。
+&lt;/p&gt;
+
+&lt;h4 id=&quot;配置查看&quot;&gt;配置查看&lt;/h4&gt;
+
+&lt;p&gt;
+可使用&lt;code&gt;rabbitmqctl environment &lt;/code&gt;命令显示当前的有效配置，配置为用户设置的与系统默认配置的合并结果。
+&lt;/p&gt;
+
+&lt;h4 id=&quot;可设置变量-1&quot;&gt;可设置变量&lt;/h4&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/rabbitmq/rabbitmq-server/blob/master/docs/rabbitmq.conf.example&quot;&gt;rabbitmq.conf配置示例&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/rabbitmq/rabbitmq-server/blob/master/docs/advanced.config.example&quot;&gt;advanced.config配置示例&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.rabbitmq.com/configure.html&quot;&gt;配置&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.rabbitmq.com/rabbitmq-env.conf.5.html&quot;&gt;环境变量配置&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.rabbitmq.com/relocate.html&quot;&gt;文件及目录配置&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Fri, 15 Mar 2019 15:10:00 +0800</pubDate>
+        <link>http://localhost:4001/2019/03/15/11-rabbitmq-study-configuration/</link>
+        <guid isPermaLink="true">http://localhost:4001/2019/03/15/11-rabbitmq-study-configuration/</guid>
+        
+        <category>rabbitmq</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>RabbitMQ学习-虚拟主机</title>
+        <description>&lt;blockquote&gt;
+  &lt;p&gt;介绍RabbitMQ中虚拟主机的作用及使用方法。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;概要&quot;&gt;概要&lt;/h2&gt;
+
+&lt;p&gt;
+Rabbit的vhost类似于物理服务器上的虚拟机，每个vhost本质上是一个mini版的Rabbit服务器，拥有自己的队列、交换器、绑定等。不同的vhost有独立的权限机制，在逻辑上是完全分离的，可以安全保密的为不同的应用提供服务。当在Rabbit内新建用户时，用户可被指派给多个vhost，且只能访问指派vhost内的队列、交换器、队列。
+&lt;/p&gt;
+
+&lt;p&gt;
+当在集群的某个节点上创建vhost时，整个集群都会创建该vhost，解决了多应用的维护成本。
+&lt;/p&gt;
+
+&lt;h2 id=&quot;vhost的维护&quot;&gt;vhost的维护&lt;/h2&gt;
+
+&lt;h5 id=&quot;1新建虚拟主机&quot;&gt;1.新建虚拟主机&lt;/h5&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-linux&quot;&gt;[root@DEV-HROEx64 mnesia]# rabbitmqctl add_vhost vhost_test
+Creating vhost &quot;vhost_test&quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5 id=&quot;2删除虚拟主机&quot;&gt;2.删除虚拟主机&lt;/h5&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-linux&quot;&gt;[root@DEV-HROEx64 mnesia]# rabbitmqctl delete_vhost vhost_test
+Deleting vhost &quot;vhost_test&quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5 id=&quot;3显示所有虚拟主机&quot;&gt;3.显示所有虚拟主机&lt;/h5&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-linux&quot;&gt;[root@DEV-HROEx64 mnesia]# rabbitmqctl list_vhosts
+Listing vhosts
+/
+vhost_test
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;vhost与用户绑定&quot;&gt;vhost与用户绑定&lt;/h2&gt;
+
+&lt;h5 id=&quot;1新建用户&quot;&gt;1.新建用户&lt;/h5&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-linux&quot;&gt;[root@DEV-HROEx64 mnesia]# rabbitmqctl add_user user_test 123456
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5 id=&quot;2关联用户到虚拟主机&quot;&gt;2.关联用户到虚拟主机&lt;/h5&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-linux&quot;&gt;[root@DEV-HROEx64 mnesia]# rabbitmqctl set_permissions -p vhost-test user-test &quot;.*&quot; &quot;.* &quot;.*&quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h5 id=&quot;3设置用户角色&quot;&gt;3.设置用户角色&lt;/h5&gt;
+
+&lt;p&gt;
+如果希望用户可以使用web端进行集群的管理，可通过如下设置实现。
+&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-linux&quot;&gt;#授予用户管理员权限
+[root@DEV-HROEx64 mnesia]# rabbitmqctl set_user_tags user_test administrator
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.rabbitmq.com/vhosts.html&quot;&gt;Virtual Hosts&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Tue, 12 Mar 2019 14:10:00 +0800</pubDate>
+        <link>http://localhost:4001/2019/03/12/11-rabbitmq-study-virtual-hosts/</link>
+        <guid isPermaLink="true">http://localhost:4001/2019/03/12/11-rabbitmq-study-virtual-hosts/</guid>
+        
+        <category>rabbitmq</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>redis的集群</title>
+        <description>&lt;blockquote&gt;
+  &lt;p&gt;介绍如果搭建redis集群，以及如何对集群进行扩展与收缩&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;前言&quot;&gt;前言&lt;/h2&gt;
+
+&lt;p&gt;
+为了提高缓存服务器的写请求处理能力与数据存储能力可使用redis集群，根据实际业务情况对集群进行扩展与收缩
+&lt;/p&gt;
+
+&lt;h2 id=&quot;准备工作&quot;&gt;准备工作&lt;/h2&gt;
+
+&lt;p&gt;
+由于机器的限制，此文章中的redis实例都是在一台机器上启动的，通过不同的port来模拟不同的redis实例。
+&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@vagrant redis-6386]# ps -ef|grep redis
+root      2943     1  0 15:29 ?        00:00:01 ./redis-server *:6381 [cluster]
+root      2952     1  0 15:39 ?        00:00:00 ./redis-server *:6382 [cluster]
+root      2960     1  0 15:40 ?        00:00:00 ./redis-server *:6383 [cluster]
+root      2968     1  0 15:40 ?        00:00:00 ./redis-server *:6384 [cluster]
+root      2976     1  0 15:41 ?        00:00:00 ./redis-server *:6385 [cluster]
+root      2984     1  0 15:42 ?        00:00:00 ./redis-server *:6386 [cluster]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;h2 id=&quot;数据分布&quot;&gt;数据分布&lt;/h2&gt;
+
+&lt;h4 id=&quot;数据分区&quot;&gt;数据分区&lt;/h4&gt;
+
+&lt;p&gt;
+redis集群采用虚拟槽分区，所有的键根据哈希函数映射到[0-16383]整数槽内，计算公式：slot=CRC16（key）&amp;amp;16383，每一个节点负责维护一部分槽以及槽所映射的键值数据，有如下一些特点：
+&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;解耦数据和节点之间的关系，简化了节点扩容和收缩难度&lt;/li&gt;
+  &lt;li&gt;节点自身维护槽的映射关系，不需要客户端或者代理服务维护槽分区元数据&lt;/li&gt;
+  &lt;li&gt;支持节点、槽、键之间的映射查询，用于数据路由、在线伸缩等场景&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2018-10-12-redis-cluster/20181018180422.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;集群功能限制&quot;&gt;集群功能限制&lt;/h4&gt;
+
+&lt;p&gt;
+不同于单机环境，集群环境有如下一些限制：
+&lt;/p&gt;
+
+&lt;p&gt;
+&lt;font color=&quot;red&quot;&gt;集群客户端支持下面的操作么？&lt;/font&gt;
+&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;key批量操作支持有限。如mset、mget，目前只支持具有相同slot值的key执行批量操作。对于映射为不同slot值的key由于执行mget、mget等操作可能存在于多个节点上因此不被支持&lt;/li&gt;
+  &lt;li&gt;key事务操作支持有限。同理只支持多key在同一节点上的事务操作，当多个key分布在不同的节点上时无法使用事务功能&lt;/li&gt;
+  &lt;li&gt;key作为数据分区的最小粒度，因此不能将一个大的键值对象如hash、list等映射到不同的节点&lt;/li&gt;
+  &lt;li&gt;不支持多数据库空间。单机下的Redis可以支持16个数据库，集群模式下只能使用一个数据库空间，即db0&lt;/li&gt;
+  &lt;li&gt;复制结构只支持一层，从节点只能复制主节点，不支持嵌套树状复制结构&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;集群搭建&quot;&gt;集群搭建&lt;/h2&gt;
+
+&lt;h4 id=&quot;节点准备&quot;&gt;节点准备&lt;/h4&gt;
+
+&lt;p&gt;
+为了搭建集群需要准备多个redis节点，通常至少需要6个（3主3从）才能组建一个高可用的集群。节点配置同单机模式，除了以下几个相关的配置：
+&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#开启集群模式
+cluster-enabled yes
+#节点超时时间，单位毫秒
+cluster-node-timeout 15000
+#集群配置文件（nodes-{port}.conf）
+cluster-config-file &quot;nodes-6379.conf&quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;
+在启动节点时，如果没有配置文件则会根据&lt;code&gt;cluster-config-file&lt;/code&gt;自动创建一个，否则使用配置文件来初始化集群信息。redis会自动维护此配置文件，不需要手动修改，以免错误。配置文件中的节点id在集群初始化的时候会创建一次，之后会一直重用。
+&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#配置文件
+[root@vagrant redis-6381]# cat nodes-6381.conf 
+da2bd0c5419300bbe390dab920872aee71ae7d1d :0@0 myself,master - 0 0 0 connected
+vars currentEpoch 0 lastVoteEpoch 0
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#集群节点状态
+[root@vagrant redis-6381]# ./redis-cli -p 6381 cluster nodes
+da2bd0c5419300bbe390dab920872aee71ae7d1d :6381@16381 myself,master - 0 0 0 connected
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;手动部署&quot;&gt;手动部署&lt;/h4&gt;
+
+&lt;h5 id=&quot;节点握手&quot;&gt;节点握手&lt;/h5&gt;
+
+&lt;p&gt;
+当所有节点都启动后，彼此之间是不知道其它节点的存在的。可以在任意节点上执行&lt;code&gt;cluster meet {ip} {port}&lt;/code&gt;命令，握手状态会通过消息在集群内传播，这样其他节点会自动发现新节点并发起握手流程。
+&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@vagrant redis-6386]# ./redis-cli -p 6381 cluster meet 127.0.0.1 6382
+OK
+[root@vagrant redis-6386]# ./redis-cli -p 6381 cluster meet 127.0.0.1 6383
+OK
+[root@vagrant redis-6386]# ./redis-cli -p 6381 cluster meet 127.0.0.1 6384
+OK
+[root@vagrant redis-6386]# ./redis-cli -p 6381 cluster meet 127.0.0.1 6385
+OK
+[root@vagrant redis-6386]# ./redis-cli -p 6381 cluster meet 127.0.0.1 6386
+OK
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;
+执行命令后，可在任意节点查看集群节点状态。
+&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#6381
+[root@vagrant redis-6386]# ./redis-cli -p 6381 cluster nodes
+75cb527086abcb65ab2dcf7f96cc539d1293a6a3 127.0.0.1:6383@16383 master - 0 1539503506009 2 connected
+9291db5efb3254f60ec828525dfa9f62983be18b 127.0.0.1:6386@16386 master - 0 1539503502994 5 connected
+02a0f13dd1455bd849afd268b5d0bfc82a28cbf8 127.0.0.1:6385@16385 master - 0 1539503503000 4 connected
+edbbe9a0fb92076ac4bf896337ec7c5237124b86 127.0.0.1:6384@16384 master - 0 1539503505005 0 connected
+da2bd0c5419300bbe390dab920872aee71ae7d1d 127.0.0.1:6381@16381 myself,master - 0 1539503502000 3 connected
+6c1722030a1e5fc1fd0d076819dad662a4941db1 127.0.0.1:6382@16382 master - 0 1539503505000 1 connected
+
+#6386
+[root@vagrant redis-6386]# ./redis-cli -p 6386 cluster nodes
+edbbe9a0fb92076ac4bf896337ec7c5237124b86 127.0.0.1:6384@16384 master - 0 1539503942475 0 connected
+02a0f13dd1455bd849afd268b5d0bfc82a28cbf8 127.0.0.1:6385@16385 master - 0 1539503943000 4 connected
+75cb527086abcb65ab2dcf7f96cc539d1293a6a3 127.0.0.1:6383@16383 master - 0 1539503941469 2 connected
+9291db5efb3254f60ec828525dfa9f62983be18b 127.0.0.1:6386@16386 myself,master - 0 1539503942000 5 connected
+6c1722030a1e5fc1fd0d076819dad662a4941db1 127.0.0.1:6382@16382 master - 0 1539503943480 1 connected
+da2bd0c5419300bbe390dab920872aee71ae7d1d 127.0.0.1:6381@16381 master - 0 1539503940460 3 connected
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h5 id=&quot;节点槽分配&quot;&gt;节点槽分配&lt;/h5&gt;
+
+&lt;p&gt;
+在节点完成互相握手后，集群还是不能使用的，只有当&lt;code&gt;16384&lt;/code&gt;个槽被完全分配到节点上时，集群才进入可使用状态。
+&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#集群信息
+[root@vagrant redis-6386]# ./redis-cli -p 6381 cluster info
+cluster_state:fail
+cluster_slots_assigned:0
+cluster_slots_ok:0
+cluster_slots_pfail:0
+cluster_slots_fail:0
+cluster_known_nodes:6
+cluster_size:0
+...
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#不能使用集群
+[root@vagrant redis-6386]# ./redis-cli -p 6381 set a 1
+(error) CLUSTERDOWN Hash slot not served
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;
+槽（slot）是redis集群中数据的分区单位，每个key经过&lt;code&gt;CRC16&lt;/code&gt;计算会映射到一个固定的槽，只有节点分配了槽，才能响应和这些槽关联的键命令。通过&lt;code&gt;cluster addslots&lt;/code&gt;将槽平均分配给3个节点。
+&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@vagrant redis-6386]# ./redis-cli -p 6381 cluster addslots {0..5461}
+OK
+[root@vagrant redis-6386]# ./redis-cli -p 6382 cluster addslots {5462..10922}
+OK
+[root@vagrant redis-6386]# ./redis-cli -p 6383 cluster addslots {10923..16383}
+OK
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#集群信息
+[root@vagrant redis-6386]# ./redis-cli -p 6383 cluster info
+cluster_state:ok
+cluster_slots_assigned:16384
+cluster_slots_ok:16384
+cluster_slots_pfail:0
+cluster_slots_fail:0
+cluster_known_nodes:6
+cluster_size:3
+...
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;
+可看到集群已经变为可使用状态，测试使用集群设置键值对
+&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#在6381执行提示moved信息，因为&apos;a&apos;计算出来的槽为15495，在6383上
+[root@vagrant redis-6386]# ./redis-cli -p 6381 set a 1
+(error) MOVED 15495 127.0.0.1:6383
+#命令增加&apos;-c&apos;代表自动进行命令转向，在6383执行
+[root@vagrant redis-6386]# ./redis-cli -p 6381 -c set a 1
+OK
+[root@vagrant redis-6386]# ./redis-cli -p 6381 -c get a
+&quot;1&quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;
+查看槽与节点的分配关系
+&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#集群节点状态
+[root@vagrant redis-6386]# ./redis-cli -p 6383 cluster nodes
+923c5d325b6dcbcca94276195206e24cdd37039b 127.0.0.1:6382@16382 master - 0 1539508163000 1 connected 5462-10922
+edbbe9a0fb92076ac4bf896337ec7c5237124b86 127.0.0.1:6384@16384 master - 0 1539508165000 0 connected
+b9cb94e45c16cb2aadc60eefc29bee386b7a9ef7 127.0.0.1:6381@16381 master - 0 1539508166253 7 connected 0-5461
+02a0f13dd1455bd849afd268b5d0bfc82a28cbf8 127.0.0.1:6385@16385 master - 0 1539508165248 4 connected
+9291db5efb3254f60ec828525dfa9f62983be18b 127.0.0.1:6386@16386 master - 0 1539508164244 5 connected
+0235798b70ba10533e04d3cc7c6e2345f4481d9f 127.0.0.1:6383@16383 myself,master - 0 1539508164000 2 connected 10923-16383
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;
+目前还有3个节点没有使用，为了实现集群的高可用性，这3个节点作为槽节点的从节点，当出现故障时进行故障转移。集群模式下，reids节点角色分为主节点和从节点，首次启动的节点和被分配槽的节点都是主节点，从节点负责复制主节点槽信息和相关的数据。使用&lt;code&gt;cluster replicate {nodeId}&lt;/code&gt;命令让一个节点成为某个主节点的从节点。
+&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@vagrant redis-6386]# ./redis-cli -p 6384 cluster replicate b9cb94e45c16cb2aadc60eefc29bee386b7a9ef7
+OK
+[root@vagrant redis-6386]# ./redis-cli -p 6385 cluster replicate 923c5d325b6dcbcca94276195206e24cdd37039b
+OK
+[root@vagrant redis-6386]# ./redis-cli -p 6386 cluster replicate 0235798b70ba10533e04d3cc7c6e2345f4481d9f
+OK
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;
+查看集群节点状态和复制关系
+&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@vagrant redis-6386]# ./redis-cli -p 6381 cluster nodes
+02a0f13dd1455bd849afd268b5d0bfc82a28cbf8 127.0.0.1:6385@16385 slave 923c5d325b6dcbcca94276195206e24cdd37039b 0 1539509091000 4 connd
+923c5d325b6dcbcca94276195206e24cdd37039b 127.0.0.1:6382@16382 master - 0 1539509093853 1 connected 5462-10922
+0235798b70ba10533e04d3cc7c6e2345f4481d9f 127.0.0.1:6383@16383 master - 0 1539509091000 2 connected 10923-16383
+9291db5efb3254f60ec828525dfa9f62983be18b 127.0.0.1:6386@16386 slave 0235798b70ba10533e04d3cc7c6e2345f4481d9f 0 1539509092849 5 connd
+b9cb94e45c16cb2aadc60eefc29bee386b7a9ef7 127.0.0.1:6381@16381 myself,master - 0 1539509093000 7 connected 0-5461
+edbbe9a0fb92076ac4bf896337ec7c5237124b86 127.0.0.1:6384@16384 slave b9cb94e45c16cb2aadc60eefc29bee386b7a9ef7 0 15395090920
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;自动部署&quot;&gt;自动部署&lt;/h4&gt;
+
+&lt;p&gt;
+对于集群的维护，如果使用手动执行相关命令的话，比较费时且很容易出现错误。可以通过redis提供的&lt;code&gt;redis-trib.rb&lt;/code&gt;工具来进行集群的管理。
+&lt;/p&gt;
+
+&lt;p&gt;
+&lt;font color=&quot;red&quot;&gt;
+Tips：在最新的redis版本里，已经不再支持redis-trib.rb工具，可以直接使用&lt;code&gt;redis-cli --cluster&lt;/code&gt;来进行集群的管理，使用方式同redis-trib.rb
+&lt;/font&gt;
+&lt;/p&gt;
+
+&lt;h5 id=&quot;ruby环境&quot;&gt;ruby环境&lt;/h5&gt;
+
+&lt;p&gt;
+redis-trib.rb是采用Ruby实现的Redis集群管理工具，所以使用前需要安装Ruby依赖环境。
+&lt;/p&gt;
+
+&lt;p&gt;
+安装ruby
+&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@vagrant /]# cd /bmsource/
+[root@vagrant bmsource]# wget https://cache.ruby-lang.org/pub/ruby/2.3/ruby-2.3.1.tar.gz
+[root@vagrant bmsource]# tar xvf ruby-2.3.1.tar.gz
+[root@vagrant bmsource]# cd ruby-2.3.1
+[root@vagrant ruby-2.3.1]# ./configure -prefix=/usr/local/bin/
+[root@vagrant ruby-2.3.1]# make
+[root@vagrant ruby-2.3.1]# make install
+
+#复制可执行文件到/usr/local/bin/
+[root@vagrant ruby-2.3.1]# cd /usr/local/bin/bin
+[root@vagrant bin]# cp ruby /usr/local/bin/
+[root@vagrant bin]# cp gem /usr/local/bin/
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;
+安装ruby gem redis依赖
+&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root@vagrant bin]# cd /bmsource/
+[root@vagrant bmsource]# wget http://rubygems.org/downloads/redis-3.3.0.gem
+[root@vagrant bmsource]# gem install -l redis-3.3.0.gem
+#查看包是否已安装
+[root@vagrant bmsource]# gem list
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;
+执行redis-trib.rb命令确认环境是否正确
+&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@vagrant bmsource]# cd /usr/local/bin/redis-6381/
+[root@vagrant redis-6381]# ./redis-trib.rb 
+Usage: redis-trib &amp;lt;command&amp;gt; &amp;lt;options&amp;gt; &amp;lt;arguments ...&amp;gt;
+
+  create          host1:port1 ... hostN:portN
+                  --replicas &amp;lt;arg&amp;gt;
+  ...
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h5 id=&quot;节点准备-1&quot;&gt;节点准备&lt;/h5&gt;
+
+&lt;p&gt;
+同手动部署，首先准备6个集群节点。
+&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@vagrant redis-6382]# ps -ef|grep redis
+root     18040     1  0 18:22 ?        00:00:00 ./redis-server *:6381 [cluster]
+root     18049     1  0 18:23 ?        00:00:00 ./redis-server *:6383 [cluster]
+root     18054     1  0 18:23 ?        00:00:00 ./redis-server *:6384 [cluster]
+root     18059     1  0 18:23 ?        00:00:00 ./redis-server *:6385 [cluster]
+root     18064     1  0 18:23 ?        00:00:00 ./redis-server *:6386 [cluster]
+root     18071     1  0 18:23 ?        00:00:00 ./redis-server *:6382 [cluster]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h5 id=&quot;集群创建&quot;&gt;集群创建&lt;/h5&gt;
+
+&lt;p&gt;
+使用&lt;code&gt;redis-trib.rb create&lt;/code&gt;创建集群，&lt;code&gt;--replicas 1&lt;/code&gt;用于指定主节点拥有的从节点个数
+&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@vagrant redis-6382]# ./redis-trib.rb create --replicas 1 127.0.0.1:6381 127.0.0.1:6382 127.0.0.1:6383 127.0.0.1:6384 127.0.0.1:6385 127.0.0.1:6386
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;
+创建程序首先会给出主节点，从节点，槽的分配概况
+&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt;&amp;gt;&amp;gt; Creating cluster
+&amp;gt;&amp;gt;&amp;gt; Performing hash slots allocation on 6 nodes...
+Using 3 masters:
+127.0.0.1:6381
+127.0.0.1:6382
+127.0.0.1:6383
+Adding replica 127.0.0.1:6385 to 127.0.0.1:6381
+Adding replica 127.0.0.1:6386 to 127.0.0.1:6382
+Adding replica 127.0.0.1:6384 to 127.0.0.1:6383
+&amp;gt;&amp;gt;&amp;gt; Trying to optimize slaves allocation for anti-affinity
+[WARNING] Some slaves are in the same host as their master
+M: 9b53bc798f30f0c3aad64ae787ef97bfb520ed62 127.0.0.1:6381
+   slots:0-5460 (5461 slots) master
+M: e19b36f039d4c56db0e48c9ffda0d00555a9576a 127.0.0.1:6382
+   slots:5461-10922 (5462 slots) master
+M: 0113a3532640fe678bd652bac626e4fc2fc32916 127.0.0.1:6383
+   slots:10923-16383 (5461 slots) master
+S: f9a65ed5171b9a66e70b4a12474386c4f9b47e35 127.0.0.1:6384
+   replicates e19b36f039d4c56db0e48c9ffda0d00555a9576a
+S: 4010a79852155581fffc9e632398898619a5db90 127.0.0.1:6385
+   replicates 0113a3532640fe678bd652bac626e4fc2fc32916
+S: c9a2731b7db540b7937b4bde854be8a0817258f0 127.0.0.1:6386
+   replicates 9b53bc798f30f0c3aad64ae787ef97bfb520ed62
+Can I set the above configuration? (type &apos;yes&apos; to accept): yes
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;
+查看分配情况，如果觉得没问题可以输入&lt;code&gt;yes&lt;/code&gt;来执行实际分配
+&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt;&amp;gt;&amp;gt; Nodes configuration updated
+&amp;gt;&amp;gt;&amp;gt; Assign a different config epoch to each node
+&amp;gt;&amp;gt;&amp;gt; Sending CLUSTER MEET messages to join the cluster
+Waiting for the cluster to join.......
+&amp;gt;&amp;gt;&amp;gt; Performing Cluster Check (using node 127.0.0.1:6381)
+M: 9b53bc798f30f0c3aad64ae787ef97bfb520ed62 127.0.0.1:6381
+   slots:0-5460 (5461 slots) master
+   1 additional replica(s)
+S: c9a2731b7db540b7937b4bde854be8a0817258f0 127.0.0.1:6386
+   slots: (0 slots) slave
+   replicates 9b53bc798f30f0c3aad64ae787ef97bfb520ed62
+M: 0113a3532640fe678bd652bac626e4fc2fc32916 127.0.0.1:6383
+   slots:10923-16383 (5461 slots) master
+   1 additional replica(s)
+M: e19b36f039d4c56db0e48c9ffda0d00555a9576a 127.0.0.1:6382
+   slots:5461-10922 (5462 slots) master
+   1 additional replica(s)
+S: 4010a79852155581fffc9e632398898619a5db90 127.0.0.1:6385
+   slots: (0 slots) slave
+   replicates 0113a3532640fe678bd652bac626e4fc2fc32916
+S: f9a65ed5171b9a66e70b4a12474386c4f9b47e35 127.0.0.1:6384
+   slots: (0 slots) slave
+   replicates e19b36f039d4c56db0e48c9ffda0d00555a9576a
+[OK] All nodes agree about slots configuration.
+&amp;gt;&amp;gt;&amp;gt; Check for open slots...
+&amp;gt;&amp;gt;&amp;gt; Check slots coverage...
+[OK] All 16384 slots covered.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;
+最后的输出报告说明：16384个槽全部被分配，集群创建成功。这里需要注意给redis-trib.rb的节点地址必须是不包含任何槽/数据的节点，否则会拒绝创建集群。
+&lt;/p&gt;
+
+&lt;h5 id=&quot;集群检查&quot;&gt;集群检查&lt;/h5&gt;
+
+&lt;p&gt;
+集群创建好后，还可以通过&lt;code&gt;./redis-trib.rb check&lt;/code&gt;来检查集群的完整性，只需在集群中的任意节点执行即可。
+&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@vagrant redis-6382]# ./redis-trib.rb check 127.0.0.1:6381
+&amp;gt;&amp;gt;&amp;gt; Performing Cluster Check (using node 127.0.0.1:6381)
+M: 9b53bc798f30f0c3aad64ae787ef97bfb520ed62 127.0.0.1:6381
+   slots:0-5460 (5461 slots) master
+   1 additional replica(s)
+S: c9a2731b7db540b7937b4bde854be8a0817258f0 127.0.0.1:6386
+   slots: (0 slots) slave
+   replicates 9b53bc798f30f0c3aad64ae787ef97bfb520ed62
+M: 0113a3532640fe678bd652bac626e4fc2fc32916 127.0.0.1:6383
+   slots:10923-16383 (5461 slots) master
+   1 additional replica(s)
+M: e19b36f039d4c56db0e48c9ffda0d00555a9576a 127.0.0.1:6382
+   slots:5461-10922 (5462 slots) master
+   1 additional replica(s)
+S: 4010a79852155581fffc9e632398898619a5db90 127.0.0.1:6385
+   slots: (0 slots) slave
+   replicates 0113a3532640fe678bd652bac626e4fc2fc32916
+S: f9a65ed5171b9a66e70b4a12474386c4f9b47e35 127.0.0.1:6384
+   slots: (0 slots) slave
+   replicates e19b36f039d4c56db0e48c9ffda0d00555a9576a
+[OK] All nodes agree about slots configuration.
+&amp;gt;&amp;gt;&amp;gt; Check for open slots...
+&amp;gt;&amp;gt;&amp;gt; Check slots coverage...
+[OK] All 16384 slots covered.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;集群伸缩&quot;&gt;集群伸缩&lt;/h2&gt;
+
+&lt;h4 id=&quot;原理&quot;&gt;原理&lt;/h4&gt;
+
+&lt;p&gt;
+redis的集群伸缩是在不影响集群对外服务的前提下，对集群增加节点（扩容）与减少节点（收缩）。
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2018-10-12-redis-cluster/20181017110314.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;
+redis集群可以方便的进行节点上下线控制，原理是依赖于槽和数据在节点中的灵活移动。
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2018-10-12-redis-cluster/20181017135000.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;扩容&quot;&gt;扩容&lt;/h4&gt;
+
+&lt;h5 id=&quot;准备新节点&quot;&gt;准备新节点&lt;/h5&gt;
+
+&lt;p&gt;
+为了扩容集群首先需要准备节点，节点的配置最好与集群中其他节点一致，从机数量也可保持与集群中主节点的从机数一致。
+&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@vagrant redis-6388]# ps -ef|grep redis
+root     18625     1  0 14:02 ?        00:00:00 ./redis-server *:6387 [cluster]
+root     18638     1  0 14:03 ?        00:00:00 ./redis-server *:6388 [cluster]
+...
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h5 id=&quot;加入集群&quot;&gt;加入集群&lt;/h5&gt;
+
+&lt;p&gt;
+可使用&lt;code&gt;cluster meet&lt;/code&gt;命令，这里推荐使用&lt;code&gt;redis-trib.rb add-node&lt;/code&gt;命令加入新节点，此命令可以帮助检查新节点是否属于其他集群或者已经包含数据。
+&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@vagrant redis-6388]# ./redis-trib.rb add-node 127.0.0.1:6387 127.0.0.1:6381 
+#在加入节点时指定主节点
+[root@vagrant redis-6388]# ./redis-trib.rb add-node --slave --master-id 96db27a74fd2717b9e65a7b843831de53158e273 127.0.0.1:6388 127.0.0.1:6381 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;
+添加好节点后，集群节点变为如下
+&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@vagrant redis-6388]# ./redis-cli -p 6381 cluster nodes
+c9a2731b7db540b7937b4bde854be8a0817258f0 127.0.0.1:6386@16386 slave 9b53bc798f30f0c3aad64ae787ef97bfb520ed62 0 1539758431000 6 connd
+8dc6f1d391ea4ae1f2fbc1ced10f2af356c34c31 127.0.0.1:6388@16388 slave 96db27a74fd2717b9e65a7b843831de53158e273 0 1539758433949 7 connd
+0113a3532640fe678bd652bac626e4fc2fc32916 127.0.0.1:6383@16383 master - 0 1539758433000 3 connected 10923-16383
+e19b36f039d4c56db0e48c9ffda0d00555a9576a 127.0.0.1:6382@16382 master - 0 1539758431939 2 connected 5461-10922
+4010a79852155581fffc9e632398898619a5db90 127.0.0.1:6385@16385 slave 0113a3532640fe678bd652bac626e4fc2fc32916 0 1539758431000 5 connd
+9b53bc798f30f0c3aad64ae787ef97bfb520ed62 127.0.0.1:6381@16381 myself,master - 0 1539758431000 1 connected 0-5460
+f9a65ed5171b9a66e70b4a12474386c4f9b47e35 127.0.0.1:6384@16384 slave e19b36f039d4c56db0e48c9ffda0d00555a9576a 0 1539758430000 4 connd
+96db27a74fd2717b9e65a7b843831de53158e273 127.0.0.1:6387@16387 master - 0 1539758432000 0 connected
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h5 id=&quot;迁移槽和数据&quot;&gt;迁移槽和数据&lt;/h5&gt;
+
+&lt;p&gt;
+新的节点加入到集群后，需要将现有主节点上的槽迁移到新节点上，同时确保迁移后每个节点上的槽数是均衡的。根据以上规则得到每个节点有哪些槽需要被迁移，确定好计划后就开始逐个将数据从源节点转移到目标节点。数据转移流程：
+&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;对目标节点发送cluster setslot {slot} importing {sourceNodeId}命令，让目标节点准备导入槽的数据&lt;/li&gt;
+  &lt;li&gt;对源节点发送cluster setslot {slot} migrating {targetNodeId}命令，让源节点准备迁出槽的数据&lt;/li&gt;
+  &lt;li&gt;源节点循环执行cluster getkeysinslot {slot} {count}命令，获取count个属于槽{slot}的键&lt;/li&gt;
+  &lt;li&gt;在源节点上执行migrate {targetIp} {targetPort} “” 0 {timeout} keys {keys…}命令，把获取的键通过流水线（pipeline）机制批量迁移到目标节点&lt;/li&gt;
+  &lt;li&gt;重复执行步骤（3,4）直到槽下所有的键值数据迁移到目标节点&lt;/li&gt;
+  &lt;li&gt;向集群内所有主节点发送cluster setslot {slot} node {targetNodeId}命令，通知槽分配给目标节点。为了保证槽节点映射变更及时传播，需要遍历发送给所有主节点更新被迁移的槽指向新节点&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2018-10-12-redis-cluster/20181017161739.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;
+手动执行命令将槽1180从6381节点迁移到6387节点。
+&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#1.节点6387准备导入槽1180数据
+[root@vagrant redis-6388]# ./redis-cli -p 6387 cluster setslot 1180 importing 9b53bc798f30f0c3aad64ae787ef97bfb520ed62
+OK
+#6387槽1180导入状态开启
+#如果需要可通过&quot;cluster setslot 1180 stable&quot;取消槽迁移
+[root@vagrant redis-6388]# ./redis-cli -p 6387 cluster nodes
+96db27a74fd2717b9e65a7b843831de53158e273 127.0.0.1:6387@16387 myself,master - 0 1539765189000 0 connected [1180-&amp;lt;-9b53bc798f30f0c3aad64ae787ef97bfb520ed62]
+
+#2.节点6381准备导出槽1180数据
+[root@vagrant redis-6388]# ./redis-cli -p 6381 cluster setslot 1180 migrating 96db27a74fd2717b9e65a7b843831de53158e273
+OK
+#6381槽1180导出状态开启
+[root@vagrant redis-6388]# ./redis-cli -p 6381 cluster nodes
+9b53bc798f30f0c3aad64ae787ef97bfb520ed62 127.0.0.1:6381@16381 myself,master - 0 1539766397000 1 connected 0-5460 [1180-&amp;gt;-96db27a74fd2717b9e65a7b843831de53158e273]
+
+#3.批量获取槽1180的键
+[root@vagrant redis-6388]# ./redis-cli -p 6381 cluster getkeysinslot 1180 100
+1) &quot;aa&quot;
+
+#4.批量转移键
+[root@vagrant redis-6388]# ./redis-cli -p 6381 migrate 127.0.0.1 6387 &quot;&quot; 0 5000 keys aa
+OK
+#键已经不在源节点了，回复&quot;ASK&quot;引导客户端找到真实数据节点
+[root@vagrant redis-6388]# ./redis-cli -p 6381 get aa
+(error) ASK 1180 127.0.0.1:6387
+
+#5.通知所有主节点槽1180已经被分配给节点6387
+[root@vagrant redis-6388]# ./redis-cli -p 6381 cluster setslot 1180 node 96db27a74fd2717b9e65a7b843831de53158e273
+OK
+[root@vagrant redis-6388]# ./redis-cli -p 6382 cluster setslot 1180 node 96db27a74fd2717b9e65a7b843831de53158e273
+OK
+[root@vagrant redis-6388]# ./redis-cli -p 6383 cluster setslot 1180 node 96db27a74fd2717b9e65a7b843831de53158e273
+OK
+[root@vagrant redis-6388]# ./redis-cli -p 6387 cluster setslot 1180 node 96db27a74fd2717b9e65a7b843831de53158e273
+OK
+
+
+#6.槽与数据迁移完成
+[root@vagrant redis-6388]# ./redis-cli -p 6381 cluster nodes
+c9a2731b7db540b7937b4bde854be8a0817258f0 127.0.0.1:6386@16386 slave 9b53bc798f30f0c3aad64ae787ef97bfb520ed62 0 1539767465226 6 connected
+8dc6f1d391ea4ae1f2fbc1ced10f2af356c34c31 127.0.0.1:6388@16388 slave 96db27a74fd2717b9e65a7b843831de53158e273 0 1539767466233 8 connected
+0113a3532640fe678bd652bac626e4fc2fc32916 127.0.0.1:6383@16383 master - 0 1539767464222 3 connected 10923-16383
+e19b36f039d4c56db0e48c9ffda0d00555a9576a 127.0.0.1:6382@16382 master - 0 1539767467240 2 connected 5461-10922
+4010a79852155581fffc9e632398898619a5db90 127.0.0.1:6385@16385 slave 0113a3532640fe678bd652bac626e4fc2fc32916 0 1539767468243 5 connected
+9b53bc798f30f0c3aad64ae787ef97bfb520ed62 127.0.0.1:6381@16381 myself,master - 0 1539767466000 1 connected 0-1179 1181-5460
+f9a65ed5171b9a66e70b4a12474386c4f9b47e35 127.0.0.1:6384@16384 slave e19b36f039d4c56db0e48c9ffda0d00555a9576a 0 1539767467000 4 connected
+96db27a74fd2717b9e65a7b843831de53158e273 127.0.0.1:6387@16387 master - 0 1539767466000 8 connected 1180
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;
+对于线上环境的redis集群，由于迁移槽与数据量都会比较大，最好还是使用&lt;code&gt;redis-trib.rb reshard&lt;/code&gt;命令。
+&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#命令说明
+#host:port：必传参数，集群内任意节点地址，用来获取整个集群信息
+#--from：制定源节点的id，如果有多个源节点，使用逗号分隔，如果是all源节点变为集群内所有主节点，在迁移过程中提示用户输入
+#--to：需要迁移的目标节点的id，目标节点只能填写一个，在迁移过程中提示用户输入
+#--slots：需要迁移槽的总数量，在迁移过程中提示用户输入
+#--yes：当打印出reshard执行计划时，是否需要用户输入yes确认后再执行reshard
+#--timeout：控制每次migrate操作的超时时间，默认为60000毫秒
+#--pipeline：控制每次批量迁移键的数量，默认为10
+redis-trib.rb reshard host:port --from &amp;lt;arg&amp;gt; --to &amp;lt;arg&amp;gt; --slots &amp;lt;arg&amp;gt; --yes --timeout &amp;lt;arg&amp;gt; --pipeline &amp;lt;arg&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;
+使用redis-trib.rb来迁移剩余的slot
+&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#1.开启迁移，显示集群信息，提示输入迁移槽个数
+[root@vagrant redis-6388]# ./redis-trib.rb reshard 127.0.0.1:6381
+&amp;gt;&amp;gt;&amp;gt; Performing Cluster Check (using node 127.0.0.1:6381)
+M: 9b53bc798f30f0c3aad64ae787ef97bfb520ed62 127.0.0.1:6381
+   slots:0-1179,1181-5460 (5460 slots) master
+   1 additional replica(s)
+...
+[OK] All nodes agree about slots configuration.
+&amp;gt;&amp;gt;&amp;gt; Check for open slots...
+&amp;gt;&amp;gt;&amp;gt; Check slots coverage...
+[OK] All 16384 slots covered.
+How many slots do you want to move (from 1 to 16384)? 
+
+#2.输入4096，提示输入目标id
+How many slots do you want to move (from 1 to 16384)? 4096
+What is the receiving node ID? 
+
+#3.输入目标id，提示输入源id
+What is the receiving node ID? 96db27a74fd2717b9e65a7b843831de53158e273
+Please enter all the source node IDs.
+  Type &apos;all&apos; to use all the nodes as source nodes for the hash slots.
+  Type &apos;done&apos; once you entered all the source nodes IDs.
+Source node #1:
+
+#4.输入3个源id，显示迁移计划，提示输入yes
+...
+Moving slot 1361 from 9b53bc798f30f0c3aad64ae787ef97bfb520ed62
+Moving slot 1362 from 9b53bc798f30f0c3aad64ae787ef97bfb520ed62
+Moving slot 1363 from 9b53bc798f30f0c3aad64ae787ef97bfb520ed62
+...
+Do you want to proceed with the proposed reshard plan (yes/no)?
+
+#5.输入yes开始迁移，显示迁移状态
+...
+Moving slot 1338 from 127.0.0.1:6381 to 127.0.0.1:6387: 
+Moving slot 1339 from 127.0.0.1:6381 to 127.0.0.1:6387: 
+Moving slot 1340 from 127.0.0.1:6381 to 127.0.0.1:6387: 
+Moving slot 1341 from 127.0.0.1:6381 to 127.0.0.1:6387: 
+...
+
+#6.迁移结束查看节点状态
+[root@vagrant redis-6388]# ./redis-cli -p 6381 cluster nodes
+c9a2731b7db540b7937b4bde854be8a0817258f0 127.0.0.1:6386@16386 slave 9b53bc798f30f0c3aad64ae787ef97bfb520ed62 0 1539768765984 6 connected
+8dc6f1d391ea4ae1f2fbc1ced10f2af356c34c31 127.0.0.1:6388@16388 slave 96db27a74fd2717b9e65a7b843831de53158e273 0 1539768763000 8 connected
+0113a3532640fe678bd652bac626e4fc2fc32916 127.0.0.1:6383@16383 master - 0 1539768762000 3 connected 12288-16383
+e19b36f039d4c56db0e48c9ffda0d00555a9576a 127.0.0.1:6382@16382 master - 0 1539768762972 2 connected 6827-10922
+4010a79852155581fffc9e632398898619a5db90 127.0.0.1:6385@16385 slave 0113a3532640fe678bd652bac626e4fc2fc32916 0 1539768764981 5 connected
+9b53bc798f30f0c3aad64ae787ef97bfb520ed62 127.0.0.1:6381@16381 myself,master - 0 1539768764000 1 connected 1366-5460
+f9a65ed5171b9a66e70b4a12474386c4f9b47e35 127.0.0.1:6384@16384 slave e19b36f039d4c56db0e48c9ffda0d00555a9576a 0 1539768763000 4 connected
+96db27a74fd2717b9e65a7b843831de53158e273 127.0.0.1:6387@16387 master - 0 1539768763977 8 connected 0-1365 5461-6826 10923-12287
+
+#7.查看集群的平衡性
+[root@vagrant redis-6388]# ./redis-trib.rb rebalance 127.0.0.1:6381
+&amp;gt;&amp;gt;&amp;gt; Performing Cluster Check (using node 127.0.0.1:6381)
+[OK] All nodes agree about slots configuration.
+&amp;gt;&amp;gt;&amp;gt; Check for open slots...
+&amp;gt;&amp;gt;&amp;gt; Check slots coverage...
+[OK] All 16384 slots covered.
+*** No rebalancing needed! All nodes are within the 2.0% threshold.
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;收缩&quot;&gt;收缩&lt;/h4&gt;
+
+&lt;p&gt;
+由于业务或硬件更换可能需要从集群下线节点，一般流程如下：
+&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;首先需要确定下线节点是否有负责的槽，如果有，需要把槽迁移到其他节点，保证节点下线后整个集群槽节点映射的完整性&lt;/li&gt;
+  &lt;li&gt;当下线节点不再负责槽或者本身是从节点时，就可以通知集群内其他节点忘记下线节点，当所有的节点忘记该节点后可以正常关闭&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2018-10-12-redis-cluster/20181017194309.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;下线迁移槽&quot;&gt;下线迁移槽&lt;/h5&gt;
+
+&lt;p&gt;
+下线节点需要迁移槽，原理与扩容迁移槽的过程一致，这里下线6383（master）与6385（slave），需要把主节点6383上的槽均匀迁移到另外3个主节点上。
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2018-10-12-redis-cluster/20181017202012.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;
+每次执行redis-trib.rb reshard只能有一个目标节点，所以需要执行3此reshard命令。
+&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#第一次迁移1365个槽-&amp;gt;6381
+[root@vagrant redis-6388]# ./redis-trib.rb reshard 127.0.0.1:6381
+&amp;gt;&amp;gt;&amp;gt; Performing Cluster Check (using node 127.0.0.1:6381)
+...
+[OK] All nodes agree about slots configuration.
+&amp;gt;&amp;gt;&amp;gt; Check for open slots...
+&amp;gt;&amp;gt;&amp;gt; Check slots coverage...
+[OK] All 16384 slots covered.
+How many slots do you want to move (from 1 to 16384)? 1365
+What is the receiving node ID? 9b53bc798f30f0c3aad64ae787ef97bfb520ed62
+Please enter all the source node IDs.
+  Type &apos;all&apos; to use all the nodes as source nodes for the hash slots.
+  Type &apos;done&apos; once you entered all the source nodes IDs.
+Source node #1:0113a3532640fe678bd652bac626e4fc2fc32916
+Source node #2:done
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#第二次迁移1365个槽-&amp;gt;6382
+[root@vagrant redis-6388]# ./redis-trib.rb reshard 127.0.0.1:6381
+&amp;gt;&amp;gt;&amp;gt; Performing Cluster Check (using node 127.0.0.1:6381)
+...
+[OK] All nodes agree about slots configuration.
+&amp;gt;&amp;gt;&amp;gt; Check for open slots...
+&amp;gt;&amp;gt;&amp;gt; Check slots coverage...
+[OK] All 16384 slots covered.
+How many slots do you want to move (from 1 to 16384)? 1365
+What is the receiving node ID? e19b36f039d4c56db0e48c9ffda0d00555a9576a
+Please enter all the source node IDs.
+  Type &apos;all&apos; to use all the nodes as source nodes for the hash slots.
+  Type &apos;done&apos; once you entered all the source nodes IDs.
+Source node #1:0113a3532640fe678bd652bac626e4fc2fc32916
+Source node #2:done
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#第一次迁移1366个槽-&amp;gt;6387
+[root@vagrant redis-6388]# ./redis-trib.rb reshard 127.0.0.1:6381
+&amp;gt;&amp;gt;&amp;gt; Performing Cluster Check (using node 127.0.0.1:6381)
+...
+[OK] All nodes agree about slots configuration.
+&amp;gt;&amp;gt;&amp;gt; Check for open slots...
+&amp;gt;&amp;gt;&amp;gt; Check slots coverage...
+[OK] All 16384 slots covered.
+How many slots do you want to move (from 1 to 16384)? 1365
+What is the receiving node ID? 96db27a74fd2717b9e65a7b843831de53158e273
+Please enter all the source node IDs.
+  Type &apos;all&apos; to use all the nodes as source nodes for the hash slots.
+  Type &apos;done&apos; once you entered all the source nodes IDs.
+Source node #1:0113a3532640fe678bd652bac626e4fc2fc32916
+Source node #2:done
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;
+全部迁移完成后查看集群节点状态，确保迁移结果是正确的
+&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#集群状态
+[root@vagrant redis-6388]# ./redis-cli -p 6381 cluster nodes
+c9a2731b7db540b7937b4bde854be8a0817258f0 127.0.0.1:6386@16386 slave 9b53bc798f30f0c3aad64ae787ef97bfb520ed62 0 1539831140899 9 connected
+8dc6f1d391ea4ae1f2fbc1ced10f2af356c34c31 127.0.0.1:6388@16388 slave 96db27a74fd2717b9e65a7b843831de53158e273 0 1539831137000 8 connected
+0113a3532640fe678bd652bac626e4fc2fc32916 127.0.0.1:6383@16383 master - 0 1539831140000 3 connected
+e19b36f039d4c56db0e48c9ffda0d00555a9576a 127.0.0.1:6382@16382 master - 0 1539831137000 10 connected 6827-10922 13653-15017
+4010a79852155581fffc9e632398898619a5db90 127.0.0.1:6385@16385 slave 0113a3532640fe678bd652bac626e4fc2fc32916 0 1539831139000 5 connected
+9b53bc798f30f0c3aad64ae787ef97bfb520ed62 127.0.0.1:6381@16381 myself,master - 0 1539831138000 9 connected 1366-5460 12288-13652
+f9a65ed5171b9a66e70b4a12474386c4f9b47e35 127.0.0.1:6384@16384 slave e19b36f039d4c56db0e48c9ffda0d00555a9576a 0 1539831139895 10 connected
+96db27a74fd2717b9e65a7b843831de53158e273 127.0.0.1:6387@16387 master - 0 1539831137884 11 connected 0-1365 5461-6826 10923-12287 15018-16383
+
+#检查集群
+[root@vagrant redis-6388]# ./redis-trib.rb check 127.0.0.1:6381
+&amp;gt;&amp;gt;&amp;gt; Performing Cluster Check (using node 127.0.0.1:6381)
+M: 9b53bc798f30f0c3aad64ae787ef97bfb520ed62 127.0.0.1:6381
+   slots:1366-5460,12288-13652 (5460 slots) master
+   1 additional replica(s)
+S: c9a2731b7db540b7937b4bde854be8a0817258f0 127.0.0.1:6386
+   slots: (0 slots) slave
+   replicates 9b53bc798f30f0c3aad64ae787ef97bfb520ed62
+S: 8dc6f1d391ea4ae1f2fbc1ced10f2af356c34c31 127.0.0.1:6388
+   slots: (0 slots) slave
+   replicates 96db27a74fd2717b9e65a7b843831de53158e273
+M: 0113a3532640fe678bd652bac626e4fc2fc32916 127.0.0.1:6383
+   slots: (0 slots) master
+   0 additional replica(s)
+M: e19b36f039d4c56db0e48c9ffda0d00555a9576a 127.0.0.1:6382
+   slots:6827-10922,13653-15017 (5461 slots) master
+   1 additional replica(s)
+S: 4010a79852155581fffc9e632398898619a5db90 127.0.0.1:6385
+   slots: (0 slots) slave
+   replicates 96db27a74fd2717b9e65a7b843831de53158e273
+S: f9a65ed5171b9a66e70b4a12474386c4f9b47e35 127.0.0.1:6384
+   slots: (0 slots) slave
+   replicates e19b36f039d4c56db0e48c9ffda0d00555a9576a
+M: 96db27a74fd2717b9e65a7b843831de53158e273 127.0.0.1:6387
+   slots:0-1365,5461-6826,10923-12287,15018-16383 (5463 slots) master
+   2 additional replica(s)
+[OK] All nodes agree about slots configuration.
+&amp;gt;&amp;gt;&amp;gt; Check for open slots...
+&amp;gt;&amp;gt;&amp;gt; Check slots coverage...
+[OK] All 16384 slots covered.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h5 id=&quot;忘记节点&quot;&gt;忘记节点&lt;/h5&gt;
+
+&lt;p&gt;
+redis提供了&lt;code&gt;cluster forget {downNodeId}&lt;/code&gt;来将被忘记节点加入到禁用列表中，不过需要在&lt;code&gt;60s&lt;/code&gt;内在所有节点上执行此命令，否则节点会恢复通信，此种方式不适合在线上环境使用。
+&lt;/p&gt;
+
+&lt;p&gt;
+这里使用&lt;code&gt;redis-trib.rb del-node&lt;/code&gt;来忘记节点，为了避免从节点的全量复制，优先下线从节点，再下线主节点。
+&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@vagrant redis-6388]# ./redis-trib.rb del-node 127.0.0.1:6381 4010a79852155581fffc9e632398898619a5db90
+&amp;gt;&amp;gt;&amp;gt; Removing node 4010a79852155581fffc9e632398898619a5db90 from cluster 127.0.0.1:6381
+&amp;gt;&amp;gt;&amp;gt; Sending CLUSTER FORGET messages to the cluster...
+&amp;gt;&amp;gt;&amp;gt; SHUTDOWN the node.
+[root@vagrant redis-6388]# ./redis-trib.rb del-node 127.0.0.1:6381 0113a3532640fe678bd652bac626e4fc2fc32916
+&amp;gt;&amp;gt;&amp;gt; Removing node 0113a3532640fe678bd652bac626e4fc2fc32916 from cluster 127.0.0.1:6381
+&amp;gt;&amp;gt;&amp;gt; Sending CLUSTER FORGET messages to the cluster...
+&amp;gt;&amp;gt;&amp;gt; SHUTDOWN the node.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;
+查看集群节点与redis进程信息，确认节点已下线
+&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#集群信息
+[root@vagrant redis-6388]# ./redis-cli -p 6381 cluster nodes
+c9a2731b7db540b7937b4bde854be8a0817258f0 127.0.0.1:6386@16386 slave 9b53bc798f30f0c3aad64ae787ef97bfb520ed62 0 1539840155493 9 connected
+8dc6f1d391ea4ae1f2fbc1ced10f2af356c34c31 127.0.0.1:6388@16388 slave 96db27a74fd2717b9e65a7b843831de53158e273 0 1539840154000 11 connected
+e19b36f039d4c56db0e48c9ffda0d00555a9576a 127.0.0.1:6382@16382 master - 0 1539840155000 10 connected 6827-10922 13653-15017
+9b53bc798f30f0c3aad64ae787ef97bfb520ed62 127.0.0.1:6381@16381 myself,master - 0 1539840154000 9 connected 1366-5460 12288-13652
+f9a65ed5171b9a66e70b4a12474386c4f9b47e35 127.0.0.1:6384@16384 slave e19b36f039d4c56db0e48c9ffda0d00555a9576a 0 1539840156497 10 connected
+96db27a74fd2717b9e65a7b843831de53158e273 127.0.0.1:6387@16387 master - 0 1539840154000 11 connected 0-1365 5461-6826 10923-12287 15018-16383
+
+#redis进程
+[root@vagrant redis-6388]# ps -ef|grep redis
+root     18040     1  0 Oct16 ?        00:03:40 ./redis-server *:6381 [cluster]
+root     18054     1  0 Oct16 ?        00:03:35 ./redis-server *:6384 [cluster]
+root     18064     1  0 Oct16 ?        00:03:34 ./redis-server *:6386 [cluster]
+root     18071     1  0 Oct16 ?        00:03:40 ./redis-server *:6382 [cluster]
+root     18625     1  0 Oct17 ?        00:02:02 ./redis-server *:6387 [cluster]
+root     18855     1  0 Oct17 ?        00:01:53 ./redis-server *:6388 [cluster]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;
+&lt;font color=&quot;red&quot;&gt;
+Tips：对于已下线的节点，如果需要重新启动的话，最好删除掉持久化文件（aof或rdb）与集群配置文件（nodes-{port}.conf），否则在启动时会加载
+&lt;/font&gt;
+&lt;/p&gt;
+
+&lt;h2 id=&quot;故障转移&quot;&gt;故障转移&lt;/h2&gt;
+
+&lt;p&gt;
+redis自身实现了故障转移，不需要依赖sentinel来进行故障转移。
+&lt;/p&gt;
+
+&lt;h4 id=&quot;故障发现&quot;&gt;故障发现&lt;/h4&gt;
+
+&lt;h5 id=&quot;主观下线&quot;&gt;主观下线&lt;/h5&gt;
+
+&lt;p&gt;
+当&lt;code&gt;cluster-note-timeout&lt;/code&gt;时间内某节点无法与另一个节点顺利完成ping消息通信时，则将该节点标记为主观下线状态。
+&lt;/p&gt;
+
+&lt;h5 id=&quot;客观下线&quot;&gt;客观下线&lt;/h5&gt;
+
+&lt;p&gt;
+当集群中半数以上持有槽的主节点都标记某个节点是主观下线时，触发客观下线流程。向集群广播一条fail消息，通知所有的节点将故障节点标记为客观下线。
+&lt;/p&gt;
+
+&lt;p&gt;
+Tips：如果在cluster-node-time*2时间内无法收集到一半以上槽节点的下线报告，那么之前的下线报告将会过期，因此不能将cluster-node-time设置得过小。
+&lt;/p&gt;
+
+&lt;h4 id=&quot;故障恢复&quot;&gt;故障恢复&lt;/h4&gt;
+
+&lt;p&gt;
+故障节点变为客观下线后，如果下线节点是持有槽的主节点则需要在它的从节点中选出一个替换它，从而保证集群的高可用。主要流程：
+&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;资格检查&lt;/li&gt;
+  &lt;li&gt;准备选举时间&lt;/li&gt;
+  &lt;li&gt;发起选举&lt;/li&gt;
+  &lt;li&gt;选举投票&lt;/li&gt;
+  &lt;li&gt;替换主节点&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h5 id=&quot;资格检查&quot;&gt;资格检查&lt;/h5&gt;
+
+&lt;p&gt;
+获取有资格进行故障替换的从节点，主从断线时间&amp;lt;=cluster-node-timeout*cluster-slave-alidity-factor（默认为10）
+&lt;/p&gt;
+
+&lt;h5 id=&quot;准备选举时间&quot;&gt;准备选举时间&lt;/h5&gt;
+
+&lt;p&gt;
+从节点根据自身复制偏移量设置延迟选举时间，如复制偏移量最大的节点slave b-1延迟1秒执行，保证复制延迟低的从节点优先发起选举
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2018-10-12-redis-cluster/20181018155222.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;发起选举&quot;&gt;发起选举&lt;/h5&gt;
+
+&lt;p&gt;
+当从节点判断到达故障选举时间后，在集群内广播选举消息（FAILOVER_AUTH_REQUEST），并记录已发送过消息的状态，保证该从节点在一个配置纪元内只能发起一次选举。
+&lt;/p&gt;
+
+&lt;h5 id=&quot;选举投票&quot;&gt;选举投票&lt;/h5&gt;
+
+&lt;p&gt;
+只有拥有槽的主节点才能对选举进行投票，且在一个配置纪元内只能投票一次，当从节点收集到N(所有槽主节点)/2+1个持有槽主节点投票时，从节点即可执行替换主节点操作。
+&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4001/img/2018-10-12-redis-cluster/20181018164925.png?raw=true&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;
+&lt;font color=&quot;red&quot;&gt;
+Tips：因为故障的主节点也在投票数内，如果在一台物理机上部署多个主节点时，当物理机出现故障可能会导致故障转移失败，所以部署集群时主节点最好部署在多台物理机上。
+&lt;/font&gt;
+&lt;/p&gt;
+
+&lt;h5 id=&quot;替换主节点&quot;&gt;替换主节点&lt;/h5&gt;
+
+&lt;p&gt;
+当确定由哪个主节点替换主节点后，即可进行一下操作：
+&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;当前从节点取消复制变为主节点&lt;/li&gt;
+  &lt;li&gt;执行clusterDelSlot操作撤销故障主节点负责的槽，并执行clusterAddSlot把这些槽委派给自己&lt;/li&gt;
+  &lt;li&gt;向集群广播自己的pong消息，通知集群内所有的节点当前从节点变为主节点并接管了故障主节点的槽信息&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;故障转移时间&quot;&gt;故障转移时间&lt;/h4&gt;
+
+&lt;p&gt;
+通过上面的流程可以得知故障转移需要花费的时间（failover_time）&amp;lt;=cluster-node-timeout +cluster-node-timeout/2 + 1000
+&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;主观下线（pfail）识别时间=cluster-node-timeout&lt;/li&gt;
+  &lt;li&gt;主观下线状态消息传播时间&amp;lt;=cluster-node-timeout/2&lt;/li&gt;
+  &lt;li&gt;从节点转移时间&amp;lt;=1000毫秒&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;
+因此故障转移时间跟cluster-node-timeout参数息息相关（默认15秒），配置时可以根据业务容忍度做出适当调整。
+&lt;/p&gt;
+
+&lt;h4 id=&quot;故障转移测试&quot;&gt;故障转移测试&lt;/h4&gt;
+
+&lt;p&gt;
+下面对现有集群模拟故障转移
+&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#初始集群信息
+[root@vagrant redis-6388]# ./redis-cli -p 6381 cluster nodes
+c9a2731b7db540b7937b4bde854be8a0817258f0 127.0.0.1:6386@16386 slave 9b53bc798f30f0c3aad64ae787ef97bfb520ed62 0 1539853344532 9 connected
+8dc6f1d391ea4ae1f2fbc1ced10f2af356c34c31 127.0.0.1:6388@16388 slave 96db27a74fd2717b9e65a7b843831de53158e273 0 1539853346544 11 connected
+e19b36f039d4c56db0e48c9ffda0d00555a9576a 127.0.0.1:6382@16382 master - 0 1539853346000 10 connected 6827-10922 13653-15017
+9b53bc798f30f0c3aad64ae787ef97bfb520ed62 127.0.0.1:6381@16381 myself,master - 0 1539853345000 9 connected 1366-5460 12288-13652
+f9a65ed5171b9a66e70b4a12474386c4f9b47e35 127.0.0.1:6384@16384 slave e19b36f039d4c56db0e48c9ffda0d00555a9576a 0 1539853345539 10 connected
+96db27a74fd2717b9e65a7b843831de53158e273 127.0.0.1:6387@16387 master - 0 1539853347551 11 connected 0-1365 5461-6826 10923-12287 15018-16383
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;
+使用&lt;code&gt;kill -9 {pid}&lt;/code&gt;强制关闭6387主节点。
+&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#查看最新集群信息，故障已转移，6388变为新主节点
+[root@vagrant redis-6388]# ./redis-cli -p 6381 cluster nodes
+c9a2731b7db540b7937b4bde854be8a0817258f0 127.0.0.1:6386@16386 slave 9b53bc798f30f0c3aad64ae787ef97bfb520ed62 0 1539853959000 9 connected
+8dc6f1d391ea4ae1f2fbc1ced10f2af356c34c31 127.0.0.1:6388@16388 master - 0 1539853958000 12 connected 0-1365 5461-6826 10923-12287 15018-16383
+e19b36f039d4c56db0e48c9ffda0d00555a9576a 127.0.0.1:6382@16382 master - 0 1539853959841 10 connected 6827-10922 13653-15017
+9b53bc798f30f0c3aad64ae787ef97bfb520ed62 127.0.0.1:6381@16381 myself,master - 0 1539853960000 9 connected 1366-5460 12288-13652
+f9a65ed5171b9a66e70b4a12474386c4f9b47e35 127.0.0.1:6384@16384 slave e19b36f039d4c56db0e48c9ffda0d00555a9576a 0 1539853960853 10 connected
+96db27a74fd2717b9e65a7b843831de53158e273 127.0.0.1:6387@16387 master,fail - 1539853943825 1539853941716 11 disconnected
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;
+重启6387节点，启动后发现自己负责的槽已被指派给另一个节点，则以现有集群配置为准，变为新主节点6388的从节点。
+&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@vagrant redis-6387]# ./redis-server redis.conf 
+[root@vagrant redis-6387]# ./redis-cli -p 6381 cluster nodes
+c9a2731b7db540b7937b4bde854be8a0817258f0 127.0.0.1:6386@16386 slave 9b53bc798f30f0c3aad64ae787ef97bfb520ed62 0 1539854292000 9 connected
+8dc6f1d391ea4ae1f2fbc1ced10f2af356c34c31 127.0.0.1:6388@16388 master - 0 1539854294121 12 connected 0-1365 5461-6826 10923-12287 15018-16383
+e19b36f039d4c56db0e48c9ffda0d00555a9576a 127.0.0.1:6382@16382 master - 0 1539854293116 10 connected 6827-10922 13653-15017
+9b53bc798f30f0c3aad64ae787ef97bfb520ed62 127.0.0.1:6381@16381 myself,master - 0 1539854291000 9 connected 1366-5460 12288-13652
+f9a65ed5171b9a66e70b4a12474386c4f9b47e35 127.0.0.1:6384@16384 slave e19b36f039d4c56db0e48c9ffda0d00555a9576a 0 1539854292000 10 connected
+96db27a74fd2717b9e65a7b843831de53158e273 127.0.0.1:6387@16387 slave 8dc6f1d391ea4ae1f2fbc1ced10f2af356c34c31 0 1539854292113 12 connected
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;集群运维&quot;&gt;集群运维&lt;/h2&gt;
+
+&lt;h4 id=&quot;集群完整性&quot;&gt;集群完整性&lt;/h4&gt;
+
+&lt;p&gt;
+默认情况下当集群16384个槽任何一个没有指派到节点时整个集群不可用。执行任何键命令返回（error）CLUSTERDOWNHash slot not served错误。建议将参数cluster-require-full-coverage配置为no，当主节点故障只影响它负责槽的相关命令执行，不会影响其他主节点的可用性。
+&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@vagrant redis-6381]# ./redis-cli -p 6381 config get cluster-require-full-coverage
+1) &quot;cluster-require-full-coverage&quot;
+2) &quot;yes&quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;读写分离&quot;&gt;读写分离&lt;/h4&gt;
+
+&lt;p&gt;
+集群模式下从节点是不能处理读写请求的，发送过来的命令会重定向到相应槽的主节点上。如果需要从节点可以处理读的请求，需要使用&lt;code&gt;readyonly&lt;/code&gt;命令来设置客户端的只读状态。
+&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@vagrant redis-6381]# ./redis-cli -p 6384
+127.0.0.1:6384&amp;gt; get b
+(error) MOVED 3300 127.0.0.1:6381
+127.0.0.1:6384&amp;gt; readonly
+OK
+127.0.0.1:6384&amp;gt; get b
+(nil)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;
+&lt;font color=&quot;red&quot;&gt;
+Tips：readonly命令是连接级别生效，因此每次新建连接时都需要执行readonly开启只读状态。执行readwrite命令可以关闭连接只读状态。
+&lt;/font&gt;
+&lt;/p&gt;
+
+&lt;h4 id=&quot;手动故障转移&quot;&gt;手动故障转移&lt;/h4&gt;
+
+&lt;p&gt;
+当需要对主节点迁移或自动故障转移失败时，可手动进行故障转移。在需要故障转移的主节点对应的从节点里，选取一个可变为主节点的从节点执行&lt;code&gt;cluster failover&lt;/code&gt;命令，此从节点就会变为新主节点。
+&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#6386为6383的从节点
+[root@vagrant redis-6381]# ./redis-cli -p 6381 cluster nodes
+8613c01624d779fe892002ef48e2ea3ebcdc4c6b 127.0.0.1:6386@16386 slave 7d024eba97453219dda1375cfbf2bf9105841299 0 1539934116000 6 connected
+7d024eba97453219dda1375cfbf2bf9105841299 127.0.0.1:6383@16383 master - 0 1539934117445 3 connected 10923-16383
+
+#在6386上执行故障转移
+[root@vagrant redis-6381]# ./redis-cli -p 6386 cluster failover
+OK
+
+#6383变为6386的从节点
+[root@vagrant redis-6381]# ./redis-cli -p 6381 cluster nodes
+8613c01624d779fe892002ef48e2ea3ebcdc4c6b 127.0.0.1:6386@16386 master - 0 1539934245070 7 connected 10923-16383
+7d024eba97453219dda1375cfbf2bf9105841299 127.0.0.1:6383@16383 slave 8613c01624d779fe892002ef48e2ea3ebcdc4c6b 0 1539934249094 7 connected
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;
+默认情况下转移期间客户端请求会有短暂的阻塞，但不会丢失数据，流程如下：
+&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;从节点通知主节点停止处理所有客户端请求&lt;/li&gt;
+  &lt;li&gt;主节点发送对应从节点延迟复制的数据&lt;/li&gt;
+  &lt;li&gt;从节点接收处理复制延迟的数据，直到主从复制偏移量一致为止，保证复制数据不丢失&lt;/li&gt;
+  &lt;li&gt;从节点立刻发起投票选举（这里不需要延迟触发选举）。选举成功后断开复制变为新的主节点，之后向集群广播主节点pong消息，故障转移细节见10.6故障恢复部分&lt;/li&gt;
+  &lt;li&gt;旧主节点接受到消息后更新自身配置变为从节点，解除所有客户端请求阻塞，这些请求会被重定向到新主节点上执行&lt;/li&gt;
+  &lt;li&gt;旧主节点变为从节点后，向新的主节点发起全量复制流程&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;数据迁移&quot;&gt;数据迁移&lt;/h4&gt;
+
+&lt;p&gt;
+当准备使用redis集群时，一般都需要把数据从单机迁移到集群环境，推荐使用唯品会开源的&lt;a target=&quot;#&quot; href=&quot;https://github.com/vipshop/redis-migrate-tool&quot;&gt;redis-migrate-tool&lt;/a&gt;。
+&lt;/p&gt;
+
+&lt;p&gt;
+下面尝试使用此工具，进行一次redis单机到集群的数据迁移。
+&lt;/p&gt;
+
+&lt;h5 id=&quot;1环境准备&quot;&gt;1.环境准备&lt;/h5&gt;
+
+&lt;p&gt;
+准备redis单机环境，6387（master），6388（slave）
+&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@vagrant redis-6388]# ps -ef|grep redis
+root     12689     1  0 10:33 ?        00:00:00 ./redis-server *:6387    
+root     12694     1  0 10:33 ?        00:00:00 ./redis-server *:6388
+
+[root@vagrant redis-6388]# ./redis-cli -p 6387 info replication
+# Replication
+role:master
+connected_slaves:1
+slave0:ip=127.0.0.1,port=6388,state=online,offset=14,lag=1
+...
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;
+准备redis集群环境
+&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@vagrant redis-6386]# ps -ef|grep redis
+root     12709     1  0 10:52 ?        00:00:00 ./redis-server *:6381 [cluster]
+root     12714     1  0 10:52 ?        00:00:00 ./redis-server *:6382 [cluster]
+root     12719     1  0 10:52 ?        00:00:00 ./redis-server *:6383 [cluster]
+root     12724     1  0 10:52 ?        00:00:00 ./redis-server *:6384 [cluster]
+root     12729     1  0 10:52 ?        00:00:00 ./redis-server *:6385 [cluster]
+root     12734     1  0 10:53 ?        00:00:00 ./redis-server *:6386 [cluster]
+
+[root@vagrant redis-6386]# ./redis-cli -p 6381 cluster nodes
+1b1025d40c5e4d46941996ca382a2a07069dadb8 127.0.0.1:6382@16382 master - 0 1539919113086 2 connected 5461-10922
+3561068ac19a730fe98fb9e90fc85c7487319d17 127.0.0.1:6385@16385 slave 1b1025d40c5e4d46941996ca382a2a07069dadb8 0 1539919114089 5 connected
+dbc68e4e6ad2fccbe4383899a9e9f8156bfe8caa 127.0.0.1:6384@16384 slave 17bd7b9527f6ec1bb55976925ce7813d7acde6e0 0 1539919112081 4 connected
+8613c01624d779fe892002ef48e2ea3ebcdc4c6b 127.0.0.1:6386@16386 slave 7d024eba97453219dda1375cfbf2bf9105841299 0 1539919111076 6 connected
+7d024eba97453219dda1375cfbf2bf9105841299 127.0.0.1:6383@16383 master - 0 1539919111000 3 connected 10923-16383
+17bd7b9527f6ec1bb55976925ce7813d7acde6e0 127.0.0.1:6381@16381 myself,master - 0 1539919112000 1 connected 0-5460
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;
+准备redis单机数据，确保测试数据在集群内分别属于不同的节点，用于之后检查数据迁移的准确性
+&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#槽15495，节点6383
+[root@vagrant redis-6386]# ./redis-cli -p 6387 set a 100
+OK
+#槽3300，节点6381
+[root@vagrant redis-6386]# ./redis-cli -p 6387 set b 200
+OK
+#槽7365，节点6382
+[root@vagrant redis-6386]# ./redis-cli -p 6387 set c 300
+OK
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h5 id=&quot;2工具安装&quot;&gt;2.工具安装&lt;/h5&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;#安装依赖库
+[root@vagrant redis-migrate-tool-master]# yum install libtool
+
+#安装redis-migrate-tool
+[root@vagrant bmsource]# wget https://github.com/vipshop/redis-migrate-tool/archive/master.zip -O redis-migrate-tool.zip
+[root@vagrant bmsource]# unzip redis-migrate-tool.zip 
+[root@vagrant bmsource]# cd redis-migrate-tool-master/
+[root@vagrant redis-migrate-tool-master]# autoreconf -fvi
+[root@vagrant redis-migrate-tool-master]# ./configure 
+[root@vagrant redis-migrate-tool-master]# make
+
+#查看工具帮助信息
+[root@vagrant redis-migrate-tool-master]# src/redis-migrate-tool -h
+This is redis-migrate-tool-0.1.0
+
+Usage: redis-migrate-tool [-?hVdIn] [-v verbosity level] [-o output file]
+                  [-c conf file] [-C command]
+                  [-f source address] [-t target address]
+                  [-p pid file] [-m mbuf size] [-r target role]
+                  [-T thread number] [-b buffer size]
+...
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h5 id=&quot;3迁移数据&quot;&gt;3.迁移数据&lt;/h5&gt;
+
+&lt;p&gt;
+迁移配置文件&lt;code&gt;rmt.conf&lt;/code&gt;
+&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[source]
+type: single
+servers :
+-127.0.0.1:6387
+
+[target]
+type: redis cluster
+servers:
+-127.0.0.1:6381
+
+[common]
+listen: 0.0.0.0:8888
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;
+执行命令迁移数据
+&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[root@vagrant redis-migrate-tool-master]# src/redis-migrate-tool -c rmt.conf -o rmt.log -d
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;
+查看rmt.log文件，发现存在以下报错，查看仓库问题，此&lt;font color=&quot;red&quot;&gt;工具还不支持redis4.x版本&lt;/font&gt;
+&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;...
+[2018-10-19 14:53:51.678] rmt_redis.c:1643 rdb file node127.0.0.1:6387-1539932031654768-21118.rdb write complete
+[2018-10-19 14:53:51.678] rmt_redis.c:6446 ERROR: Can&apos;t handle RDB format version -782133880
+[2018-10-19 14:53:51.678] rmt_redis.c:6715 ERROR: Rdb file for node[127.0.0.1:6387] parsed failed
+...
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;参考资料&quot;&gt;参考资料&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://item.jd.com/12121730.html?spm=1.1.1&quot;&gt;redis开发与运维&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://blog.csdn.net/joy0921/article/details/80129724&quot;&gt;redis cluster探索与思考&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://redis.io/topics/cluster-spec&quot;&gt;redis集群规范&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/antirez/redis/blob/unstable/src/redis-cli.c&quot;&gt;redis集群管理工具&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.cnblogs.com/luckcs/articles/6477261.html&quot;&gt;数据迁移工具&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Fri, 12 Oct 2018 15:30:00 +0800</pubDate>
+        <link>http://localhost:4001/2018/10/12/redis-cluster/</link>
+        <guid isPermaLink="true">http://localhost:4001/2018/10/12/redis-cluster/</guid>
+        
+        <category>redis</category>
+        
+        
+      </item>
+    
+  </channel>
+</rss>
