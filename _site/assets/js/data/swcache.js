@@ -1,43 +1,43 @@
 const resource = [
 
   /* --- CSS --- */
-  '/_site/assets/css/style.css',
+  '/assets/css/style.css',
 
   /* --- JavaScripts --- */
   
-  '/_site/assets/js/dist/home.min.js',
-  '/_site/assets/js/dist/page.min.js',
-  '/_site/assets/js/dist/post.min.js',
-  '/_site/assets/js/dist/categories.min.js',
-  '/_site/assets/js/data/search.json',
-  '/_site/app.js',
-  '/_site/sw.js',
+  '/assets/js/dist/home.min.js',
+  '/assets/js/dist/page.min.js',
+  '/assets/js/dist/post.min.js',
+  '/assets/js/dist/categories.min.js',
+  '/assets/js/data/search.json',
+  '/app.js',
+  '/sw.js',
 
   /* --- HTML --- */
-  '/_site/index.html',
-  '/_site/404.html',
+  '/index.html',
+  '/404.html',
   
-    '/_site/categories/',
+    '/categories/',
   
-    '/_site/tags/',
+    '/tags/',
   
-    '/_site/archives/',
+    '/archives/',
   
-    '/_site/about/',
+    '/about/',
   
 
   /* --- Favicons --- */
   
 
-  '/_site/assets/img/favicons/android-chrome-192x192.png',
-  '/_site/assets/img/favicons/android-chrome-512x512.png',
-  '/_site/assets/img/favicons/apple-touch-icon.png',
-  '/_site/assets/img/favicons/favicon-16x16.png',
-  '/_site/assets/img/favicons/favicon-32x32.png',
-  '/_site/assets/img/favicons/favicon.ico',
-  '/_site/assets/img/favicons/mstile-150x150.png',
-  '/_site/assets/img/favicons/site.webmanifest',
-  '/_site/assets/img/favicons/browserconfig.xml'
+  '/assets/img/favicons/android-chrome-192x192.png',
+  '/assets/img/favicons/android-chrome-512x512.png',
+  '/assets/img/favicons/apple-touch-icon.png',
+  '/assets/img/favicons/favicon-16x16.png',
+  '/assets/img/favicons/favicon-32x32.png',
+  '/assets/img/favicons/favicon.ico',
+  '/assets/img/favicons/mstile-150x150.png',
+  '/assets/img/favicons/site.webmanifest',
+  '/assets/img/favicons/browserconfig.xml'
 
 ];
 
