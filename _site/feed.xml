@@ -1,0 +1,349 @@
+
+
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <id>http://localhost:4000/</id>
+  <title>Chirpy</title>
+  <subtitle>A minimal, portfolio, sidebar, bootstrap Jekyll theme with responsive web design and focuses on text presentation.</subtitle>
+  <updated>2022-01-18T21:21:09+08:00</updated>
+  <author>
+    <name>your_full_name</name>
+    <uri>http://localhost:4000/</uri>
+  </author>
+  <link rel="self" type="application/atom+xml" href="http://localhost:4000/feed.xml"/>
+  <link rel="alternate" type="text/html" hreflang="en"
+    href="http://localhost:4000/"/>
+  <generator uri="https://jekyllrb.com/" version="4.2.1">Jekyll</generator>
+  <rights> © 2022 your_full_name </rights>
+  <icon>/assets/img/favicons/favicon.ico</icon>
+  <logo>/assets/img/favicons/favicon-96x96.png</logo>
+
+
+  
+  <entry>
+    <title>composer安装</title>
+    <link href="http://localhost:4000/posts/composer-install/" rel="alternate" type="text/html" title="composer安装" />
+    <published>2019-07-30T20:30:00+08:00</published>
+  
+    <updated>2019-07-30T20:30:00+08:00</updated>
+  
+    <id>http://localhost:4000/posts/composer-install/</id>
+    <content src="http://localhost:4000/posts/composer-install/" />
+    <author>
+      <name>zwtisme</name>
+    </author>
+
+  
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      安装
+
+[root@localhost bmsource]# php -r "copy('https://install.phpcomposer.com/installer', 'composer-setup.php');"
+[root@localhost bmsource]# php composer-setup.php
+#移动到bin目录，供全局调用
+[root@localhost bmsource]# mv composer.phar /usr/local/bin/composer
+
+
+添加国内镜像
+
+#全局配置
+[root@localhost bmsource]# composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/
+#取消全局配置
+[root@localhost bms...
+    </summary>
+  
+
+  </entry>
+
+  
+  <entry>
+    <title>图解HTTP笔记</title>
+    <link href="http://localhost:4000/posts/tujie-http/" rel="alternate" type="text/html" title="图解HTTP笔记" />
+    <published>2019-06-24T14:10:00+08:00</published>
+  
+    <updated>2022-01-18T00:56:38+08:00</updated>
+  
+    <id>http://localhost:4000/posts/tujie-http/</id>
+    <content src="http://localhost:4000/posts/tujie-http/" />
+    <author>
+      <name>zwtisme</name>
+    </author>
+
+  
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+  介绍了HTTP协议报文的构成，响应状态码，请求与响应的首部字段。为了应对新场景需求的Ajax，Comet，WebSocket等技术。通过HTTPS与用户认证实现安全通信，一些常见的Web攻击技术。
+
+
+了解Web
+
+TCP/IP通信传输流
+
+
+发送端：在层与层之间传输数据时，每经过一层时必定会被打上一个该层所属的首部信息。
+
+
+
+接收端：在层与层传输数据时，每经过一层时会把对应的首部去掉。
+
+
+
+
+各协议与HTTP协议的关系
+
+
+
+URI与URL
+
+
+  URI：统一资源标识符
+  URL：统一资源定位符，属于URI的子集
+
+
+URI格式
+
+
+
+
+  协议名：使用http:或https:等协议方案名获取访问资源时要指定协议类型。不区分字母大小写，最后附加一个冒号:
+  登录信息（可选）：指定用户名和密码作为从服务器端获取资源时必要的登录信息
+  服务器地址：使用绝对URI必须指...
+    </summary>
+  
+
+  </entry>
+
+  
+  <entry>
+    <title>图解TCP/IP笔记</title>
+    <link href="http://localhost:4000/posts/tujie-tcp-ip/" rel="alternate" type="text/html" title="图解TCP/IP笔记" />
+    <published>2019-05-23T14:10:00+08:00</published>
+  
+    <updated>2022-01-18T00:56:38+08:00</updated>
+  
+    <id>http://localhost:4000/posts/tujie-tcp-ip/</id>
+    <content src="http://localhost:4000/posts/tujie-tcp-ip/" />
+    <author>
+      <name>zwtisme</name>
+    </author>
+
+  
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      网络基础知识
+
+计算机与网络发展的7个阶段
+
+
+
+年代
+内容
+说明
+
+
+20世纪50年代
+批处理
+Batch Processing：
+事先将用户程序和数据装入卡带或磁带，让计算机按照一定的顺序读取，使用户所要执行的这些程序和数据能够一并得到批量处理
+
+
+20世纪60年代
+分时系统
+Time Sharing System：
+多个终端与同一个计算机连接，允许多个用户同时使用一台计算机系统。特性：
+1.多路性
+2.独占性
+3.交互性
+4.及时性
+
+
+20世纪70年代
+计算机之间的通信
+
+
+
+20世纪80年代
+计算机网络的产生
+
+
+
+20世纪90年代
+互联网的普及
+
+
+
+2000年
+以互联网为中心的时代
+通过IP（Internet Protocol）网可将，个人电脑，手机终端，电视机，电话，相机，家用电器等结合到一起。
+
+
+2010年
+从"单纯建立连接"到"安全建立连接"
+
+
+
+
+协议
+
+
+...
+    </summary>
+  
+
+  </entry>
+
+  
+  <entry>
+    <title>mysql超时时间</title>
+    <link href="http://localhost:4000/posts/timeout/" rel="alternate" type="text/html" title="mysql超时时间" />
+    <published>2019-05-15T11:20:00+08:00</published>
+  
+    <updated>2019-05-15T11:20:00+08:00</updated>
+  
+    <id>http://localhost:4000/posts/timeout/</id>
+    <content src="http://localhost:4000/posts/timeout/" />
+    <author>
+      <name>zwtisme</name>
+    </author>
+
+  
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+  介绍mysql中一些常用的超时时间的作用。
+
+
+概述
+
+
+通过如下命令可以获取到所有与timeout相关的配置，下面来看看这些配置大致都有什么作用。
+
+
+#查看会话级别（session）的变量
+mysql&amp;gt; show variables like '%timeout%';
++-----------------------------+----------+
+| Variable_name               | Value    |
++-----------------------------+----------+
+| connect_timeout             | 10       |
+| delayed_insert_timeout      | 300      |
+| have_statement_timeout      | YES    ...
+    </summary>
+  
+
+  </entry>
+
+  
+  <entry>
+    <title>Git学习-入门</title>
+    <link href="http://localhost:4000/posts/git-study-introduction/" rel="alternate" type="text/html" title="Git学习-入门" />
+    <published>2019-04-05T14:10:00+08:00</published>
+  
+    <updated>2022-01-18T00:56:38+08:00</updated>
+  
+    <id>http://localhost:4000/posts/git-study-introduction/</id>
+    <content src="http://localhost:4000/posts/git-study-introduction/" />
+    <author>
+      <name>zwtisme</name>
+    </author>
+
+  
+    
+  
+
+  
+    <summary>
+      
+
+
+
+
+
+      
+  介绍使用git中一些常用命令来进行版本管理。
+
+
+安装与配置
+
+windows
+
+安装
+
+下载地址
+
+
+从下载地址选择合适的版本下载，按照提示进行安装即可。
+
+
+用户配置
+
+
+当用户提交代码时，git服务器可知道是谁进行了操作。
+
+
+$ git config --global user.name "Your Name"
+$ git config --global user.email "email@example.com"
+
+
+
+配置文件位置
+
+
+C:\Users(用户)\$USER\.gitconfig
+
+
+SSH Key配置
+
+
+如果使用GitHub作为代码服务器，为了能与其进行交互，需要创建SSK key并配置到GitHub上。
+
+
+1.创建SSH Key
+
+#一路回车就可以
+$ ssh-keygen -t rsa -C "youremail@example.com"
+
+...
+    </summary>
+  
+
+  </entry>
+
+</feed>
+
+

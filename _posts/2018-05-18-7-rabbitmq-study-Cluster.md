@@ -20,7 +20,7 @@ tags:
 这里我们建立一个3台机器组成的集群，事先先在3台机器上安装好RabbitMQ服务。
 </p>
 
-[安装方法戳这里](https://xuanxuan2016.github.io/2018/05/08/rabbitmq-study-prepare-environment/)
+
 
 <p>
 机器IP：<br>
