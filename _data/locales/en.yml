@@ -24,7 +24,7 @@ search:
 
 panel:
   lastmod: Recently Updated
-  trending_tags: Tags
+  trending_tags: Trending Tags
   toc: Contents
 
 #  The liquid date format › http://strftime.net/
@@ -39,8 +39,8 @@ copyright:
   # Shown at the bottom of the post
   license:
     template: This post is licensed under :LICENSE_NAME by the author.
-    name: zwtisme
-    link: 
+    name: CC BY 4.0
+    link: https://creativecommons.org/licenses/by/4.0/
 
   # Displayed in the footer
   brief: Some rights reserved.

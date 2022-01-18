@@ -1,8 +1,8 @@
 ---
-title: 关于我
+title: About
 icon: fas fa-info-circle
 order: 4
 ---
 
 
-![image]({{site.url}}/img/about-bg-walle.jpg?raw=true)
+> **Note**: Add Markdown syntax content to file `_tabs/about.md` and it will show up on this page.
