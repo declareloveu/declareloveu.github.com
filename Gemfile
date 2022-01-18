@@ -22,5 +22,5 @@ gem "wdm", "~> 0.1.1", :install_if => Gem.win_platform?
 gem "webrick", "~> 1.7"
 
 
-gem 'jekyll-theme-chirpy', '~> 5.0', '>= 5.0.2'
+
 gem install jekyll-theme-chirpy
