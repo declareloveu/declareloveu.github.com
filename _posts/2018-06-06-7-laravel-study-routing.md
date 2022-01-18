@@ -28,7 +28,7 @@ tags:
 框架中的路由配置主要在<code>routes\web.php</code>与<code>routes\api.php</code>文件中，那么框架是如何加载文件里的路由的呢?
 </p>
 
-![image]({{site.url}}img/2018-06-06-7-laravel-study-routing/20180702151924.png?raw=true)
+![image]({{site.url}}/img/2018-06-06-7-laravel-study-routing/20180702151924.png?raw=true)
 
 #### 2.路由组
 
@@ -55,7 +55,7 @@ Route::prefix('api')
 当框架加载了路由配置文件，就需要将路由注册到应用了，以便之后能使用路由。
 </p>
 
-![image]({{site.url}}img/2018-06-06-7-laravel-study-routing/20180702164659.png?raw=true)
+![image]({{site.url}}/img/2018-06-06-7-laravel-study-routing/20180702164659.png?raw=true)
 
 ## 路由使用
 
@@ -63,5 +63,5 @@ Route::prefix('api')
 当应用接收到http请求时，需要经过路由将请求分发给闭包函数或控制器中的方法进行处理。
 </p>
 
-![image]({{site.url}}img/2018-06-06-7-laravel-study-routing/2018-07-03_082026.png?raw=true)
+![image]({{site.url}}/img/2018-06-06-7-laravel-study-routing/2018-07-03_082026.png?raw=true)
 

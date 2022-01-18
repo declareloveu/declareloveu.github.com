@@ -69,7 +69,7 @@ total 9
 右上角用户->设置->SSH and GPG keys->New SSH Key。将<code>id_rsa.pub</code>里的内容填写进去。
 </p>
 
-![image]({{site.url}}img/2019-04-05-git-study-introduction/20190407111122.png?raw=true)
+![image]({{site.url}}/img/2019-04-05-git-study-introduction/20190407111122.png?raw=true)
 
 #### linux
 
@@ -131,7 +131,7 @@ total 12
 右上角用户->设置->SSH and GPG keys->New SSH Key。将<code>id_rsa.pub</code>里的内容填写进去。
 </p>
 
-![image]({{site.url}}img/2019-04-05-git-study-introduction/20190407111122.png?raw=true)
+![image]({{site.url}}/img/2019-04-05-git-study-introduction/20190407111122.png?raw=true)
 
 ## 创建版本库
 
@@ -150,7 +150,7 @@ total 12
 $ cd /d/gitstudy2_tmp/
 
 #执行克隆命令
-$ git clone git@github.com:xuanxuan2016/gitstudy2.git
+$ git clone git@github.com:izwt/gitstudy2.git
 
 #进入仓库，查看状态
 $ cd gitstudy2/
@@ -184,7 +184,7 @@ On branch master
 在实际工作中，大部分时间都是在本地版本库里进行操作。本地版本库一般分为3个部分，工作区、暂存区、本地分支库。
 </p>
 
-![image]({{site.url}}img/2019-04-05-git-study-introduction/20190405162654.png?raw=true)
+![image]({{site.url}}/img/2019-04-05-git-study-introduction/20190405162654.png?raw=true)
 
 #### 工作区状态
 
@@ -516,7 +516,7 @@ $ git commit -m '冲突合并'
 
 ```linux
 #克隆
-$ git clone git@github.com:xuanxuan2016/gitstudy2.git
+$ git clone git@github.com:izwt/gitstudy2.git
 
 #分支
 $ git branch
@@ -533,7 +533,7 @@ $ git branch
 1.在GitHub上创建空的仓库
 
 2.本地仓库与远程库关联
-$ git remote add origin git@github.com:xuanxuan2016/gitstudy.git
+$ git remote add origin git@github.com:izwt/gitstudy.git
 
 3.将本地仓库分支推送到远程
 #第一次
@@ -546,8 +546,8 @@ git push origin master
 
 ```linux
 $ git remote -v
-origin  git@github.com:xuanxuan2016/gitstudy2.git (fetch)
-origin  git@github.com:xuanxuan2016/gitstudy2.git (push)
+origin  git@github.com:izwt/gitstudy2.git (fetch)
+origin  git@github.com:izwt/gitstudy2.git (push)
 ```
 
 #### 获取其他分支
@@ -588,7 +588,7 @@ Delta compression using up to 4 threads
 Compressing objects: 100% (2/2), done.
 Writing objects: 100% (3/3), 272 bytes | 68.00 KiB/s, done.
 Total 3 (delta 0), reused 0 (delta 0)
-To github.com:xuanxuan2016/gitstudy2.git
+To github.com:izwt/gitstudy2.git
    a9c0378..741bc0c  master -> master
 ```
 
@@ -606,7 +606,7 @@ remote: Counting objects: 100% (4/4), done.
 remote: Compressing objects: 100% (2/2), done.
 remote: Total 3 (delta 0), reused 3 (delta 0), pack-reused 0
 Unpacking objects: 100% (3/3), done.
-From github.com:xuanxuan2016/gitstudy2
+From github.com:izwt/gitstudy2
    a9c0378..741bc0c  master     -> origin/master
 Updating a9c0378..741bc0c
 Fast-forward
@@ -623,4 +623,4 @@ Fast-forward
 
 [廖雪峰教程](https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000)
 
-[git-cheatsheet]({{site.url}}img/2019-04-05-git-study-introduction/git-cheatsheet.pdf)
+[git-cheatsheet]({{site.url}}/img/2019-04-05-git-study-introduction/git-cheatsheet.pdf)

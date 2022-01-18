@@ -97,33 +97,33 @@ while (count($objChannel->callbacks)) {
 
 [戳这里看详细说明](http://naotu.baidu.com/file/31363a3566b1fdffedb4693cb3cc679b?token=6679f43790e2f5dc)
 
-![image]({{site.url}}img/2018-05-08-6-rabbitmq-study-php-amqplib/class_relation.png?raw=true)
+![image]({{site.url}}/img/2018-05-08-6-rabbitmq-study-php-amqplib/class_relation.png?raw=true)
 
 #### UML
 
-![image]({{site.url}}img/2018-05-08-6-rabbitmq-study-php-amqplib/uml_combine_1.png?raw=true)
+![image]({{site.url}}/img/2018-05-08-6-rabbitmq-study-php-amqplib/uml_combine_1.png?raw=true)
 
 ## 代码流程
 
 #### 创建connection
 
-![image]({{site.url}}img/2018-05-08-6-rabbitmq-study-php-amqplib/connection_flow.png?raw=true)
+![image]({{site.url}}/img/2018-05-08-6-rabbitmq-study-php-amqplib/connection_flow.png?raw=true)
 
 #### 创建channel
 
-![image]({{site.url}}img/2018-05-08-6-rabbitmq-study-php-amqplib/channel_flow.png?raw=true)
+![image]({{site.url}}/img/2018-05-08-6-rabbitmq-study-php-amqplib/channel_flow.png?raw=true)
 
 #### wait处理
 
-![image]({{site.url}}img/2018-05-08-6-rabbitmq-study-php-amqplib/wait_flow.png?raw=true)
+![image]({{site.url}}/img/2018-05-08-6-rabbitmq-study-php-amqplib/wait_flow.png?raw=true)
 
 #### 发送消息(producer)
 
-![image]({{site.url}}img/2018-05-08-6-rabbitmq-study-php-amqplib/producer_flow.png?raw=true)
+![image]({{site.url}}/img/2018-05-08-6-rabbitmq-study-php-amqplib/producer_flow.png?raw=true)
 
 #### 接收消息(consumer)
 
-![image]({{site.url}}img/2018-05-08-6-rabbitmq-study-php-amqplib/consumer_flow.png?raw=true)
+![image]({{site.url}}/img/2018-05-08-6-rabbitmq-study-php-amqplib/consumer_flow.png?raw=true)
 
 ## 代码注释
 

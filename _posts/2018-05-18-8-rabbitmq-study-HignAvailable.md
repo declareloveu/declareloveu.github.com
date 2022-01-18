@@ -16,7 +16,7 @@ tags:
 
 ## 架构图
 
-![image]({{site.url}}img/2018-05-18-8-rabbitmq-study-HignAvailable/ha.png?raw=true)
+![image]({{site.url}}/img/2018-05-18-8-rabbitmq-study-HignAvailable/ha.png?raw=true)
 
 ## 服务器
 
@@ -24,7 +24,7 @@ tags:
 为了保证RabbitMQ服务器的可用性，线上环境一般都使用镜像集群，当集群中某些节点不可用时，集群还是可以工作的。
 </p>
 
-[镜像集群搭建方法](https://xuanxuan2016.github.io/2018/05/18/7-rabbitmq-study-Cluster/#%E9%95%9C%E5%83%8F%E9%9B%86%E7%BE%A4)
+[镜像集群搭建方法]({{site.url}}/2018/05/18/7-rabbitmq-study-Cluster/#%E9%95%9C%E5%83%8F%E9%9B%86%E7%BE%A4)
 
 ## 生产者
 
@@ -322,4 +322,4 @@ if ($blnAck) {
 Tips：需要时刻关注队列中消息数，提高消费者处理速度，避免消息大批量滞留。
 </p>
 
-![image]({{site.url}}img/2018-05-18-8-rabbitmq-study-HignAvailable/pic_11.png?raw=true)
+![image]({{site.url}}/img/2018-05-18-8-rabbitmq-study-HignAvailable/pic_11.png?raw=true)

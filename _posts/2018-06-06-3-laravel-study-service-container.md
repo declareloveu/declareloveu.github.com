@@ -65,7 +65,7 @@ $this->app->bind('App\Contracts\EventPusher', 'App\Services\RedisEventPusher');
 
 ##### 流程图
 
-![image]({{site.url}}img/2018-06-06-2-laravel-study-service-container/2018-06-23_083158.png?raw=true)
+![image]({{site.url}}/img/2018-06-06-2-laravel-study-service-container/2018-06-23_083158.png?raw=true)
 
 #### 2.singleton
 
@@ -99,7 +99,7 @@ $this->app->singleton('cache', function ($app) {
 
 ##### 流程图
 
-![image]({{site.url}}img/2018-06-06-2-laravel-study-service-container/20180623073829.png?raw=true)
+![image]({{site.url}}/img/2018-06-06-2-laravel-study-service-container/20180623073829.png?raw=true)
 
 #### 3.instance
 
@@ -133,7 +133,7 @@ $this->app->instance('HelpSpot\API', $api);
 
 ##### 流程图
 
-![image]({{site.url}}img/2018-06-06-2-laravel-study-service-container/20180622182322.png?raw=true)
+![image]({{site.url}}/img/2018-06-06-2-laravel-study-service-container/20180622182322.png?raw=true)
 
 #### 4.when
 
@@ -204,7 +204,7 @@ $this->app->when(VideoController::class)
 
 ##### 流程图
 
-![image]({{site.url}}img/2018-06-06-2-laravel-study-service-container/20180622173206.png?raw=true)
+![image]({{site.url}}/img/2018-06-06-2-laravel-study-service-container/20180622173206.png?raw=true)
 
 #### 5.tag
 
@@ -243,7 +243,7 @@ $this->app->tag(['SpeedReport', 'MemoryReport'], 'reports');
 
 ##### 流程图
 
-![image]({{site.url}}img/2018-06-06-2-laravel-study-service-container/20180622162919.png?raw=true)
+![image]({{site.url}}/img/2018-06-06-2-laravel-study-service-container/20180622162919.png?raw=true)
 
 #### 6.extend
 
@@ -279,7 +279,7 @@ $this->app->extend(Service::class, function($service) {
 
 ##### 流程图
 
-![image]({{site.url}}img/2018-06-06-2-laravel-study-service-container/20180622160956.png?raw=true)
+![image]({{site.url}}/img/2018-06-06-2-laravel-study-service-container/20180622160956.png?raw=true)
 
 
 ## 解析
@@ -313,7 +313,7 @@ $api = $this->app->make('HelpSpot\API');
 
 ##### 流程图
 
-![image]({{site.url}}img/2018-06-06-2-laravel-study-service-container/2018-06-23_152549.png?raw=true)
+![image]({{site.url}}/img/2018-06-06-2-laravel-study-service-container/2018-06-23_152549.png?raw=true)
 
 #### 2.makeWith(container)
 
@@ -343,7 +343,7 @@ $api = $this->app->makeWith('HelpSpot\API', ['id' => 1]);
 
 ##### 流程图
 
-![image]({{site.url}}img/2018-06-06-2-laravel-study-service-container/20180623105813.png?raw=true)
+![image]({{site.url}}/img/2018-06-06-2-laravel-study-service-container/20180623105813.png?raw=true)
 
 #### 3.resolve(helpers)
 
@@ -395,7 +395,7 @@ $api = resolve('HelpSpot\API');
 
 ##### 流程图
 
-![image]({{site.url}}img/2018-06-06-2-laravel-study-service-container/20180623105253.png?raw=true)
+![image]({{site.url}}/img/2018-06-06-2-laravel-study-service-container/20180623105253.png?raw=true)
 
 ## 事件
 

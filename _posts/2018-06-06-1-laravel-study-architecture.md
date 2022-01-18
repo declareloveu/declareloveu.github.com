@@ -30,11 +30,11 @@ tags:
 此图主要是展示服务容器（Service Container），服务提供者（Service Providers），外观（Facades），契约（Contracts）之间的关系。
 </p>
 
-![image]({{site.url}}img/2018-06-06-1-laravel-study-architecture/20180621155721.png?raw=true)
+![image]({{site.url}}/img/2018-06-06-1-laravel-study-architecture/20180621155721.png?raw=true)
 
 ## 架构说明
 
-#### [1.服务容器](https://xuanxuan2016.github.io/2018/06/06/2-laravel-study-service-container/)
+#### [1.服务容器]({{site.url}}/2018/06/06/3-laravel-study-service-container/)
 
 <p>
 用于管理应用中的服务，提供添加服务与解析服务的接口，对于服务构造方法(__construct)中的依赖项，可自动进行解析注入。
@@ -44,7 +44,7 @@ tags:
 如果服务不依赖接口，且服务非共享的，可以不绑定到容器中，在使用服务时同样可以通过容器解析。
 </p>
 
-#### [2.服务提供者](https://xuanxuan2016.github.io/2018/06/06/3-laravel-study-service-providers/)
+#### [2.服务提供者]({{site.url}}/2018/06/06/4-laravel-study-service-providers/)
 
 <p>
 用于向服务容器中绑定服务，laravel框架自带了很多服务提供者，如果自己需要绑定新服务也应该通过服务提供者。
@@ -54,13 +54,13 @@ tags:
 - 延迟加载：使用到服务的时候
 - 事件加载：服务提供者配置了when，当when触发时加载
 
-#### [3.外观](https://xuanxuan2016.github.io/2018/06/06/4-laravel-study-facades/)
+#### [3.外观]({{site.url}}/2018/06/06/5-laravel-study-facades/)
 
 <p>
 提供访问服务容器可用类中方法的静态接口，在使用应用中通用的功能时比较简单，不需要通过长类名进行进行解析服务。
 </p>
 
-#### [4.契约](https://xuanxuan2016.github.io/2018/06/06/5-laravel-study-contracts/)
+#### [4.契约]({{site.url}}/2018/06/06/6-laravel-study-contracts/)
 
 <p>
 提供了服务要实现功能的接口，需要借助于服务提供者将接口与实现进行绑定，在通过容器解析接口时，实际是解析的接口的实现。通过接口定义的服务，可以方便的知道服务提供的功能，如果接口的实现变了可以很容易的进行修改，降低应用的耦合性。

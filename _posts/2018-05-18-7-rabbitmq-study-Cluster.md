@@ -20,7 +20,7 @@ tags:
 这里我们建立一个3台机器组成的集群，事先先在3台机器上安装好RabbitMQ服务。
 </p>
 
-[安装方法戳这里](https://xuanxuan2016.github.io/2018/05/08/rabbitmq-study-prepare-environment/)
+
 
 <p>
 机器IP：<br>
@@ -64,7 +64,7 @@ tags:
 队列类似于节点上运行的进程，每个进程拥有自己的进程ID（集群中的Erlang地址），信道将消息进行匹配后，会建立到队列PID的连接，然后将消息发送过去。
 </p>
 
-![image]({{site.url}}img/2018-05-18-7-rabbitmq-study-Cluster/20190402152335.png?raw=true)
+![image]({{site.url}}/img/2018-05-18-7-rabbitmq-study-Cluster/20190402152335.png?raw=true)
 
 ##### 交换器
 
@@ -377,7 +377,7 @@ Setting tags for user "admin" to [administrator]
 
 ##### 7.3.登录web管理端查看集群状态
 
-![image]({{site.url}}img/2018-05-18-7-rabbitmq-study-Cluster/20180526161717.png?raw=true)
+![image]({{site.url}}/img/2018-05-18-7-rabbitmq-study-Cluster/20180526161717.png?raw=true)
 
 #### 8.集群使用测试
 
@@ -395,9 +395,9 @@ Setting tags for user "admin" to [administrator]
 
 ##### 8.2.web管理端信息
 
-![image]({{site.url}}img/2018-05-18-7-rabbitmq-study-Cluster/20180526170231.png?raw=true)
+![image]({{site.url}}/img/2018-05-18-7-rabbitmq-study-Cluster/20180526170231.png?raw=true)
 
-![image]({{site.url}}img/2018-05-18-7-rabbitmq-study-Cluster/20180526170706.png?raw=true)
+![image]({{site.url}}/img/2018-05-18-7-rabbitmq-study-Cluster/20180526170706.png?raw=true)
 
 ## 镜像集群
 
@@ -437,9 +437,9 @@ Tips：如果将消息存储置于SSD的话，就可以极大提升持久化消�
 
 ##### 4.1.web管理端
 
-![image]({{site.url}}img/2018-05-18-7-rabbitmq-study-Cluster/20180526183111.png?raw=true)
+![image]({{site.url}}/img/2018-05-18-7-rabbitmq-study-Cluster/20180526183111.png?raw=true)
 
-![image]({{site.url}}img/2018-05-18-7-rabbitmq-study-Cluster/20180526183151.png?raw=true)
+![image]({{site.url}}/img/2018-05-18-7-rabbitmq-study-Cluster/20180526183151.png?raw=true)
 
 ##### 4.2.cli命令行
 
@@ -480,9 +480,9 @@ Listing policies
 测试代码同上面普通集群的测试代码。
 </p>
 
-![image]({{site.url}}img/2018-05-18-7-rabbitmq-study-Cluster/20180526190556.png?raw=true)
+![image]({{site.url}}/img/2018-05-18-7-rabbitmq-study-Cluster/20180526190556.png?raw=true)
 
-![image]({{site.url}}img/2018-05-18-7-rabbitmq-study-Cluster/20180526190945.png?raw=true)
+![image]({{site.url}}/img/2018-05-18-7-rabbitmq-study-Cluster/20180526190945.png?raw=true)
 
 ## 参考资料
 

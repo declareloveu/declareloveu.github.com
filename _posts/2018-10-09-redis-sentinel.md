@@ -208,7 +208,7 @@ sentinel set <param> <value>
 这里以1个主节点，3个从节点，4个哨兵节点来组成一个Redis Sentinel。
 </p>
 
-![image]({{site.url}}img/2018-10-09-redis-sentinel/20181009135214.png?raw=true)
+![image]({{site.url}}/img/2018-10-09-redis-sentinel/20181009135214.png?raw=true)
 
 #### 数据节点
 
@@ -611,7 +611,7 @@ Sentinel节点之间用来交换对主节点是否下线的判断，根据参数
 - 自动感知新加入的从节点
 - 节点不可达或故障转移后，更新最新的拓扑信息
 
-![image]({{site.url}}img/2018-10-09-redis-sentinel/20181011165230.png?raw=true)
+![image]({{site.url}}/img/2018-10-09-redis-sentinel/20181011165230.png?raw=true)
 
 ##### 2.间隔2s
 
@@ -647,7 +647,7 @@ Reading messages... (press Ctrl-C to quit)
 <Sentinel节点IP> <Sentinel节点端口> <Sentinel节点runId> <Sentinel节点配置版本><主节点名字> <主节点Ip> <主节点端口> <主节点配置版本>
 ```
 
-![image]({{site.url}}img/2018-10-09-redis-sentinel/20181011170255.png?raw=true)
+![image]({{site.url}}/img/2018-10-09-redis-sentinel/20181011170255.png?raw=true)
 
 ##### 3.间隔1s
 
@@ -655,7 +655,7 @@ Reading messages... (press Ctrl-C to quit)
 每个sentinel节点会向主节点、从节点、其余sentinel节点发送一条ping命令做一次心跳检测，来确认这些节点当前是否可达。
 </p>
 
-![image]({{site.url}}img/2018-10-09-redis-sentinel/20181011172218.png?raw=true)
+![image]({{site.url}}/img/2018-10-09-redis-sentinel/20181011172218.png?raw=true)
 
 #### 主观下线与客观下线
 
@@ -722,7 +722,7 @@ sentinel leader执行故障转移的大致流程如下：
 - 选择复制偏移量最大的从节点（复制的最完整），如果存在则返回，不存在则继续
 - 选择runid最小的从节点
 
-![image]({{site.url}}img/2018-10-09-redis-sentinel/20181012135652.png?raw=true)
+![image]({{site.url}}/img/2018-10-09-redis-sentinel/20181012135652.png?raw=true)
 
 <p>
 2.sentinel leader对选出来的节点执行<code>slaveof no one</code>让其变为主节点

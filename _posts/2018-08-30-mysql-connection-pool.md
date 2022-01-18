@@ -26,7 +26,7 @@ php作为脚本语言在每次运行结束后会销毁所有状态，不能将�
 
 ## 处理流程
 
-![image]({{site.url}}img/2018-08-30-mysql-connection-pool/20180830183231.png?raw=true)
+![image]({{site.url}}/img/2018-08-30-mysql-connection-pool/20180830183231.png?raw=true)
 
 ## 实现
 

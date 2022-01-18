@@ -19,7 +19,7 @@ tags:
 RabbitMQ节点一般指RabbitMQ应用程序和其所在的Erlang节点，当运行在Erlang节点上的应用程序崩溃时，Erlang会自动尝试重启应用程序（如果Erlang本身没有崩溃）。
 </p>
 
-![image]({{site.url}}img/2018-05-08-3-rabbitmq-study-server-command/20190318103109.png?raw=true)
+![image]({{site.url}}/img/2018-05-08-3-rabbitmq-study-server-command/20190318103109.png?raw=true)
 
 #### 启动节点
 
