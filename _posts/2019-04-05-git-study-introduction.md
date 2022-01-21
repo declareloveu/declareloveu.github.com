@@ -73,7 +73,7 @@ total 9
 
 #### linux
 
-##### 安装
+##### 安装1
 
 [版本地址](https://github.com/git/git/releases)
 
@@ -86,6 +86,21 @@ total 9
 [root@iZwz9i8fd8lio2yh3oerizZ git-2.21.0]# ./configure --prefix=/usr/local/git
 [root@iZwz9i8fd8lio2yh3oerizZ git-2.21.0]# make && make install
 ```
+
+##### 安装2
+用 yum 安装
+```linux
+yum install -y git
+```
+但是用 yum 安装一般版本较低，可通过如下方式
+```linux
+# 安装 centos7 WANDisco 仓库
+yum install http://opensource.wandisco.com/centos/7/git/x86_64/wandisco-git-release-7-2.noarch.rpm
+yum -y install git
+git version
+```
+
+
 
 ##### 用户配置
 
